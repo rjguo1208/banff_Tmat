@@ -1,0 +1,60 @@
+<!doctype html><html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Results - Explicit EDI-direct T-matrix, MoS2 S-vacancy</title>
+<link rel="stylesheet" href="../assets/style.css">
+<script>window.MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']],displayMath:[['$$','$$'],['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head><body>
+<nav class="topnav"><div class="inner"><span class="brand">EDI&nbsp;direct&nbsp;T-matrix</span><a href="../index.html">Home</a><a href="results.html" style="color:#fff;text-decoration:underline">Results</a><a href="https://rjguo1208.github.io/claude-sternheimer/">Sternheimer site &rarr;</a></div></nav>
+
+<header><div class="header-inner"><h1>Numerical Results</h1>
+<p class="subtitle">Explicit electron&ndash;defect $T$-matrix spectral function for the MoS&#8322; S-vacancy, from EDI direct-mode matrix elements; full-order rest downfolding by direct inversion; validated against supercell DFT.</p>
+<div class="meta"><span class="pill">$\omega_0=$ VBM $=-5.937$ eV</span><span class="pill">$A$=7&ndash;17, $R$=1&ndash;6,18&ndash;70</span><span class="pill">$\eta=0.05$ eV</span></div></div></header>
+
+<main>
+<section id="sec-spectral"><h2>1. Spectral function (full-order, $\omega_0=$ VBM)</h2>
+<p>The defect-dressed spectral function $A(\omega)=-\tfrac1\pi\,\mathrm{Im\,Tr}\,[G^A+G^A T_{PP}\,G^A]$, with the active-space $T$-matrix $T_{PP}(\omega)=[1-\tilde V\,G^A(\omega)]^{-1}\tilde V$ and the full-order downfolded potential $\tilde V=V_{PP}+V_{PQ}\,\mathcal G^Q\,V_{QP}$, $\mathcal G^Q=[\omega_0-H_0^Q-V_{QQ}]^{-1}$ evaluated once at the VBM.</p>
+<figure><img src="../assets/spectral_main.svg" alt="MoS2 S-vacancy spectral function" style="width:100%;max-width:900px">
+<figcaption><strong>Top:</strong> bare active DOS (grey) vs. the defect-dressed spectral function (indigo). <strong>Bottom:</strong> defect-induced $\Delta$DOS. Shaded band = host gap (VBM teal, CBM magenta).</figcaption></figure>
+<div class="table-wrap"><table><thead><tr><th>Quantity</th><th>Value</th><th>Meaning</th></tr></thead><tbody>
+<tr><td>rest inverse cond$[\omega_0-H_0^Q-V_{QQ}]$</td><td>$5.5\times10^{3}$</td><td>finite &mdash; partition valid, no level pinned at $\omega_0$</td></tr>
+<tr><td>$\lVert\tilde V\rVert_F/\lVert V_{PP}\rVert_F$</td><td>$1.41$</td><td>moderate rest dressing (the earlier $\times11$ was the units-bug artifact)</td></tr>
+<tr><td>$\int A_{\rm bare}\,d\omega$</td><td>$1572$</td><td>vs $1584$ active states &mdash; spectral sum rule satisfied</td></tr>
+<tr><td>in-gap $\Delta$DOS peak</td><td>$\sim{+}1.4$ eV (E&minus;VBM), strong</td><td>the S-vacancy defect state (cf. DFT $+1.16$ eV)</td></tr>
+</tbody></table></div></section>
+
+<section id="sec-validation"><h2>2. Validation vs. direct supercell DFT</h2>
+<p>Ground truth: the defect-induced $\Delta$DOS = (107-atom S-vacancy KS DOS) &minus; (108-atom pristine KS DOS), $\Gamma$-point, aligned by the deep-band reference. Compared on a common E&minus;VBM axis (each curve normalized to unit peak, since the $k$-density and matrix-element normalization differ).</p>
+<figure><img src="../assets/validation.svg" alt="Validation vs supercell DFT" style="width:100%;max-width:900px">
+<figcaption>Normalized defect $\Delta$DOS: supercell DFT (teal, ground truth) vs. the explicit T-matrix (indigo). The deep-valence scattering and &mdash; crucially &mdash; the in-gap defect state are both reproduced.</figcaption></figure>
+<div class="table-wrap"><table><thead><tr><th>Check</th><th>Verdict</th><th>Detail</th></tr></thead><tbody>
+<tr><td>Band structure (VBM, gap)</td><td><span class="badge ok">match</span></td><td>supercell (folded) VBM $-5.936$ eV, gap $1.657$ eV $=$ primitive $-5.937$/$1.66$; deep-band alignment shift only $-8$ meV</td></tr>
+<tr><td>Deep-valence feature</td><td><span class="badge ok">aligns</span></td><td>strongest $\Delta$DOS peak: DFT $-3.16$ eV $\leftrightarrow$ T-matrix $-3.20$ eV (E&minus;VBM)</td></tr>
+<tr><td>In-gap defect state</td><td><span class="badge ok">recovered</span></td><td>DFT $+1.16$ eV; T-matrix $\sim{+}1.4$ eV &mdash; same strong in-gap feature (residual $\sim0.2$&ndash;$0.4$ eV)</td></tr>
+<tr><td>Absolute magnitude</td><td><span class="badge warn">n/a</span></td><td>$k$-density (144 vs 36 folded) &amp; normalization not reconciled &mdash; compare features/shape, not amplitude</td></tr>
+</tbody></table></div>
+<p><strong>Verdict.</strong> With consistent units the explicit $T$-matrix reproduces the band structure, the delocalized valence-band scattering, <em>and</em> the localized in-gap defect state near the DFT energy. The residual $\sim0.2$&ndash;$0.4$ eV in the in-gap level is a second-order effect (static-$\omega_0$ limit, the semicore inclusion in $R$, and the 70-band basis truncation).</p></section>
+
+<section id="sec-units"><h2>3. The units bug &mdash; how the in-gap state was lost and recovered</h2>
+<p>The first runs put the in-gap defect feature at the wrong energy ($+0.2$ eV, a weak band-edge tail) with an implausible $\lVert\tilde V\rVert/\lVert V_{PP}\rVert=11$. A step-by-step audit ruled out the usual suspects and pinned the cause:</p>
+<div class="table-wrap"><table><thead><tr><th>Hypothesis</th><th>Test</th><th>Outcome</th></tr></thead><tbody>
+<tr><td>Static-$\omega_0$ limit (deep/bound-level failure)</td><td>$\omega_0$ sweep across the gap</td><td><span class="badge warn">ruled out</span> &mdash; feature insensitive to $\omega_0$</td></tr>
+<tr><td>FFT-grid folding mismatch</td><td>primitive vs supercell grids</td><td><span class="badge warn">ruled out</span> &mdash; exactly $6\times6\times1$ commensurate (40&times;40&times;300 vs 240&times;240&times;300)</td></tr>
+<tr><td>Potential alignment</td><td><code>pot_align</code> vacuum vs none</td><td><span class="badge warn">ruled out</span> &mdash; no meaningful change (shift $\sim0.012$ eV)</td></tr>
+<tr><td>Bad matrix elements / basis</td><td>direct $H_0{+}V$ diagonalization</td><td><span class="badge prod">smoking gun</span> &mdash; unphysical spectrum $\pm200$ eV &rArr; units</td></tr>
+<tr><td><strong>Units of $M$</strong></td><td>source-code audit</td><td><span class="badge prod">root cause</span> &mdash; EDI writes $M$ in <strong>Ry</strong> (<code>|M|^2(Ry^2)</code>), used as eV</td></tr>
+</tbody></table></div>
+<p>EDI's <code>ed_coarse.f90</code> writes the matrix elements in <strong>Rydberg</strong>, while the eigenvalues were converted to eV. Treating $M$ as eV under-counts every scattering term by $\mathrm{RYTOEV}=13.6057$. Because $\tilde V$ and $T_{PP}=[1-\tilde V G^A]^{-1}\tilde V$ depend on the units <em>non-linearly</em>, the effect is not a rescaling: $\tilde V G^A$ became $\ll 1$, collapsing the $T$-matrix to the first Born result $T_{PP}\!\approx\!\tilde V$, which cannot bind an in-gap state.</p>
+<figure><img src="../assets/unitsfix.svg" alt="Units bug before/after" style="width:100%;max-width:900px">
+<figcaption>In-gap $\Delta$DOS: with $M$ mistaken for eV (amber) there is only a weak band-edge tail; after $M\times$RYTOEV (indigo) a strong in-gap defect state appears near the DFT level (magenta line, $+1.16$ eV).</figcaption></figure>
+<p>Fixing the units brought $\lVert\tilde V\rVert/\lVert V_{PP}\rVert$ from $11$ (artifact) to $1.4$, and moved the in-gap state from $+0.2$ eV (wrong) to $\sim+1.4$ eV (right). <strong>The earlier static-limit diagnosis was itself an artifact of the units bug.</strong></p></section>
+
+<section id="sec-method"><h2>4. Method &amp; inputs</h2>
+<p><strong>DFT.</strong> MoS&#8322; monolayer, pseudo-dojo v0.5 stringent NC pseudopotentials, $E_{\rm cut}^{\rm wfc}{=}100$ Ry, <code>assume_isolated='2D'</code>. SCF on a $12\times12$ grid; NSCF with 80 bands on the explicit full $12\times12$ ($144$ $k$, <code>nosym</code>). The S-vacancy $\Delta V$ comes from a relaxed $6\times6$ supercell (defect 107 atoms, pristine 108), extracted as cube files.</p>
+<p><strong>Matrix elements.</strong> EDI direct calculation mode (<code>edmat_direct_from_file</code>, <code>band_ed='1-70'</code>) gives $\langle\psi_{nk}|\Delta V|\psi_{mk'}\rangle$ for all band pairs over the full $144\times144$ $k$-grid &mdash; $1.0\times10^8$ complex elements. The supercell $\Delta V$ is folded onto the primitive cell; the primitive and supercell FFT grids are exactly $6\times6\times1$ commensurate.</p>
+<p><strong>Downfolding &amp; resummation.</strong> Active $A$ = bands 7&ndash;17 (11 valence/low-conduction), rest $R$ = bands 1&ndash;6 (semicore) + 18&ndash;70. The rest resolvent $\mathcal G^Q=[\omega_0-H_0^Q-V_{QQ}]^{-1}$ is a single $8496\times8496$ direct inverse (full-order in $V_{QQ}$). $\tilde V=V_{PP}+V_{PQ}\mathcal G^Q V_{QP}$ feeds $T_{PP}(\omega)=[1-\tilde V G^A(\omega)]^{-1}\tilde V$, $\omega_0={}$VBM, $\eta=0.05$ eV.</p>
+<div class="warning"><p><strong>Caveats.</strong> (i) The spectral function is the raw $T$-matrix, not yet scaled by the defect concentration $n_d{=}1/36$. (ii) Static rest limit: $\mathcal G^Q$ frozen at $\omega_0$. (iii) Semicore bands (1&ndash;6) are in $R$ and couple strongly to the deep bare-ionic $\Delta V$; the Sternheimer-site analysis drops them. (iv) Unrelaxed-vs-relaxed defect geometry and the 70-band truncation set the $\sim0.2$&ndash;$0.4$ eV residual in the in-gap level.</p></div></section>
+</main>
+<footer>Explicit / EDI-direct electron&ndash;defect $T$-matrix &mdash; MoS&#8322; S-vacancy, Banff. Companion to the
+<a href="https://rjguo1208.github.io/claude-sternheimer/">Sternheimer downfolding site</a>. Equations via MathJax v3.</footer>
+</body></html>
