@@ -18,30 +18,33 @@
 <figcaption><strong>Top:</strong> bare active DOS (grey) vs. the defect-dressed spectral function (indigo), per primitive cell. <strong>Bottom:</strong> defect-induced $\Delta$DOS; the magenta line marks the supercell-DFT defect level (+1.16 eV).</figcaption></figure>
 <div class="table-wrap"><table><thead><tr><th>Quantity</th><th>Value</th><th>Meaning</th></tr></thead><tbody>
 <tr class="ok"><td>$\int A_{\rm bare}\,d\omega$</td><td>$10.92$</td><td>$\approx 11$ = active bands per cell &mdash; <strong>the normalization sanity check</strong> (was $1572=11\times N_k$ before the $1/N_k$ fix)</td></tr>
-<tr><td>rest inverse cond$[N_k(\omega_0-H_0^Q)-V_{QQ}]$</td><td>$15.2$</td><td>well-conditioned (was $5\times10^3$ without $1/N_k$)</td></tr>
-<tr><td>$\lVert\tilde V\rVert_F/\lVert V_{PP}\rVert_F$</td><td>$2.4$</td><td>the rest dressing is significant (consistent with the Sternheimer-site finding)</td></tr>
+<tr><td>rest inverse cond$[N_k(\omega_0-H_0^Q)-V_{QQ}]$</td><td>$17.6$</td><td>well-conditioned</td></tr>
+<tr><td>$\lVert\tilde V\rVert_F/\lVert V_{PP}\rVert_F$</td><td>$0.68$</td><td>rest dressing, computed with the Hermitian $M$ (&sect;2)</td></tr>
 <tr><td>$\int\Delta\mathrm{DOS}\,d\omega$</td><td>$-0.035$</td><td>tiny net redistribution &mdash; physical for one defect per cell</td></tr>
-<tr><td>in-gap defect levels (eigenvalues)</td><td>$a_1$ near VBM; $e$ at $+1.2$&ndash;$1.4$</td><td>read from diagonalization eigenvalues (&sect;2); the $\Delta$DOS $\arg\max$ ($+1.37$) is <em>not</em> a robust estimator</td></tr>
+<tr><td>in-gap defect state</td><td>$e$-doublet at $+1.21$ eV; $a_1$ near VBM</td><td>$T$-matrix $\Delta$DOS peak $+1.21$; the Hermitian-$M$ eigenvalues give the $e$-doublet at $+1.194$ (&sect;2), vs DFT $+1.16$ / Anvil $+1.19$</td></tr>
 </tbody></table></div></section>
 
-<section id="sec-validation"><h2>2. In-gap defect levels &mdash; eigenvalues, robustness, cross-checks</h2>
-<p>The physical defect levels are read <strong>directly from the in-gap eigenvalues</strong> of the diagonalized defect Hamiltonian $H_{\rm eff}=\mathrm{diag}(\varepsilon_{nk})+M/N_k$ (full 70-band Bloch basis, $1/N_k$ measure) &mdash; <em>not</em> from the $\arg\max$ of the broadened $\Delta$DOS. In the gap the $\Delta$DOS is a weak, diffuse signal (peak $\lesssim0.08$, vs. $0.20$ for the robust valence feature at $-3.2$ eV), so its $\arg\max$ is not a robust estimator: it jumps between $+0.16$ and $+1.37$ eV across pseudopotentials. The eigenvalues themselves are stable.</p>
-<figure><img src="../assets/compare_sg15_dojo.svg" alt="why the dDOS argmax is not robust" style="width:100%;max-width:900px">
-<figcaption>Why the $\Delta$DOS $\arg\max$ fails: in the gap the $\Delta$DOS is weak and diffuse (right; arrows mark each route's $\arg\max$, scattered $0.16$&ndash;$1.37$ eV), whereas the robust feature is the valence peak at $-3.2$ eV (left). The eigenvalues (next figure) are the stable observable.</figcaption></figure>
-<p>Four independent routes agree on the level structure &mdash; an $a_1$ state near the VBM and an $e$-derived deep level at $+1.2$&ndash;$1.4$ eV, matching the $C_{3v}$ symmetry of the S vacancy and supercell DFT:</p>
-<figure><img src="../assets/ingap_levels_compare.svg" alt="In-gap defect levels from four routes" style="width:100%;max-width:760px">
-<figcaption>In-gap eigenvalues (relative to VBM) from four routes: supercell DFT; Anvil's downfolded diagonalization (explicit-60 $\tilde V$); and our full-70-band direct diagonalization with two pseudopotential sets. All show $a_1$ near VBM and an $e$-derived level near $+1.2$&ndash;$1.4$ eV.</figcaption></figure>
-<div class="table-wrap"><table><thead><tr><th>Route</th><th>$a_1$ (near VBM)</th><th>mid-gap</th><th>$e$ deep level</th></tr></thead><tbody>
-<tr><td>supercell DFT</td><td>$+0.11$</td><td>&mdash;</td><td>$+1.17$</td></tr>
-<tr class="ok"><td>Anvil, downfold (explicit-60)</td><td>$+0.005$</td><td>&mdash;</td><td>$+1.205$ (doublet)</td></tr>
-<tr><td>ours, full-70 &middot; pseudo-dojo</td><td>$+0.019$</td><td>$+0.394,\,+0.770$</td><td>$+1.436$</td></tr>
-<tr><td>ours, full-70 &middot; SG15</td><td>$+0.018$</td><td>$+0.325,\,+0.631$</td><td>$+1.340$</td></tr>
+<section id="sec-validation"><h2>2. In-gap defect levels &mdash; a Hermiticity bug, its fix, and validation</h2>
+<p>The physical defect levels are the in-gap <strong>eigenvalues</strong> of the defect Hamiltonian $H_{\rm eff}=\mathrm{diag}(\varepsilon_{nk})+M/N_k$. Getting them right required finding a third, deeper bug &mdash; a non-Hermitian $M$ produced by EDI-direct &mdash; which is the root cause of the pseudopotential-sensitive, split-doublet results in earlier drafts.</p>
+<h3 style="margin-top:1.2em">The bug: a fixed bra in the matrix-element loop</h3>
+<p>In <code>ed_coarse.f90::ed_direct_from_files</code> the bra $\psi_{k_i}$ lived in a single-$k$ buffer overwritten on every $k_i$ of a broadcast loop, leaving only the last $k$-point; the pair loop then computed, for <em>every</em> $k_i$,
+$$M(k_i,k_f)=\langle\psi_{k_N}|\,\Delta V\,|\psi_{k_f}\rangle\quad(\text{bra frozen at }k_N).$$
+Because $\Delta V$ is Hermitian the true $M$ obeys $M_{ij}=M_{ji}^*$; the frozen bra broke this. The tell-tale: the diagonal $M_{ii}=\langle\psi_{k_i}|\Delta V|\psi_{k_i}\rangle$ must be <strong>real</strong>, yet carried up to <strong>20 eV</strong> of imaginary part (worst at the Mo semicore bands) with $\max|M-M^\dagger|=40$ eV &mdash; and <em>only</em> $k_i=k_N$ (the one truly-diagonal row) was real, which pinpointed the cause. This non-Hermiticity split the symmetry-required $e$-doublet and made the $\Delta$DOS $\arg\max$ jump between $+0.16$ and $+1.37$ eV across pseudopotentials: the earlier &ldquo;instability&rdquo; and &ldquo;full-70 vs.&nbsp;downfold discrepancy&rdquo; were all artifacts of this single bug. Anvil's independent EDT code was Hermitian to $10^{-14}$ &mdash; it never had it.</p>
+<p><strong>The fix</strong> caches the bra per $k_i$ (only this pool's pair-range $k_i$, bounding memory) instead of one overwritten buffer. After recompiling and rerunning: $\max|M-M^\dagger|=\mathbf 0$, $\mathrm{Im}\,M_{ii}=0$ for all bands, zero phase violations over $10^8$ elements.</p>
+<h3 style="margin-top:1.2em">Validation: four routes agree</h3>
+<p>With the Hermitian $M$ the S-vacancy shows the textbook $C_{3v}$ structure &mdash; an $a_1$ state near the VBM and a <strong>doubly-degenerate $e$ level at $+1.19$&ndash;$1.21$ eV</strong> &mdash; and all four independent determinations agree:</p>
+<figure><img src="../assets/ingap_levels_fixed.svg" alt="In-gap levels after the fix; four routes agree" style="width:100%;max-width:780px">
+<figcaption>In-gap defect levels (relative to VBM) after the bra-bug fix: supercell DFT, Anvil's EDT, and our diagonalization with two pseudopotential sets. The $e$-doublet is degenerate and lands at $+1.19$&ndash;$1.21$ eV in every case.</figcaption></figure>
+<div class="table-wrap"><table><thead><tr><th>Route</th><th>$a_1$ (near VBM)</th><th>$e$ level (doublet)</th><th>$T$-matrix in-gap</th></tr></thead><tbody>
+<tr><td>supercell DFT</td><td>$+0.11$</td><td>$+1.17$</td><td>&mdash;</td></tr>
+<tr class="ok"><td>Anvil, EDT</td><td>$+0.005$</td><td>$+1.205,\,+1.205$</td><td>$+1.19$</td></tr>
+<tr><td>Banff, diag &middot; pseudo-dojo</td><td>$+0.001$</td><td>$+1.194,\,+1.194$</td><td>$+1.209$</td></tr>
+<tr><td>Banff, diag &middot; SG15</td><td>$+0.001$</td><td>$+1.194,\,+1.194$</td><td>$+1.219$</td></tr>
 </tbody></table></div>
-<h3 style="margin-top:1.4em">SG15 vs. pseudo-dojo robustness check</h3>
-<p>Rerunning the whole pipeline (NSCF &rarr; supercell SCF &rarr; EDI direct &rarr; diagonalization) with SG15 ONCV pseudopotentials &mdash; identical valence (Mo 14e, S 6e), identical VBM/gap to meV &mdash; gives the same sum rule ($\int A_{\rm bare}=10.92$) and the same $a_1{+}e$ structure. <strong>Robust</strong> across pseudopotential and method: the sum rule; the deep-valence feature (DFT $-3.16\leftrightarrow$ ours $-3.20$ eV); the $a_1$-near-VBM plus $e$-at-$+1.2$&ndash;$1.4$ structure. <strong>Method-dependent</strong>: the exact $e$-level position ($\pm0.2$ eV) and whether the $e$ doublet stays degenerate.</p>
-<h3 style="margin-top:1.4em">Full-70 vs. downfold &mdash; an honest discrepancy</h3>
-<p>Anvil's <em>downfolded</em> diagonalization (explicit-60 $\tilde V$) tracks DFT most closely: a clean $a_1$ and a degenerate $e$ doublet at $+1.205$. Our <em>full-70-band</em> direct diagonalization places the $e$ level higher ($+1.34$&ndash;$1.44$), splits the doublet, and shows extra mid-gap levels ($+0.3$&ndash;$0.8$). The likely cause: the full-70 route is sensitive to the non-Hermiticity of the raw high-band matrix elements ($\max|V-V^\dagger|\approx40$&ndash;$47$ eV before Hermitization; EDI writes phases consistent only for $|M|^2$), which the downfold integrates out. Reconciling the two routes is deferred.</p>
-<p><strong>On the earlier &ldquo;$+1.37$&rdquo; claim.</strong> The previously published $+1.37$ eV was the $\arg\max$ of the $T$-matrix $\Delta$DOS. It falls inside the $e$-level window, so it was not meaningless &mdash; but it is not a robust estimator (SG15 gives $+0.16$). The robust statement is the eigenvalue-based one above: $a_1$ near VBM, $e$ deep level at $+1.2$&ndash;$1.4$ eV, consistent with DFT $+1.17$.</p></section>
+<h3 style="margin-top:1.2em">SG15 vs. pseudo-dojo robustness check</h3>
+<p>Rerunning the whole pipeline (NSCF &rarr; supercell SCF &rarr; EDI-direct &rarr; diagonalization / $T$-matrix) with SG15 ONCV pseudopotentials &mdash; identical valence (Mo 14e, S 6e), VBM/gap equal to meV &mdash; gives <strong>identical</strong> results: $\int A_{\rm bare}=10.92$, the $e$-doublet at $+1.194$ (diag) / $+1.22$ ($T$-matrix), $a_1$ at $+0.001$, and the deep-valence feature at $-3.2$ eV. The defect level is now robust to the pseudopotential <em>and</em> to the method (direct diagonalization vs.&nbsp;downfolded $T$-matrix), and matches supercell DFT.</p>
+<figure><img src="../assets/spectral_fixed_compare.svg" alt="T-matrix defect dDOS stringent vs SG15 after fix" style="width:100%;max-width:900px">
+<figcaption>Defect $\Delta$DOS from the $T$-matrix after the fix: pseudo-dojo (stringent) and SG15 overlay, with the in-gap peak at $\sim+1.21$ eV beside the DFT level ($+1.16$).</figcaption></figure></section>
 
 <section id="sec-units"><h2>3. Two normalization bugs &mdash; units and the $1/N_k$ BZ measure</h2>
 <p>The first runs put the in-gap feature at the wrong energy ($+0.2$ eV) and gave an implausible spectral norm ($\int A_{\rm bare}=1572$). A step-by-step audit found <strong>two</strong> independent normalization errors:</p>
@@ -71,7 +74,7 @@
 <p><strong>Downfolding &amp; resummation</strong> (per-cell states, $1/N_k$ BZ measure throughout):</p>
 <div class="math">$$\mathcal G^Q=\big[\,N_k(\omega_0 I-H_0^Q)-V_{QQ}\,\big]^{-1},\quad \tilde V=V_{PP}+V_{PQ}\mathcal G^Q V_{QP},\quad G^A(\omega)=\tfrac1{N_k}\,\mathrm{diag}\!\Big[\tfrac{1}{\omega+i\eta-\varepsilon_a}\Big],\quad T_{PP}=[1-\tilde V G^A]^{-1}\tilde V$$</div>
 <p>Active $A$ = bands 7&ndash;17, rest $R$ = 1&ndash;6 + 18&ndash;70, $\omega_0={}$VBM, $\eta=0.05$ eV. Matrix elements $\times$RYTOEV (Ry$\to$eV); $V$ blocks Hermitized.</p>
-<div class="warning"><p><strong>Caveats.</strong> (i) Raw $T$-matrix, not yet scaled by defect concentration $n_d{=}1/36$. (ii) Static rest limit ($\mathcal G^Q$ frozen at $\omega_0$). (iii) The $e$-level position varies by $\sim0.2$ eV between our full-70 diagonalization ($+1.34$&ndash;$1.44$) and Anvil's downfolded route ($+1.205$, closest to DFT $+1.17$); reconciling them (raw high-band non-Hermiticity) is deferred. (iv) Semicore (1&ndash;6) kept in $R$; the Sternheimer site drops them.</p></div></section>
+<div class="warning"><p><strong>Caveats.</strong> (i) Raw $T$-matrix, not yet scaled by defect concentration $n_d{=}1/36$. (ii) Static rest limit ($\mathcal G^Q$ frozen at $\omega_0$). (iii) With the Hermitian $M$ (&sect;2) the $e$-doublet is stable at $+1.19$&ndash;$1.21$ eV across both pseudopotentials, both methods (diagonalization vs.&nbsp;$T$-matrix), and against Anvil's EDT and supercell DFT. (iv) Semicore (1&ndash;6) kept in $R$; the Sternheimer site drops them.</p></div></section>
 </main>
 <footer>Explicit / EDI-direct electron&ndash;defect $T$-matrix &mdash; MoS&#8322; S-vacancy, Banff. Companion to the
 <a href="https://rjguo1208.github.io/claude-sternheimer/">Sternheimer downfolding site</a>. Equations via MathJax v3.</footer>
