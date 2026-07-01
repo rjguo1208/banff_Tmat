@@ -40,7 +40,18 @@
 <figure><img src="../assets/spectral_fixed_compare.svg" alt="T-matrix defect dDOS: stringent vs SG15" style="width:100%;max-width:900px">
 <figcaption>Defect $\Delta$DOS from the $T$-matrix: pseudo-dojo (stringent) and SG15 overlay, with the in-gap peak at $\sim+1.21$ eV beside the DFT level ($+1.16$).</figcaption></figure></section>
 
-<section id="sec-method"><h2>3. Method &amp; inputs</h2>
+<section id="sec-dos3"><h2>3. The DOS three ways &mdash; a method cross-check</h2>
+<p>The in-gap defect DOS can be reached three ways from the same Hermitian $M$: <strong>(①)</strong> direct diagonalization of $H_{\rm eff}=\mathrm{diag}(\varepsilon)+M/N_k$ over the full 70-band basis; <strong>(②)</strong> full-space $T$-matrix inversion $G=G_0+G_0 T G_0$, $T=[1-V G_0]^{-1}V$, solved at each $\omega$; and <strong>(③)</strong> the active/rest downfolding of &sect;1&ndash;2. Routes ① and ② are the same full-space Green's function &mdash; they agree to $\max|\Delta\mathrm{DOS}|=3\times10^{-13}$ &mdash; and the downfolding approximation (③) lands within $0.02$ eV.</p>
+<figure><img src="../assets/dos_three_methods.svg" alt="Defect DOS by three methods" style="width:100%;max-width:900px">
+<figcaption>Defect DOS vs $E-$VBM from the three methods (Hermitian $M$). Method ② (amber markers) rides exactly on method ① (blue line); the downfolded curve (③, magenta dashed) tracks them, its $e$-doublet peak at $+1.22$ vs $+1.20$ eV. Gap shaded (VBM&hellip;CBM).</figcaption></figure>
+<div class="table-wrap"><table><thead><tr><th>Method</th><th>Space</th><th>in-gap peak ($E-$VBM)</th></tr></thead><tbody>
+<tr><td>① direct diagonalization</td><td>full 70-band</td><td>$+1.201$ eV</td></tr>
+<tr><td>② full $T$-matrix inversion</td><td>full 70-band</td><td>$+1.201$ eV</td></tr>
+<tr class="ok"><td>③ downfolding</td><td>active 7&ndash;17 + static rest</td><td>$+1.223$ eV</td></tr>
+</tbody></table></div>
+<p>①=② is the numerical statement that diagonalization and $T$-matrix inversion are two solvers for one Green's function; ③ shows the active-space downfolding reproduces it to $0.02$ eV, validating the approximation used for the production spectral function in &sect;1.</p></section>
+
+<section id="sec-method"><h2>4. Method &amp; inputs</h2>
 <p><strong>DFT.</strong> MoS&#8322; monolayer, pseudo-dojo v0.5 stringent NC pseudopotentials (cross-checked with SG15 ONCV), $E_{\rm cut}^{\rm wfc}{=}100$ Ry, <code>assume_isolated='2D'</code>. SCF on $12\times12$; NSCF with 80 bands on the explicit full $12\times12$ ($N_k=144$, <code>nosym</code>). The S-vacancy $\Delta V$ comes from an <strong>unrelaxed (ideal)</strong> $6\times6$ supercell (defect 107 atoms, pristine 108 &mdash; a single S removed, all other atoms at ideal lattice sites), as cube files.</p>
 <p><strong>Matrix elements.</strong> EDI direct mode (<code>edmat_direct_from_file</code>, <code>band_ed='1-70'</code>) gives the Hermitian $M_{nk,mk'}=\langle\psi_{nk}|\Delta V|\psi_{mk'}\rangle$ (in Ry) over the full $144\times144$ $k$-grid &mdash; $1.0\times10^8$ elements. FFT grids exactly $6\times$ commensurate ($40\times40\times300$ primitive, $240\times240\times300$ supercell).</p>
 <p><strong>Downfolding &amp; resummation</strong> (per-cell states, $1/N_k$ BZ measure throughout):</p>
