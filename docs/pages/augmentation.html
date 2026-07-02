@@ -8,8 +8,8 @@
 <nav class="topnav"><div class="inner"><span class="brand">EDI&nbsp;direct&nbsp;T-matrix</span><a href="../index.html">Home</a><a href="results.html">Results</a><a href="augmentation.html" style="color:#fff;text-decoration:underline">Augmentation</a><a href="https://rjguo1208.github.io/claude-sternheimer/">Sternheimer site &rarr;</a></div></nav>
 
 <header><div class="header-inner"><h1>Atomic-Orbital Basis Augmentation for New-Element Defects</h1>
-<p class="subtitle">Why the pristine Bloch basis fails for O$_S$ (a $+0.7$ eV variational push-up), and the fix: augment the basis with <strong>Bloch sums of the new element's pseudo-atomic orbitals</strong>, orthogonalized against the kept bands. Implemented in EDI direct mode (<code>edi_v6b.x</code>); the O$_S$ mid-gap artifact is cured from $+0.72$ eV to a $\sim$45 meV residual.</p>
-<div class="meta"><span class="pill">A1 method</span><span class="pill">MoS&#8322; O$_S$, 6&times;6</span><span class="pill">160 bands + 4 $\tilde\chi_O$ per $k$</span><span class="pill">edi_v6b.x</span><span class="pill">verdict: artifact cured</span></div></div></header>
+<p class="subtitle">Why the pristine Bloch basis fails for O$_S$ (a $+0.7$ eV variational push-up), and the fix: augment the basis with <strong>Bloch sums of the new element's pseudo-atomic orbitals</strong>, orthogonalized against the kept bands. Implemented in EDI direct mode (<code>edi_v6b.x</code>); the O$_S$ mid-gap artifact is cured from $+0.72$ eV to a $\sim$45 meV residual. A second route &mdash; <strong>PAW pseudopotentials with no augmentation</strong> (&sect;6, standalone <code>edi_paw.x</code>) &mdash; avoids the artifact altogether.</p>
+<div class="meta"><span class="pill">A1 method</span><span class="pill">MoS&#8322; O$_S$, 6&times;6</span><span class="pill">160 bands + 4 $\tilde\chi_O$ per $k$</span><span class="pill">edi_v6b.x</span><span class="pill">verdict: artifact cured</span><span class="pill">PAW route: cured too (&sect;6)</span></div></div></header>
 
 <main>
 
@@ -110,6 +110,25 @@ G^k_{ij}=\langle\bar\chi^k_i|\bar\chi^k_j\rangle=\big(W E W^\dagger\big)_{ij},\q
 </div>
 
 <div class="warning"><p><strong>Scope.</strong> (i) The replica identity for $V^{\rm NL}$ holds at $k_i=k_f$, exactly where $h^p$ is needed; the $\Delta V$ blocks at $k_i\neq k_f$ are unaffected (they use the difference of defect and pristine KB sums, as always). (ii) Collinear, norm-conserving case; the aug species' <code>upf</code> must ship <code>PP_PSWFC</code>. (iii) The S-vacancy pipeline is untouched: with <code>aug_orbitals=.false.</code> outputs are bitwise identical to <code>edi_v4/v5</code>.</p></div>
+</section>
+
+<section id="sec-paw"><h2>6&nbsp;&middot;&nbsp;Route 2: PAW pseudopotentials &mdash; the artifact never forms</h2>
+<p>The push-up is an NC-basis disease, so a sharper question is whether <strong>PAW alone</strong> (no augmentation at all) avoids it: the PAW transformation $\mathcal T_d = 1+\sum_a\sum_i(|\varphi_i^a\rangle-|\tilde\varphi_i^a\rangle)\langle\tilde p_i^a|$ carries the O near-core structure in atom-centered channels, so the <em>smooth</em> defect state $\tilde\varphi_d$ should be representable in the smooth O-free pristine basis. The matrix-element formulas change structurally (standalone <code>edi_paw.x</code>, built in <code>src_paw/</code>):</p>
+<div class="math">$$\Big(\varepsilon_{nk}\,\delta+\frac{\Delta\tilde H}{N_k}\Big)c \;=\; E\,\Big(\delta+\frac{\Delta S}{N_k}\Big)c,\qquad
+\Delta\tilde H=\Delta\tilde V_{\rm eff}^{\rm smooth}+\Big[\sum_a|\beta\rangle D^{\rm scr}_a\langle\beta|\Big]_{d-p},\qquad
+\Delta S=\Big[\sum_a|\beta\rangle q\langle\beta|\Big]_{d-p},$$</div>
+<p>a <em>generalized</em> eigenproblem: the overlap $S=1+\sum|\tilde p\rangle q\langle\tilde p|$ differs between the two systems, so a second matrix-element stream $\langle\tilde\psi|\Delta S|\tilde\psi'\rangle$ is computed alongside $M$ (here $\max|\Delta S|=0.077$ &mdash; an 8% metric effect). The nonlocal strengths are the <strong>SCF-screened, per-atom</strong> $D^{\rm scr}$ (QE's <code>deeq</code>, exported per system after <code>newd</code>/<code>add_paw_to_deeq</code>; the defect visibly re-screens every atom), and the local part is the smooth-grid $v_{rs}$ &mdash; exactly the operator <code>h_psi</code> applies. Machinery invariants: NSCF $S$-orthonormality $\max|\langle\tilde\psi|S_p|\tilde\psi\rangle-1|=2.6\times10^{-8}$; $B=I+\Delta S/N_k$ eigenvalues $[0.93,1.25]$; NC-limit run is <em>bitwise</em> identical to <code>edi_v6b.x</code>. Pseudopotentials: PSlibrary 1.0.0 kjpaw (PBE), $E_{\rm cut}=60/480$ Ry; the primitive PAW VBM ($-5.9399$ eV) sits 3.4 meV from the NC one, and the two families' supercell-DFT defect levels agree to meV.</p>
+
+<figure><img src="../assets/paw_dos.svg" alt="O_S DOS: PAW vs NC basis, no augmentation" style="width:100%;max-width:860px">
+<figcaption>Gaussian-broadened DOS ($\eta=0.05$ eV), each spectrum relative to its own family's VBM. The NC 160-band basis (magenta, dashed) shows the $+0.72$ eV spurious doublet of &sect;1; the <strong>PAW 160-band basis with no augmentation</strong> (teal) leaves the gap empty and returns the $e{\times}2+a_1$ triple to the VBM edge, on top of the PAW supercell-DFT ground truth (gray). <strong>Inset:</strong> VBM edge.</figcaption></figure>
+
+<div class="table-wrap"><table><thead><tr><th>Level (rel. host six-pack)</th><th>supercell DFT (PAW)</th><th>$H_{\rm eff}$ PAW, no aug</th><th>difference</th></tr></thead><tbody>
+<tr class="ok"><td>O-2p $e$-doublet (centroid)</td><td>$+0.2650$</td><td>$+0.2622$</td><td>$-2.9$ meV (split 13 meV)</td></tr>
+<tr class="ok"><td>$a_1$</td><td>$+0.2880$</td><td>$+0.2908$</td><td>$+2.8$ meV</td></tr>
+<tr><td>CBM-edge $e$-doublet</td><td>$+1.9247\times2$</td><td>$+1.872/+1.896$</td><td>$-30$ to $-50$ meV, split 24 meV</td></tr>
+<tr class="ok"><td>mid-gap</td><td>empty</td><td><strong>empty</strong></td><td>artifact never forms</td></tr>
+</tbody></table></div>
+<p><strong>Verdict.</strong> Pure PAW cures the O$_S$ artifact to the same accuracy class as NC+A1: the defect triple lands within $\pm3$ meV of DFT relative to the host manifold (common-mode offset $-32$ meV, analogous to &sect;5's $-45$ meV). Two equivalent routes for new-element defects, then: <em>NC + orbital augmentation</em> (&sect;3&ndash;5, $\pm1.4$ meV) or <em>switch to PAW</em> (this section, $\pm3$ meV) &mdash; both collapse a 712 meV artifact to the meV scale. Residual PAW blemishes (13&ndash;24 meV degeneracy splittings, CBM-edge offset) are consistent with smooth-grid quadrature and the alignment constant acting on the local part only.</p>
 </section>
 
 </main>
