@@ -1,0 +1,632 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="540.582801pt" height="415.341453pt" viewBox="0 0 540.582801 415.341453" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:date>2026-07-01T21:15:54.358543</dc:date>
+    <dc:format>image/svg+xml</dc:format>
+    <dc:creator>
+     <cc:Agent>
+      <dc:title>Matplotlib v3.10.8, https://matplotlib.org/</dc:title>
+     </cc:Agent>
+    </dc:creator>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 415.341453 
+L 540.582801 415.341453 
+L 540.582801 0 
+L 0 0 
+L 0 415.341453 
+z
+" style="fill: none"/>
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 47.618438 235.082569 
+L 471.698437 235.082569 
+L 471.698437 22.318125 
+L 47.618438 22.318125 
+L 47.618438 235.082569 
+z
+" style="fill: none"/>
+   </g>
+   <g id="patch_3">
+    <path d="M 47.618438 50.585401 
+L 471.698437 50.585401 
+L 471.698437 22.318125 
+L 47.618438 22.318125 
+z
+" clip-path="url(#pb76917e5bc)" style="fill: #e7e9f0; stroke: #e7e9f0; stroke-linejoin: miter"/>
+   </g>
+   <g id="matplotlib.axis_1">
+    <g id="xtick_1">
+     <g id="line2d_1">
+      <defs>
+       <path id="mc89cc962f4" d="M 0 0 
+L 0 3.5 
+" style="stroke: #000000; stroke-width: 0.8"/>
+      </defs>
+      <g>
+       <use xlink:href="#mc89cc962f4" x="66.894801" y="235.082569" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+    </g>
+    <g id="xtick_2">
+     <g id="line2d_2">
+      <g>
+       <use xlink:href="#mc89cc962f4" x="259.658437" y="235.082569" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+    </g>
+    <g id="xtick_3">
+     <g id="line2d_3">
+      <g>
+       <use xlink:href="#mc89cc962f4" x="452.422074" y="235.082569" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+    </g>
+   </g>
+   <g id="matplotlib.axis_2">
+    <g id="ytick_1">
+     <g id="line2d_4">
+      <defs>
+       <path id="m5b74a3b256" d="M 0 0 
+L -3.5 0 
+" style="stroke: #000000; stroke-width: 0.8"/>
+      </defs>
+      <g>
+       <use xlink:href="#m5b74a3b256" x="47.618438" y="219.885109" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_1">
+      <text style="font-size: 11.5px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: end" x="40.618438" y="224.254211" transform="rotate(-0 40.618438 224.254211)">1.1</text>
+     </g>
+    </g>
+    <g id="ytick_2">
+     <g id="line2d_5">
+      <g>
+       <use xlink:href="#m5b74a3b256" x="47.618438" y="189.490188" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_2">
+      <text style="font-size: 11.5px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: end" x="40.618438" y="193.85929" transform="rotate(-0 40.618438 193.85929)">1.2</text>
+     </g>
+    </g>
+    <g id="ytick_3">
+     <g id="line2d_6">
+      <g>
+       <use xlink:href="#m5b74a3b256" x="47.618438" y="159.095268" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_3">
+      <text style="font-size: 11.5px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: end" x="40.618438" y="163.464369" transform="rotate(-0 40.618438 163.464369)">1.3</text>
+     </g>
+    </g>
+    <g id="ytick_4">
+     <g id="line2d_7">
+      <g>
+       <use xlink:href="#m5b74a3b256" x="47.618438" y="128.700347" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_4">
+      <text style="font-size: 11.5px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: end" x="40.618438" y="133.069449" transform="rotate(-0 40.618438 133.069449)">1.4</text>
+     </g>
+    </g>
+    <g id="ytick_5">
+     <g id="line2d_8">
+      <g>
+       <use xlink:href="#m5b74a3b256" x="47.618438" y="98.305427" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_5">
+      <text style="font-size: 11.5px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: end" x="40.618438" y="102.674528" transform="rotate(-0 40.618438 102.674528)">1.5</text>
+     </g>
+    </g>
+    <g id="ytick_6">
+     <g id="line2d_9">
+      <g>
+       <use xlink:href="#m5b74a3b256" x="47.618438" y="67.910506" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_6">
+      <text style="font-size: 11.5px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: end" x="40.618438" y="72.279608" transform="rotate(-0 40.618438 72.279608)">1.6</text>
+     </g>
+    </g>
+    <g id="ytick_7">
+     <g id="line2d_10">
+      <g>
+       <use xlink:href="#m5b74a3b256" x="47.618438" y="37.515585" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_7">
+      <text style="font-size: 11.5px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: end" x="40.618438" y="41.884687" transform="rotate(-0 40.618438 41.884687)">1.7</text>
+     </g>
+    </g>
+    <g id="text_8">
+     <!-- $E-$VBM  (eV) -->
+     <g transform="translate(15.938203 167.857847) rotate(-90)">
+      <text>
+       <tspan x="0" y="-0.28125" style="font-style: oblique; font-size: 11.5px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'">E</tspan>
+       <tspan x="9.506592" y="-0.28125" style="font-size: 11.5px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'">−</tspan>
+       <tspan x="21.382812" y="-0.28125" style="font-size: 11.5px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'">V</tspan>
+       <tspan x="29.249756" y="-0.28125" style="font-size: 11.5px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'">B</tspan>
+       <tspan x="37.13916" y="-0.28125" style="font-size: 11.5px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'">M</tspan>
+       <tspan x="47.061279" y="-0.28125" style="font-size: 11.5px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'"> </tspan>
+       <tspan x="50.716797" y="-0.28125" style="font-size: 11.5px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'"> </tspan>
+       <tspan x="54.372314" y="-0.28125" style="font-size: 11.5px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'">(</tspan>
+       <tspan x="58.858887" y="-0.28125" style="font-size: 11.5px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'">e</tspan>
+       <tspan x="65.934082" y="-0.28125" style="font-size: 11.5px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'">V</tspan>
+       <tspan x="73.801025" y="-0.28125" style="font-size: 11.5px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'">)</tspan>
+      </text>
+     </g>
+    </g>
+   </g>
+   <g id="line2d_11">
+    <path d="M 47.618438 50.585401 
+L 471.698437 50.585401 
+" clip-path="url(#pb76917e5bc)" style="fill: none; stroke-dasharray: 4,3; stroke-dashoffset: 0; stroke: #1a1d27"/>
+   </g>
+   <g id="line2d_12">
+    <path d="M 66.894801 191.283489 
+L 259.658437 196.632995 
+L 452.422074 201.070653 
+" clip-path="url(#pb76917e5bc)" style="fill: none; stroke: #2456b3; stroke-width: 1.8; stroke-linecap: square"/>
+    <defs>
+     <path id="m6750594655" d="M 0 3 
+C 0.795609 3 1.55874 2.683901 2.12132 2.12132 
+C 2.683901 1.55874 3 0.795609 3 0 
+C 3 -0.795609 2.683901 -1.55874 2.12132 -2.12132 
+C 1.55874 -2.683901 0.795609 -3 0 -3 
+C -0.795609 -3 -1.55874 -2.683901 -2.12132 -2.12132 
+C -2.683901 -1.55874 -3 -0.795609 -3 0 
+C -3 0.795609 -2.683901 1.55874 -2.12132 2.12132 
+C -1.55874 2.683901 -0.795609 3 0 3 
+z
+" style="stroke: #2456b3"/>
+    </defs>
+    <g clip-path="url(#pb76917e5bc)">
+     <use xlink:href="#m6750594655" x="66.894801" y="191.283489" style="fill: #2456b3; stroke: #2456b3"/>
+     <use xlink:href="#m6750594655" x="259.658437" y="196.632995" style="fill: #2456b3; stroke: #2456b3"/>
+     <use xlink:href="#m6750594655" x="452.422074" y="201.070653" style="fill: #2456b3; stroke: #2456b3"/>
+    </g>
+   </g>
+   <g id="line2d_13">
+    <path d="M 66.894801 68.822354 
+L 259.658437 50.706981 
+L 452.422074 47.485119 
+" clip-path="url(#pb76917e5bc)" style="fill: none; stroke: #b3348f; stroke-width: 1.8; stroke-linecap: square"/>
+    <defs>
+     <path id="mdff60a7154" d="M -3 3 
+L 3 3 
+L 3 -3 
+L -3 -3 
+z
+" style="stroke: #b3348f; stroke-linejoin: miter"/>
+    </defs>
+    <g clip-path="url(#pb76917e5bc)">
+     <use xlink:href="#mdff60a7154" x="66.894801" y="68.822354" style="fill: #b3348f; stroke: #b3348f; stroke-linejoin: miter"/>
+     <use xlink:href="#mdff60a7154" x="259.658437" y="50.706981" style="fill: #b3348f; stroke: #b3348f; stroke-linejoin: miter"/>
+     <use xlink:href="#mdff60a7154" x="452.422074" y="47.485119" style="fill: #b3348f; stroke: #b3348f; stroke-linejoin: miter"/>
+    </g>
+   </g>
+   <g id="patch_4">
+    <path d="M 47.618438 235.082569 
+L 47.618438 22.318125 
+" style="fill: none; stroke: #000000; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="patch_5">
+    <path d="M 47.618438 235.082569 
+L 471.698437 235.082569 
+" style="fill: none; stroke: #000000; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="text_9">
+    <text style="font-size: 10px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: end; fill: #1a1d27" x="533.382801" y="47.289917" transform="rotate(-0 533.382801 47.289917)">CBM</text>
+   </g>
+   <g id="text_10">
+    <text style="font-size: 9.5px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: start; fill: #8893a8" x="72.67771" y="37.515585" transform="rotate(-0 72.67771 37.515585)">conduction band</text>
+   </g>
+   <g id="patch_6">
+    <path d="M 107.768436 164.0746 
+Q 88.163611 177.125201 68.558785 190.175803 
+" style="fill: none; stroke: #2456b3; stroke-width: 0.6; stroke-linecap: round"/>
+   </g>
+   <g id="text_11">
+    <text style="font-size: 9px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: start; fill: #2456b3" x="101.592256" y="159.095268" transform="rotate(-0 101.592256 159.095268)">32 meV</text>
+   </g>
+   <g id="patch_7">
+    <path d="M 313.103964 164.007129 
+Q 287.234229 179.799331 261.364493 195.591532 
+" style="fill: none; stroke: #2456b3; stroke-width: 0.6; stroke-linecap: round"/>
+   </g>
+   <g id="text_12">
+    <text style="font-size: 9px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: start; fill: #2456b3" x="288.572983" y="159.095268" transform="rotate(-0 288.572983 159.095268)">residual 15 meV</text>
+   </g>
+   <g id="patch_8">
+    <path d="M 390.947382 82.029281 
+Q 420.812361 65.247405 449.897587 48.903691 
+" style="fill: none; stroke: #b3348f; stroke-width: 0.8; stroke-linecap: round"/>
+    <path d="M 445.654013 49.108836 
+L 449.897587 48.903691 
+L 447.515559 52.421637 
+" style="fill: none; stroke: #b3348f; stroke-width: 0.8; stroke-linecap: round"/>
+   </g>
+   <g id="text_13">
+    <text style="font-size: 9.5px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: start; fill: #b3348f" x="346.402074" y="92.226442" transform="rotate(-0 346.402074 92.226442)">exits the gap</text>
+   </g>
+   <g id="text_14">
+    <text style="font-size: 12px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: middle" x="259.658437" y="16.318125" transform="rotate(-0 259.658437 16.318125)">Defect-level convergence with the Bloch-basis size</text>
+   </g>
+   <g id="legend_1">
+    <g id="line2d_14">
+     <path d="M 56.618438 120.611285 
+L 66.618438 120.611285 
+L 76.618438 120.611285 
+" style="fill: none; stroke: #2456b3; stroke-width: 1.8; stroke-linecap: square"/>
+     <g>
+      <use xlink:href="#m6750594655" x="66.618438" y="120.611285" style="fill: #2456b3; stroke: #2456b3"/>
+     </g>
+    </g>
+    <g id="text_15">
+     <!-- S-vacancy $e$-doublet (genuine) -->
+     <g transform="translate(84.618438 124.111285)">
+      <text>
+       <tspan x="0" y="-0.40625" style="font-size: 10px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'">S</tspan>
+       <tspan x="6.347656" y="-0.40625" style="font-size: 10px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'">-</tspan>
+       <tspan x="9.956055" y="-0.40625" style="font-size: 10px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'">v</tspan>
+       <tspan x="15.874023" y="-0.40625" style="font-size: 10px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'">a</tspan>
+       <tspan x="22.001953" y="-0.40625" style="font-size: 10px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'">c</tspan>
+       <tspan x="27.5" y="-0.40625" style="font-size: 10px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'">a</tspan>
+       <tspan x="33.62793" y="-0.40625" style="font-size: 10px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'">n</tspan>
+       <tspan x="39.96582" y="-0.40625" style="font-size: 10px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'">c</tspan>
+       <tspan x="45.463867" y="-0.40625" style="font-size: 10px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'">y</tspan>
+       <tspan x="51.381836" y="-0.40625" style="font-size: 10px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'"> </tspan>
+       <tspan x="60.712891" y="-0.40625" style="font-size: 10px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'">-</tspan>
+       <tspan x="64.321289" y="-0.40625" style="font-size: 10px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'">d</tspan>
+       <tspan x="70.668945" y="-0.40625" style="font-size: 10px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'">o</tspan>
+       <tspan x="76.787109" y="-0.40625" style="font-size: 10px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'">u</tspan>
+       <tspan x="83.125" y="-0.40625" style="font-size: 10px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'">b</tspan>
+       <tspan x="89.472656" y="-0.40625" style="font-size: 10px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'">l</tspan>
+       <tspan x="92.250977" y="-0.40625" style="font-size: 10px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'">e</tspan>
+       <tspan x="98.40332" y="-0.40625" style="font-size: 10px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'">t</tspan>
+       <tspan x="102.324219" y="-0.40625" style="font-size: 10px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'"> </tspan>
+       <tspan x="105.50293" y="-0.40625" style="font-size: 10px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'">(</tspan>
+       <tspan x="109.404297" y="-0.40625" style="font-size: 10px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'">g</tspan>
+       <tspan x="115.751953" y="-0.40625" style="font-size: 10px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'">e</tspan>
+       <tspan x="121.904297" y="-0.40625" style="font-size: 10px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'">n</tspan>
+       <tspan x="128.242188" y="-0.40625" style="font-size: 10px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'">u</tspan>
+       <tspan x="134.580078" y="-0.40625" style="font-size: 10px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'">i</tspan>
+       <tspan x="137.358398" y="-0.40625" style="font-size: 10px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'">n</tspan>
+       <tspan x="143.696289" y="-0.40625" style="font-size: 10px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'">e</tspan>
+       <tspan x="149.848633" y="-0.40625" style="font-size: 10px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'">)</tspan>
+       <tspan x="54.560547" y="-0.40625" style="font-style: oblique; font-size: 10px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'">e</tspan>
+      </text>
+     </g>
+    </g>
+    <g id="line2d_15">
+     <path d="M 56.618438 135.309722 
+L 66.618438 135.309722 
+L 76.618438 135.309722 
+" style="fill: none; stroke: #b3348f; stroke-width: 1.8; stroke-linecap: square"/>
+     <g>
+      <use xlink:href="#mdff60a7154" x="66.618438" y="135.309722" style="fill: #b3348f; stroke: #b3348f; stroke-linejoin: miter"/>
+     </g>
+    </g>
+    <g id="text_16">
+     <!-- O$_S$ doublet (artifact) -->
+     <g transform="translate(84.618438 138.809722)">
+      <text>
+       <tspan x="0" y="-0.40625" style="font-size: 10px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'">O</tspan>
+       <tspan x="12.683594" y="-0.40625" style="font-size: 10px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'"> </tspan>
+       <tspan x="15.862305" y="-0.40625" style="font-size: 10px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'">d</tspan>
+       <tspan x="22.209961" y="-0.40625" style="font-size: 10px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'">o</tspan>
+       <tspan x="28.328125" y="-0.40625" style="font-size: 10px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'">u</tspan>
+       <tspan x="34.666016" y="-0.40625" style="font-size: 10px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'">b</tspan>
+       <tspan x="41.013672" y="-0.40625" style="font-size: 10px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'">l</tspan>
+       <tspan x="43.791992" y="-0.40625" style="font-size: 10px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'">e</tspan>
+       <tspan x="49.944336" y="-0.40625" style="font-size: 10px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'">t</tspan>
+       <tspan x="53.865234" y="-0.40625" style="font-size: 10px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'"> </tspan>
+       <tspan x="57.043945" y="-0.40625" style="font-size: 10px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'">(</tspan>
+       <tspan x="60.945312" y="-0.40625" style="font-size: 10px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'">a</tspan>
+       <tspan x="67.073242" y="-0.40625" style="font-size: 10px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'">r</tspan>
+       <tspan x="71.18457" y="-0.40625" style="font-size: 10px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'">t</tspan>
+       <tspan x="75.105469" y="-0.40625" style="font-size: 10px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'">i</tspan>
+       <tspan x="77.883789" y="-0.40625" style="font-size: 10px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'">f</tspan>
+       <tspan x="81.404297" y="-0.40625" style="font-size: 10px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'">a</tspan>
+       <tspan x="87.532227" y="-0.40625" style="font-size: 10px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'">c</tspan>
+       <tspan x="93.030273" y="-0.40625" style="font-size: 10px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'">t</tspan>
+       <tspan x="96.951172" y="-0.40625" style="font-size: 10px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'">)</tspan>
+       <tspan x="7.966797" y="1.234375" style="font-style: oblique; font-size: 7px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'">S</tspan>
+      </text>
+     </g>
+    </g>
+   </g>
+  </g>
+  <g id="axes_2">
+   <g id="patch_9">
+    <path d="M 47.618438 377.134125 
+L 471.698437 377.134125 
+L 471.698437 251.978569 
+L 47.618438 251.978569 
+L 47.618438 377.134125 
+z
+" style="fill: none"/>
+   </g>
+   <g id="matplotlib.axis_3">
+    <g id="xtick_4">
+     <g id="line2d_16">
+      <g>
+       <use xlink:href="#mc89cc962f4" x="66.894801" y="377.134125" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_17">
+      <text style="font-size: 11.5px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: middle" x="66.894801" y="392.872328" transform="rotate(-0 66.894801 392.872328)">70 bands</text>
+     </g>
+    </g>
+    <g id="xtick_5">
+     <g id="line2d_17">
+      <g>
+       <use xlink:href="#mc89cc962f4" x="259.658437" y="377.134125" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_18">
+      <text style="font-size: 11.5px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: middle" x="259.658437" y="392.872328" transform="rotate(-0 259.658437 392.872328)">160 bands</text>
+     </g>
+    </g>
+    <g id="xtick_6">
+     <g id="line2d_18">
+      <g>
+       <use xlink:href="#mc89cc962f4" x="452.422074" y="377.134125" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_19">
+      <text style="font-size: 11.5px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif" transform="translate(413.491879 392.872328)">supercell DFT</text>
+      <text style="font-size: 11.5px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif" transform="translate(421.076488 405.749813)">(complete)</text>
+     </g>
+    </g>
+   </g>
+   <g id="matplotlib.axis_4">
+    <g id="ytick_8">
+     <g id="line2d_19">
+      <g>
+       <use xlink:href="#m5b74a3b256" x="47.618438" y="377.134125" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_20">
+      <text style="font-size: 11.5px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: end" x="40.618438" y="381.503227" transform="rotate(-0 40.618438 381.503227)">0.0</text>
+     </g>
+    </g>
+    <g id="ytick_9">
+     <g id="line2d_20">
+      <g>
+       <use xlink:href="#m5b74a3b256" x="47.618438" y="349.321779" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_21">
+      <text style="font-size: 11.5px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: end" x="40.618438" y="353.690881" transform="rotate(-0 40.618438 353.690881)">0.2</text>
+     </g>
+    </g>
+    <g id="ytick_10">
+     <g id="line2d_21">
+      <g>
+       <use xlink:href="#m5b74a3b256" x="47.618438" y="321.509434" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_22">
+      <text style="font-size: 11.5px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: end" x="40.618438" y="325.878535" transform="rotate(-0 40.618438 325.878535)">0.4</text>
+     </g>
+    </g>
+    <g id="ytick_11">
+     <g id="line2d_22">
+      <g>
+       <use xlink:href="#m5b74a3b256" x="47.618438" y="293.697088" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_23">
+      <text style="font-size: 11.5px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: end" x="40.618438" y="298.06619" transform="rotate(-0 40.618438 298.06619)">0.6</text>
+     </g>
+    </g>
+    <g id="ytick_12">
+     <g id="line2d_23">
+      <g>
+       <use xlink:href="#m5b74a3b256" x="47.618438" y="265.884742" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_24">
+      <text style="font-size: 11.5px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: end" x="40.618438" y="270.253844" transform="rotate(-0 40.618438 270.253844)">0.8</text>
+     </g>
+    </g>
+    <g id="text_25">
+     <!-- $E-$VBM  (eV) -->
+     <g transform="translate(15.938203 353.713847) rotate(-90)">
+      <text>
+       <tspan x="0" y="-0.28125" style="font-style: oblique; font-size: 11.5px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'">E</tspan>
+       <tspan x="9.506592" y="-0.28125" style="font-size: 11.5px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'">−</tspan>
+       <tspan x="21.382812" y="-0.28125" style="font-size: 11.5px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'">V</tspan>
+       <tspan x="29.249756" y="-0.28125" style="font-size: 11.5px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'">B</tspan>
+       <tspan x="37.13916" y="-0.28125" style="font-size: 11.5px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'">M</tspan>
+       <tspan x="47.061279" y="-0.28125" style="font-size: 11.5px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'"> </tspan>
+       <tspan x="50.716797" y="-0.28125" style="font-size: 11.5px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'"> </tspan>
+       <tspan x="54.372314" y="-0.28125" style="font-size: 11.5px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'">(</tspan>
+       <tspan x="58.858887" y="-0.28125" style="font-size: 11.5px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'">e</tspan>
+       <tspan x="65.934082" y="-0.28125" style="font-size: 11.5px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'">V</tspan>
+       <tspan x="73.801025" y="-0.28125" style="font-size: 11.5px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'">)</tspan>
+      </text>
+     </g>
+    </g>
+   </g>
+   <g id="line2d_24">
+    <path d="M 66.894801 344.273839 
+L 259.658437 347.680851 
+L 452.422074 362.866392 
+" clip-path="url(#pd6f89d7348)" style="fill: none; stroke: #2456b3; stroke-width: 1.5; stroke-linecap: square"/>
+    <defs>
+     <path id="m32d6912e62" d="M 0 3 
+C 0.795609 3 1.55874 2.683901 2.12132 2.12132 
+C 2.683901 1.55874 3 0.795609 3 0 
+C 3 -0.795609 2.683901 -1.55874 2.12132 -2.12132 
+C 1.55874 -2.683901 0.795609 -3 0 -3 
+C -0.795609 -3 -1.55874 -2.683901 -2.12132 -2.12132 
+C -2.683901 -1.55874 -3 -0.795609 -3 0 
+C -3 0.795609 -2.683901 1.55874 -2.12132 2.12132 
+C -1.55874 2.683901 -0.795609 3 0 3 
+z
+" style="stroke: #2456b3"/>
+    </defs>
+    <g clip-path="url(#pd6f89d7348)">
+     <use xlink:href="#m32d6912e62" x="66.894801" y="344.273839" style="fill-opacity: 0; stroke: #2456b3"/>
+     <use xlink:href="#m32d6912e62" x="259.658437" y="347.680851" style="fill-opacity: 0; stroke: #2456b3"/>
+     <use xlink:href="#m32d6912e62" x="452.422074" y="362.866392" style="fill-opacity: 0; stroke: #2456b3"/>
+    </g>
+   </g>
+   <g id="line2d_25">
+    <path d="M 66.894801 274.367508 
+L 259.658437 276.954056 
+" clip-path="url(#pd6f89d7348)" style="fill: none; stroke: #b3348f; stroke-width: 1.5; stroke-linecap: square"/>
+    <defs>
+     <path id="me961598b1f" d="M -3 3 
+L 3 3 
+L 3 -3 
+L -3 -3 
+z
+" style="stroke: #b3348f; stroke-linejoin: miter"/>
+    </defs>
+    <g clip-path="url(#pd6f89d7348)">
+     <use xlink:href="#me961598b1f" x="66.894801" y="274.367508" style="fill-opacity: 0; stroke: #b3348f; stroke-linejoin: miter"/>
+     <use xlink:href="#me961598b1f" x="259.658437" y="276.954056" style="fill-opacity: 0; stroke: #b3348f; stroke-linejoin: miter"/>
+    </g>
+   </g>
+   <g id="line2d_26">
+    <defs>
+     <path id="mbf2328b7ea" d="M -4.5 4.5 
+L 4.5 -4.5 
+M -4.5 -4.5 
+L 4.5 4.5 
+" style="stroke: #b3348f; stroke-width: 2"/>
+    </defs>
+    <g clip-path="url(#pd6f89d7348)">
+     <use xlink:href="#mbf2328b7ea" x="452.422074" y="277.009681" style="fill: #b3348f; stroke: #b3348f; stroke-width: 2"/>
+    </g>
+   </g>
+   <g id="patch_10">
+    <path d="M 47.618438 377.134125 
+L 47.618438 251.978569 
+" style="fill: none; stroke: #000000; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="patch_11">
+    <path d="M 47.618438 377.134125 
+L 471.698437 377.134125 
+" style="fill: none; stroke: #000000; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="text_26">
+    <text style="font-size: 9px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; fill: #b3348f" transform="translate(421.393168 292.191978)">absent in DFT</text>
+    <text style="font-size: 9px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; fill: #b3348f" transform="translate(426.906371 302.270009)">(gap clean)</text>
+   </g>
+   <g id="legend_2">
+    <g id="line2d_27">
+     <path d="M 279.228437 264.423569 
+L 288.728437 264.423569 
+L 298.228437 264.423569 
+" style="fill: none; stroke: #2456b3; stroke-width: 1.5; stroke-linecap: square"/>
+     <g>
+      <use xlink:href="#m32d6912e62" x="288.728437" y="264.423569" style="fill-opacity: 0; stroke: #2456b3"/>
+     </g>
+    </g>
+    <g id="text_27">
+     <!-- S-vac $a_1$ (genuine, slow) -->
+     <g transform="translate(305.828437 267.748569)">
+      <text>
+       <tspan x="0" y="-0.78125" style="font-size: 9.5px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'">S</tspan>
+       <tspan x="6.030273" y="-0.78125" style="font-size: 9.5px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'">-</tspan>
+       <tspan x="9.458252" y="-0.78125" style="font-size: 9.5px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'">v</tspan>
+       <tspan x="15.080322" y="-0.78125" style="font-size: 9.5px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'">a</tspan>
+       <tspan x="20.901855" y="-0.78125" style="font-size: 9.5px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'">c</tspan>
+       <tspan x="26.125" y="-0.78125" style="font-size: 9.5px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'"> </tspan>
+       <tspan x="39.457397" y="-0.78125" style="font-size: 9.5px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'"> </tspan>
+       <tspan x="42.477173" y="-0.78125" style="font-size: 9.5px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'">(</tspan>
+       <tspan x="46.183472" y="-0.78125" style="font-size: 9.5px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'">g</tspan>
+       <tspan x="52.213745" y="-0.78125" style="font-size: 9.5px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'">e</tspan>
+       <tspan x="58.058472" y="-0.78125" style="font-size: 9.5px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'">n</tspan>
+       <tspan x="64.079468" y="-0.78125" style="font-size: 9.5px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'">u</tspan>
+       <tspan x="70.100464" y="-0.78125" style="font-size: 9.5px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'">i</tspan>
+       <tspan x="72.739868" y="-0.78125" style="font-size: 9.5px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'">n</tspan>
+       <tspan x="78.760864" y="-0.78125" style="font-size: 9.5px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'">e</tspan>
+       <tspan x="84.605591" y="-0.78125" style="font-size: 9.5px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'">,</tspan>
+       <tspan x="87.625366" y="-0.78125" style="font-size: 9.5px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'"> </tspan>
+       <tspan x="90.645142" y="-0.78125" style="font-size: 9.5px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'">s</tspan>
+       <tspan x="95.594604" y="-0.78125" style="font-size: 9.5px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'">l</tspan>
+       <tspan x="98.234009" y="-0.78125" style="font-size: 9.5px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'">o</tspan>
+       <tspan x="104.046265" y="-0.78125" style="font-size: 9.5px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'">w</tspan>
+       <tspan x="111.81604" y="-0.78125" style="font-size: 9.5px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'">)</tspan>
+       <tspan x="29.144775" y="-0.78125" style="font-style: oblique; font-size: 9.5px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'">a</tspan>
+       <tspan x="34.966309" y="0.779687" style="font-size: 6.65px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'">1</tspan>
+      </text>
+     </g>
+    </g>
+    <g id="line2d_28">
+     <path d="M 279.228437 278.388569 
+L 288.728437 278.388569 
+L 298.228437 278.388569 
+" style="fill: none; stroke: #b3348f; stroke-width: 1.5; stroke-linecap: square"/>
+     <g>
+      <use xlink:href="#me961598b1f" x="288.728437" y="278.388569" style="fill-opacity: 0; stroke: #b3348f; stroke-linejoin: miter"/>
+     </g>
+    </g>
+    <g id="text_28">
+     <!-- O$_S$ mid-gap (no DFT counterpart) -->
+     <g transform="translate(305.828437 281.713569)">
+      <text>
+       <tspan x="0" y="-0.78125" style="font-size: 9.5px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'">O</tspan>
+       <tspan x="12.049941" y="-0.78125" style="font-size: 9.5px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'"> </tspan>
+       <tspan x="15.069717" y="-0.78125" style="font-size: 9.5px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'">m</tspan>
+       <tspan x="24.323867" y="-0.78125" style="font-size: 9.5px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'">i</tspan>
+       <tspan x="26.963271" y="-0.78125" style="font-size: 9.5px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'">d</tspan>
+       <tspan x="32.993545" y="-0.78125" style="font-size: 9.5px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'">-</tspan>
+       <tspan x="36.421523" y="-0.78125" style="font-size: 9.5px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'">g</tspan>
+       <tspan x="42.451797" y="-0.78125" style="font-size: 9.5px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'">a</tspan>
+       <tspan x="48.27333" y="-0.78125" style="font-size: 9.5px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'">p</tspan>
+       <tspan x="54.303604" y="-0.78125" style="font-size: 9.5px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'"> </tspan>
+       <tspan x="57.323379" y="-0.78125" style="font-size: 9.5px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'">(</tspan>
+       <tspan x="61.029678" y="-0.78125" style="font-size: 9.5px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'">n</tspan>
+       <tspan x="67.050674" y="-0.78125" style="font-size: 9.5px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'">o</tspan>
+       <tspan x="72.86293" y="-0.78125" style="font-size: 9.5px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'"> </tspan>
+       <tspan x="75.882705" y="-0.78125" style="font-size: 9.5px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'">D</tspan>
+       <tspan x="83.197891" y="-0.78125" style="font-size: 9.5px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'">F</tspan>
+       <tspan x="88.662246" y="-0.78125" style="font-size: 9.5px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'">T</tspan>
+       <tspan x="94.465225" y="-0.78125" style="font-size: 9.5px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'"> </tspan>
+       <tspan x="97.485" y="-0.78125" style="font-size: 9.5px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'">c</tspan>
+       <tspan x="102.708145" y="-0.78125" style="font-size: 9.5px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'">o</tspan>
+       <tspan x="108.5204" y="-0.78125" style="font-size: 9.5px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'">u</tspan>
+       <tspan x="114.541396" y="-0.78125" style="font-size: 9.5px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'">n</tspan>
+       <tspan x="120.562393" y="-0.78125" style="font-size: 9.5px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'">t</tspan>
+       <tspan x="124.287246" y="-0.78125" style="font-size: 9.5px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'">e</tspan>
+       <tspan x="130.131973" y="-0.78125" style="font-size: 9.5px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'">r</tspan>
+       <tspan x="134.037734" y="-0.78125" style="font-size: 9.5px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'">p</tspan>
+       <tspan x="140.068008" y="-0.78125" style="font-size: 9.5px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'">a</tspan>
+       <tspan x="145.889541" y="-0.78125" style="font-size: 9.5px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'">r</tspan>
+       <tspan x="149.795303" y="-0.78125" style="font-size: 9.5px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'">t</tspan>
+       <tspan x="153.520156" y="-0.78125" style="font-size: 9.5px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'">)</tspan>
+       <tspan x="7.568594" y="0.779687" style="font-style: oblique; font-size: 6.65px; font-family: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif'">S</tspan>
+      </text>
+     </g>
+    </g>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="pb76917e5bc">
+   <rect x="47.618438" y="22.318125" width="424.08" height="212.764444"/>
+  </clipPath>
+  <clipPath id="pd6f89d7348">
+   <rect x="47.618438" y="251.978569" width="424.08" height="125.155556"/>
+  </clipPath>
+ </defs>
+</svg>
