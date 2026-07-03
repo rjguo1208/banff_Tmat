@@ -178,6 +178,30 @@ G^k_{ij}=\langle\bar\chi^k_i|\bar\chi^k_j\rangle=\big(W E W^\dagger\big)_{ij},\q
 <p><strong>Final conclusion.</strong> The disease pair is <em>conserved under the $r_c$ dial</em>: sphere radius interpolates between the NC quadrant pattern and the standard-PAW quadrant pattern, trading one failure for the other, because the underlying issue &mdash; the basis's site inventory vs the defect's bookkeeping &mdash; is only relocated by pseudization choices, never resolved. The genuinely both-quadrant solutions are <em>basis-adaptive</em>: NC&nbsp;+&nbsp;A1 augmentation (&sect;3&ndash;5, proven), its PAW mirror (add the removed atom's orbitals in the $S_p$ metric; unimplemented), or atom-centered basis sets which adapt by construction. Per-defect pseudopotential selection (vacancy&nbsp;&rarr;&nbsp;NC or hard-S PAW; new-element substitution&nbsp;&rarr;&nbsp;standard PAW or NC+A1) remains the zero-new-code option.</p>
 </section>
 
+<section id="sec-tmat"><h2>8&nbsp;&middot;&nbsp;The $T$-matrix inherits the cure: $\tilde\chi$ as rest-space members</h2>
+<p>Everything above diagonalized $H_{\rm eff}$ directly. The production formalism of this site is the <em>active/rest downfolded $T$-matrix</em> &mdash; so the remaining question is whether the augmentation survives the downfolding. Test at <strong>70 bands</strong> (O$_S$, 36 $k$, bands 1&ndash;70 + 4 $\tilde\chi/k$), three routes on the <em>same</em> matrix-element streams:</p>
+<div class="math">$$\tilde V=W_{PP}+W_{PQ}\big[\omega_0\mathbb 1-H_{QQ}\big]^{-1}W_{QP},\qquad
+H_{QQ}=\underbrace{\mathrm{diag}(\varepsilon^{\rm rest}_{nk})\oplus h^p(k)}_{D_{QQ}}+W_{QQ},\qquad
+T_{PP}(\omega)=\big[1-\tilde V G^A(\omega)\big]^{-1}\tilde V,$$</div>
+<p>with $P$ = bands 7&ndash;17, $Q$ = bands 1&ndash;6, 18&ndash;70 <em>plus all $\tilde\chi$</em>, and $W=M_{\rm ext}/N_k$. The $\tilde\chi$ are <em>not</em> $H_p$ eigenstates &mdash; they carry no scalar eigenenergy; their energy data is the $k$-diagonal $4{\times}4$ block $h^p_{ab}(k)=\langle\tilde\chi_a|H_p|\tilde\chi_b\rangle$ (eigenvalues at VBM$+113$&ndash;$133$ eV here, off/diag $\sim$5%). Two structural facts make this painless: the full-order rest fold is a <strong>matrix inverse that never needs eigenenergies</strong> (the non-diagonal $h^p$ blocks are just entries of $H_{QQ}$), and $\langle\psi_{nk}|H_p|\tilde\chi\rangle=0$ <em>exactly</em> (the &sect;3.2 orthogonalization), so the unperturbed $D$ stays block-diagonal and $G_0$ costs only $36$ independent $4{\times}4$ eigendecompositions.</p>
+
+<figure><img src="../assets/tmat70_dos.svg" alt="T-matrix with A1 augmentation, three routes" style="width:100%;max-width:860px">
+<figcaption><strong>Top:</strong> supercell DFT (gray) vs the direct diagonalization of the 70-band augmented $H_{\rm eff}$ (blue) and the full-space $T$-matrix resummation $G=G_0+G_0TG_0$ (black dots) &mdash; identical to $2{\times}10^{-11}$ states/eV, the algebraic identity verified. <strong>Bottom:</strong> the downfolded active-space $T$-matrix DOS with $\tilde\chi$ folded statically into the rest space (teal) vs the same machinery without $\tilde\chi$ (magenta, dashed): the $+0.737{\times}2$ artifact appears and disappears entirely within the $T$-matrix formalism.</figcaption></figure>
+
+<div class="table-wrap"><table><thead><tr><th>Route</th><th>Result</th><th>Verdict</th></tr></thead><tbody>
+<tr class="ok"><td>&#9312; direct diag, 70b$+4\tilde\chi$</td><td>gap empty; VBM edge $-0.0375{\times}2$, $-0.0119$</td><td>cure at 70 bands $\simeq$ 160 bands</td></tr>
+<tr class="ok"><td>&#9313; full-space $T$ resummation</td><td>matches &#9312; to $1.9{\times}10^{-11}$ states/eV</td><td>machinery identity exact</td></tr>
+<tr class="ok"><td>&#9314; downfolded $T$, $\tilde\chi$ in rest ($\omega_0$=VBM, static)</td><td>levels match &#9312; to <strong>0.1 meV</strong>; doublet degeneracy exact</td><td>the cure survives downfolding</td></tr>
+<tr><td>&#9314;b same, $\tilde\chi$ removed</td><td>artifact doublet $+0.7367{\times}2$</td><td>no-aug control</td></tr>
+</tbody></table></div>
+
+<div class="grid cards">
+<div class="card"><strong>Why static folding is safe</strong><span>The $\tilde\chi$ sit $\sim$115 eV above $\omega_0$: the $\omega$-variation of their energy denominator across the gap is $\sim$1.5% of a 0.7 eV correction &mdash; sub-meV, as measured.</span></div>
+<div class="card"><strong>Band count stops mattering</strong><span>70b$+$A1 reproduces 160b$+$A1 almost digit-for-digit: once the generators carry the tail, basis-size convergence is no longer the bottleneck &mdash; the matrix-element cost halves.</span></div>
+<div class="card"><strong>Drop-in for production</strong><span>$\tilde\chi$ behave as ordinary ultra-high rest bands: the existing downfolding code, $\omega_0$ pinning and full-order inversion apply unchanged (optionally rotate to the $h^p(k)$ eigenbasis if a tool insists on diagonal $H_0$ &mdash; a unitary no-op).</span></div>
+</div>
+</section>
+
 </main>
 <footer>Basis augmentation (A1) for new-element defects &mdash; companion page of the explicit / EDI-direct electron&ndash;defect $T$-matrix site (Banff). Equations via MathJax v3.</footer>
 </body></html>
