@@ -215,6 +215,19 @@ T_{PP}(\omega)=\big[1-\tilde V G^A(\omega)\big]^{-1}\tilde V,$$</div>
 </tbody></table></div>
 </section>
 
+<section id="sec-spectral"><h2>9&nbsp;&middot;&nbsp;$A(k,\omega)$ along $\Gamma$&ndash;K&ndash;M&ndash;$\Gamma$: the cure, $k$-resolved</h2>
+<p>The full production pipeline on the $144\times144$ $k$-grid data (bands 1&ndash;70 + 4$\tilde\chi$/k): the augmented streams are downfolded to the 11-band active vertex $\tilde V(k_i,k_f)$ <em>first</em> (static, $\omega_0$=VBM, full order &mdash; the $\tilde\chi$ are consumed before any interpolation, sidestepping the fact that atomic orbitals are not wannierizable), then Wannier-interpolated: bands 7&ndash;17 form an isolated manifold (gaps 6.3/1.85 eV &mdash; no disentanglement), 11 Mo-$d$/S-$p$ Wannier functions (total spread 18.8 &Aring;&sup2;), gauge rotation $\tilde V_W=U^\dagger\tilde V U$, real-space kernel $L(k_p,k_i)$, and the exterior relation at every $\omega$:</p>
+<div class="math">$$T(k_p,k_p,\omega)=\tilde V(k_p,k_p)+\tilde V(k_p,\cdot)\,G^0\big[1-\tilde V G^0\big]^{-1}\tilde V(\cdot,k_p),\qquad
+A(k_p,\omega)=-\tfrac1\pi\,\mathrm{Im}\sum_n\big[g^0_n+g^{0\,2}_n\,T_{nn}(k_p,\omega)\big].$$</div>
+<p>Machinery invariants: $H(R)$ decay ratio $1.3\times10^{-4}$; grid-point band reproduction $10^{-9}$ eV; $A\geq0$ everywhere; per-$k$ spectral weight 8.1&ndash;10.5 of 11 (window truncation &mdash; the manifold extends to $+4.8$ eV).</p>
+
+<figure><img src="../assets/spectral_GKMG_compare.png" alt="A(k,w) with and without augmentation" style="width:100%;max-width:980px">
+<figcaption><strong>The money shot.</strong> Same pipeline, same color scale (log), gap window. <strong>Left</strong> (no $\tilde\chi$): a flat bright line at $+0.76$ eV crosses the entire gap &mdash; $k$-independence is the spectral signature of a localized state, here the variational artifact of &sect;1. <strong>Right</strong> ($4\tilde\chi$/k in the rest space): the gap is clean; the host bands are pixel-identical. The O$_S$ defect's real states are band-edge resonances (triple at the VBM edge, doublet at the CBM edge) that merge with the band edges at $\eta=0.05$ eV &mdash; an <em>empty gap</em> is exactly what the cured spectral function should show.</figcaption></figure>
+
+<figure><img src="../assets/spectral_GKMG.png" alt="Full A(k,w) map" style="width:100%;max-width:860px">
+<figcaption>The full augmented $A(k,\omega)$ over the 11-band manifold (log colorbar, single impurity, $\eta=0.05$ eV): the Mo-$d$/S-$p$ dispersion along $\Gamma$&ndash;K&ndash;M&ndash;$\Gamma$ with the direct gap at K, Wannier-smooth everywhere.</figcaption></figure>
+</section>
+
 </main>
 <footer>Basis augmentation (A1) for new-element defects &mdash; companion page of the explicit / EDI-direct electron&ndash;defect $T$-matrix site (Banff). Equations via MathJax v3.</footer>
 </body></html>
