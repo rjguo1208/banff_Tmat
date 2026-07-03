@@ -198,6 +198,19 @@ T_{PP}(\omega)=\big[1-\tilde V G^A(\omega)\big]^{-1}\tilde V,$$</div>
 <div class="grid cards">
 <div class="card"><strong>Why static folding is safe</strong><span>The $\tilde\chi$ sit $\sim$115 eV above $\omega_0$: the $\omega$-variation of their energy denominator across the gap is $\sim$1.5% of a 0.7 eV correction &mdash; sub-meV, as measured.</span></div>
 <div class="card"><strong>Band count stops mattering</strong><span>70b$+$A1 reproduces 160b$+$A1 almost digit-for-digit: once the generators carry the tail, basis-size convergence is no longer the bottleneck &mdash; the matrix-element cost halves.</span></div>
+<h3>8.1&nbsp;&nbsp;DOS via downfolding: exact where the defect lives</h3>
+<p>The full DOS reconstructed in the standard downfolding decomposition &mdash; active block from the $T$-matrix with the static $\tilde V(\omega_0{=}{\rm VBM})$, rest block from the exact spectrum of $H_{QQ}$:</p>
+<div class="math">$$\mathrm{DOS}(\omega)=-\tfrac1\pi\,\mathrm{Im\,Tr}\big[G^A+G^A T_{PP}(\omega)G^A\big]\;-\;\tfrac1\pi\,\mathrm{Im\,Tr}\big[(\omega+i\eta-H_{QQ})^{-1}\big].$$</div>
+
+<figure><img src="../assets/tmat_dos36.svg" alt="DOS via T-matrix downfolding vs diagonalization and DFT" style="width:100%;max-width:860px">
+<figcaption><strong>Top:</strong> supercell DFT (gray), direct diagonalization (blue), the downfolded $T$-matrix DOS with $\tilde\chi$ in the rest space (teal, dashed) and the no-$\tilde\chi$ control (magenta, dotted; artifact at $+0.78$). Host-aligned, $\Delta=+44$ meV. <strong>Bottom:</strong> $|$T-fold $-$ diag$|$ on a log scale: in the defect region the downfolded DOS tracks the exact one to $\leq0.02$ states/eV (gap average 0.04), and the deviation grows only deep in the conduction continuum ($\max$ 8.5 at $+1.9$ eV, i.e. $\sim$2 eV from the $\omega_0$ pin) &mdash; the documented cost of the static rest fold, harmless to the defect physics and curable by widening the active window if that region is ever needed.</figcaption></figure>
+<div class="table-wrap"><table><thead><tr><th>Region ($E-E_{\rm VBM}$)</th><th>$\max|$T-fold$-$diag$|$</th><th>mean</th></tr></thead><tbody>
+<tr class="ok"><td>VBM edge $[-0.10,+0.10]$</td><td><strong>0.018</strong> states/eV</td><td>0.013</td></tr>
+<tr class="ok"><td>gap $[+0.10,+1.55]$</td><td>0.56</td><td>0.041</td></tr>
+<tr><td>CB continuum $[+1.75,+2.15]$</td><td>8.5</td><td>5.2</td></tr>
+</tbody></table></div>
+
+<div class="grid cards">
 <div class="card"><strong>Drop-in for production</strong><span>$\tilde\chi$ behave as ordinary ultra-high rest bands: the existing downfolding code, $\omega_0$ pinning and full-order inversion apply unchanged (optionally rotate to the $h^p(k)$ eigenbasis if a tool insists on diagonal $H_0$ &mdash; a unitary no-op).</span></div>
 </div>
 </section>
