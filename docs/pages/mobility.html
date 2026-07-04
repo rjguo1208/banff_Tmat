@@ -48,10 +48,19 @@ A_n(k,\omega)=-\tfrac1\pi\,{\rm Im}\,\bar G^R_n(k,\omega)
 \mu_{\alpha\beta}=\frac{\sigma_{\alpha\beta}}{e\,n_c},\qquad
 n_c=\frac{g_s}{A}\sum_{nk} f(\varepsilon_{nk})\ \ (\text{electrons; analogous for holes}),$$</div>
 <p>with $f$ the Fermi function at temperature $T$ and chemical potential $\mu_c$ (set by the doping level). Since impurity scattering is elastic, $\mu(T)$ varies only through $(-\partial f/\partial\varepsilon)$ sampling the energy dependence of $\tau^{\rm tr}(\varepsilon)$ &mdash; strong $T$-dependence is a fingerprint of resonances near the band edge.</p>
-<p>Beyond RTA, the linearized steady-state BTE for the deviation $\delta f_{nk}=f-f^0$ under field $\mathbf E$ is solved exactly (for elastic scattering) by iterating</p>
-<div class="math">$$-e\,\mathbf E\!\cdot\!\mathbf v_{nk}\left(-\frac{\partial f}{\partial\varepsilon}\right)=\sum_{n'k'}P_{nk\to n'k'}\big(\delta f_{nk}-\delta f_{n'k'}\big),
-\qquad P_{nk\to n'k'}=\frac{2\pi}{\hbar}\,c\,N_k\big|T_{nk,n'k'}\big|^2\delta(\varepsilon_{nk}-\varepsilon_{n'k'}),$$</div>
-<p>which reduces to the $\tau^{\rm tr}$ form for isotropic bands and is the gold standard otherwise (EDI's transport module already carries the <code>iterative_bte</code> scaffolding for exactly this kernel).</p>
+<p>The $\tau^{\rm tr}$ shortcut is exact only for isotropic dispersions and isotropic-in-angle $|T|^2$. The exact treatment is the iterative BTE below.</p>
+
+<h3>A.4&nbsp;&nbsp;Iterative BTE (IBTE): the exact solution for elastic scattering</h3>
+<p>Linearize the steady-state BTE with the ansatz $\delta f_{nk}=e\left(-\partial f^0/\partial\varepsilon\right)\,\mathbf E\!\cdot\!\mathbf F_{nk}$, where $\mathbf F_{nk}$ is the <em>vector mean free path</em>. For elastic defect scattering the collision kernel is the on-shell golden-rule matrix</p>
+<div class="math">$$P_{nk\to n'k'}=\frac{2\pi}{\hbar}\,c\,N_k\,\big|T_{nk,n'k'}(\varepsilon_{nk})\big|^2\,\delta(\varepsilon_{nk}-\varepsilon_{n'k'})
+\;=\;P_{n'k'\to nk}\quad(\text{symmetric on shell}),$$</div>
+<p>and the linearized equation becomes a <em>fixed-point problem</em>:</p>
+<div class="math">$$\boxed{\;\mathbf F_{nk}\;=\;\tau^{\rm qp}_{nk}\,\mathbf v_{nk}\;+\;\tau^{\rm qp}_{nk}\sum_{n'k'}P_{nk\to n'k'}\,\mathbf F_{n'k'}\;},
+\qquad \frac{1}{\tau^{\rm qp}_{nk}}=\sum_{n'k'}P_{nk\to n'k'},$$</div>
+<div class="math">$$\sigma_{\alpha\beta}=\frac{g_s e^2}{A}\sum_{nk}\left(-\frac{\partial f}{\partial\varepsilon}\right)_{\!\varepsilon_{nk}} v^{\alpha}_{nk}\,F^{\beta}_{nk}.$$</div>
+<p><strong>Iteration and convergence.</strong> Start from the RTA seed $\mathbf F^{(0)}=\tau^{\rm qp}\mathbf v$ (this zeroth iterate <em>is</em> the SERTA/qp-RTA result) and iterate $\mathbf F^{(i+1)}=\tau^{\rm qp}\mathbf v+\tau^{\rm qp}P\,\mathbf F^{(i)}$. This is the Neumann series of $\big[\mathbb 1-\tau^{\rm qp}P\big]^{-1}$; because the collision operator $C=\mathrm{diag}(1/\tau^{\rm qp})-P$ is symmetric positive semidefinite (its only null vector, the uniform shift, carries no current), the series converges geometrically &mdash; typically a dozen iterations. The physics of the second term is <em>in-scattering backflow</em>: carriers scattered from $k'$ into $k$ retain forward momentum memory, which RTA discards; the first iteration beyond RTA already recovers most of the $(1-\cos\theta)$ physics, and the fixed point recovers it exactly.</p>
+<p><strong>Structure worth exploiting.</strong> Elasticity block-diagonalizes the problem on iso-energy contours: $P$ only connects states with $\varepsilon_{nk}=\varepsilon_{n'k'}$, so on a discretized contour the fixed point can equally be obtained by a <em>direct</em> solve of the small linear system $C\mathbf F=\mathbf v$ per energy &mdash; on our grids this is trivial. (The practical crux is regularizing $\delta(\varepsilon-\varepsilon')$ on a discrete grid: adaptive Gaussian smearing or tetrahedron integration on the elastic contour.)</p>
+<p><strong>Exactness and hierarchy.</strong> For dilute elastic scatterers the linearized-BTE fixed point is the exact semiclassical answer at every anisotropy: $\;\text{SERTA }(\tau^{\rm qp})\;\subset\;\text{tr-RTA }(\tau^{\rm tr},\ 1-\cos\theta)\;\subset\;\text{IBTE (exact)}$. For our band-edge $T$-matrix resonances (O$_S$) the kernel $|T_{kk'}|^2$ is strongly energy- and angle-structured, so the three levels can differ materially &mdash; IBTE is the one to trust. Finally, substituting $\mathbf F_{nk}=\tau^{\rm qp}_{nk}\tilde{\mathbf v}_{nk}$ maps the fixed-point equation term by term onto the on-shell limit of the Kubo ladder equation of &sect;B.2: <strong>IBTE $\equiv$ Kubo$+$ladder</strong> &mdash; the two "exact" endpoints of routes A and B are the same theory. EDI's transport module already carries the <code>iterative_bte</code> input scaffolding for exactly this kernel.</p>
 </section>
 
 <section id="sec-kubo"><h2>B&nbsp;&middot;&nbsp;Route 2: Kubo formula on the spectral function</h2>
@@ -75,7 +84,7 @@ $\sigma^{\rm bubble}\to \frac{g_se^2}{A}\sum \tau^{\rm qp}v^\alpha v^\beta(-\par
 <section id="sec-compare"><h2>C&nbsp;&middot;&nbsp;The two routes side by side</h2>
 <div class="table-wrap"><table><thead><tr><th></th><th>Route A: BTE</th><th>Route B: Kubo</th></tr></thead><tbody>
 <tr><td>input</td><td>on-shell $|T_{nk,n'k'}|^2$ on the elastic contour + $\mathbf v_{nk}$</td><td>full $A_n(k,\omega)$ (or $\bar G^{R/A}$) + $\mathbf v_{nk}$ matrices</td></tr>
-<tr><td>vertex physics</td><td>$(1-\cos\theta)$ explicit; exact via linearized BTE</td><td>bubble $=\tau^{\rm qp}$-RTA; ladder required for $\tau^{\rm tr}$ (then $\equiv$ BTE)</td></tr>
+<tr><td>vertex physics</td><td>$(1-\cos\theta)$ explicit; <strong>exact via IBTE (A.4)</strong></td><td>bubble $=\tau^{\rm qp}$-RTA; ladder required for $\tau^{\rm tr}$ (then $\equiv$ IBTE)</td></tr>
 <tr><td>strong scattering / resonances</td><td>valid while quasiparticles exist ($\Gamma\ll\varepsilon_F$-scale)</td><td>survives quasiparticle breakdown; band tails, in-gap resonances, hopping-like regimes</td></tr>
 <tr><td>interband / intrinsic effects</td><td>absent (semiclassical)</td><td>included via velocity matrices (and Kubo&ndash;Bastin for Hall/Berry terms)</td></tr>
 <tr><td>quantum corrections</td><td>none</td><td>weak localization via crossed diagrams (beyond ladder)</td></tr>
