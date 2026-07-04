@@ -8,8 +8,8 @@
 <nav class="topnav"><div class="inner"><span class="brand">EDI&nbsp;direct&nbsp;T-matrix</span><a href="../index.html">Home</a><a href="results.html">Results</a><a href="augmentation.html">Augmentation</a><a href="mobility.html" style="color:#fff;text-decoration:underline">Mobility</a><a href="https://rjguo1208.github.io/claude-sternheimer/">Sternheimer site &rarr;</a></div></nav>
 
 <header><div class="header-inner"><h1>Defect-Limited Carrier Mobility from the $T$-matrix</h1>
-<p class="subtitle">Two routes from the machinery of this site to electron/hole mobility: (A) the <strong>Boltzmann transport equation</strong> with scattering rates from the on-shell imaginary self-energy, and (B) the <strong>Kubo formula</strong> evaluated directly on the disorder-averaged spectral function $A(k,\omega)$. Formulas and their derivation sketches only &mdash; <em>no numerical implementation yet</em>.</p>
-<div class="meta"><span class="pill">theory page</span><span class="pill">dilute defects</span><span class="pill">elastic scattering</span><span class="pill">2D conventions</span><span class="pill">status: derivation only</span></div></div></header>
+<p class="subtitle">Two routes from the machinery of this site to electron/hole mobility: (A) the <strong>Boltzmann transport equation</strong> with scattering rates from the on-shell imaginary self-energy, and (B) the <strong>Kubo formula</strong> evaluated directly on the disorder-averaged spectral function $A(k,\omega)$. Formulas with derivation sketches, now implemented through all three Route-A rungs and cross-validated against the Route-B bubble (&sect;E).</p>
+<div class="meta"><span class="pill">theory page</span><span class="pill">dilute defects</span><span class="pill">elastic scattering</span><span class="pill">2D conventions</span><span class="pill">status: computed through IBTE (&sect;E)</span></div></div></header>
 
 <main>
 
@@ -100,7 +100,42 @@ $\sigma^{\rm bubble}\to \frac{g_se^2}{A}\sum \tau^{\rm qp}v^\alpha v^\beta(-\par
 <div class="card"><strong>Needed for Route B</strong><span>$\Sigma(k,\omega)=cN_kT_{kk}(\omega)$ on a fine $\omega$ mesh with $\eta\to0^+$ (never the visualization $\eta$); $[A]^2$ quadratures; ladder solve for the vertex; interband velocity matrices if $\Gamma$ is not small.</span></div>
 <div class="card"><strong>Validity ledger</strong><span>Dilute $c\ll1$; non-overlapping defects; elastic only (no phonons); neutral defects as computed &mdash; charged centers would need long-range $\Delta V$ treatment. Self-consistent $T$-matrix (SCTMA) is the next rung if $c$ grows.</span></div>
 </div>
-<p class="small">Status: <strong>derivation page only</strong> &mdash; no mobility numbers have been produced yet. The single-impurity inputs are validated end-to-end on this site (levels to 0.1 meV, DOS to 0.02 states/eV in the defect region, $A(k,\omega)$ with conservation checks), so both routes are ready to implement on demand.</p>
+<p class="small">Status: Route A implemented through SERTA / tr-RTA / <strong>IBTE</strong> and cross-validated against the Route-B bubble &mdash; see &sect;E. Remaining hardening: $\eta\to0$, $N_{\rm int}\to\infty$ extrapolation of the elastic-contour discretization.</p>
+</section>
+
+<section id="sec-results"><h2>E&nbsp;&middot;&nbsp;Computed results: three tiers, cross-validated</h2>
+<p>Route A implemented through all three rungs (SERTA &rarr; tr-RTA &rarr; IBTE, &sect;A) and cross-checked against the Route-B bubble (&sect;B). Setup: O$_S$ (A1-augmented) and V$_{\rm S}$ vertices on the $144\,k$ grid, internal torus Wannier-densified to $24^2$ ($\eta=25$ meV), transport grid $144^2$, $c=1/36$ per cell (exact $\mu\propto1/c$ scaling within these tiers), $n=10^{12}$ cm$^{-2}$, $g_s=2$.</p>
+
+<figure><img src="../assets/mobility_results.svg" alt="Mobility results: rates and three-tier mu(T)" style="width:100%;max-width:1000px">
+<figcaption><strong>(a)</strong> On-shell rates $\Gamma^{\rm qp}(\varepsilon)$: both defects scatter strongest at the band edges (the O$_S$ band-edge resonances of the Augmentation page; the V$_{\rm S}$ valence-side rates exceed O$_S$'s). <strong>(b,c)</strong> $\mu(T)$ at the three tiers. The opposite temperature trends &mdash; electron $\mu$ falling, hole $\mu$ rising &mdash; are the fingerprint of edge-concentrated elastic resonant scattering.</figcaption></figure>
+
+<h3>E.1&nbsp;&nbsp;Three-tier mobility (300 K, cm$^2$/V&middot;s)</h3>
+<div class="table-wrap"><table><thead><tr><th></th><th>SERTA ($\tau^{\rm qp}$)</th><th>tr-RTA ($1-\cos\theta$)</th><th><strong>IBTE (exact)</strong></th><th>reading</th></tr></thead><tbody>
+<tr><td>O$_S$ electrons</td><td>93</td><td>118</td><td><strong>109</strong></td><td>IBTE sits <em>between</em> the RTAs: $(1-\cos\theta)$ overcorrects here</td></tr>
+<tr><td>O$_S$ holes</td><td>204</td><td>570</td><td><strong>621</strong></td><td><strong>&times;3 backflow correction</strong>: the VBM-edge resonance scatters strongly forward; IBTE even exceeds tr-RTA</td></tr>
+<tr><td>V$_{\rm S}$ electrons</td><td>134</td><td>185</td><td><strong>161</strong></td><td rowspan="2">$r_{\rm IBTE}\!\approx\!1.05$ vs $r_{\rm tr}\!\approx\!1.24$: the vacancy scatters nearly isotropically &mdash; backflow cancels most of the $(1-\cos\theta)$ boost, and tr-RTA <em>overestimates</em> by $\sim$20%</td></tr>
+<tr><td>V$_{\rm S}$ holes</td><td>98</td><td>130</td><td><strong>98</strong></td></tr>
+</tbody></table></div>
+<p>Robust qualitative facts (stable across every sensitivity configuration): IBTE $\ge$ SERTA always; the hole-side correction is huge for O$_S$ and the three tiers genuinely differ &mdash; neither RTA can be trusted near a band-edge resonance; V$_{\rm S}$ limits hole transport far more strongly than O$_S$ (98 vs 621).</p>
+
+<h3>E.2&nbsp;&nbsp;Kubo-bubble cross-validation (Route B rung 1)</h3>
+<p>The bubble $\sigma\propto\int d\omega(-\partial f/\partial\omega)\sum v^2[A_L(k,\omega)]^2$ (on-shell Lorentzian $A_L$) evaluated with the <em>same</em> $\Gamma(\varepsilon)$ input as SERTA, through an entirely independent formula and code path:</p>
+<div class="table-wrap"><table><thead><tr><th>side</th><th>$T$ (K)</th><th>K1/SERTA @ $c$=1/36</th><th><strong>K1/SERTA @ $c/10$</strong></th></tr></thead><tbody>
+<tr><td>e</td><td>100</td><td>1.223</td><td class="ok"><strong>1.002</strong></td></tr>
+<tr><td>e</td><td>300</td><td>1.076</td><td class="ok"><strong>1.001</strong></td></tr>
+<tr><td>h</td><td>100</td><td>1.018</td><td class="ok"><strong>0.999</strong></td></tr>
+<tr><td>h</td><td>300</td><td>1.002</td><td class="ok"><strong>0.998</strong></td></tr>
+</tbody></table></div>
+<p><strong>The dilute-limit column is the machinery verdict:</strong> as $\Gamma\to$ small the two routes converge to $10^{-3}$ &mdash; both implementations are correct. At $c=1/36$ the residual K1/SERTA excess (up to $+22\%$ for electrons at 100 K, where $k_BT\ll\Gamma$) is <em>genuine finite-broadening physics</em> that the semiclassical BTE cannot express: spectral tails let carriers sample beyond the sharp Fermi window. It fades with $T$ and with dilution, exactly as it should.</p>
+
+<h3>E.3&nbsp;&nbsp;Systematic-uncertainty ledger (300 K, IBTE)</h3>
+<div class="table-wrap"><table><thead><tr><th>knob</th><th>$\mu_e$</th><th>$\mu_h$</th><th>meaning</th></tr></thead><tbody>
+<tr><td>baseline ($24^2$, 25 meV, $\omega_0$=VBM)</td><td>109</td><td>621</td><td></td></tr>
+<tr><td>$\eta$ 25$\to$50 meV</td><td>81</td><td>885</td><td rowspan="2">elastic-contour discretization not yet converged; $\eta\to0$, $N\to\infty$ extrapolation pending</td></tr>
+<tr><td>internal torus $24^2\to36^2$</td><td>138</td><td>660</td></tr>
+<tr><td>$\omega_0$=VBM$\to$CBM (electron side)</td><td><strong>56</strong></td><td>&mdash;</td><td>the &sect;8.1 static-fold cost, transport edition: pin $\omega_0$ at the carriers' band edge (CBM for electrons, VBM for holes)</td></tr>
+</tbody></table></div>
+<p>Recommended quotes at this stage: $\mu_h\approx6\times10^2$ (VBM pin, its natural choice) and $\mu_e\approx0.6$&ndash;$1.4\times10^2$ cm$^2$/V&middot;s (CBM-pin value 56 as the physically pinned estimate; $\eta$/grid systematics span the range), at $c=1/36$; scale by $1/c$. Diagnostics on record: optical-theorem consistency $\sum_{s'}P_{ss'}$ vs $1/\tau^{\rm qp}$ holds to a 5&ndash;13% median (Lorentzian-tail window truncation); spectral radius $\tau P=0.84$&ndash;$0.97<1$; isotropy $\mu_{xx}/\mu_{yy}$ to $<0.5\%$; a full-$\Sigma(\omega)$ bubble (K2) requires $\eta\to0$ $\Sigma$ curves &mdash; at $\eta=25$ meV its in-gap Lorentzian tails are an artifact, so it is excluded here.</p>
 </section>
 
 </main>
