@@ -1,0 +1,99 @@
+<!doctype html><html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Defect-limited mobility: BTE and Kubo from the T-matrix</title>
+<link rel="stylesheet" href="../assets/style.css">
+<script>window.MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']],displayMath:[['$$','$$'],['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head><body>
+<nav class="topnav"><div class="inner"><span class="brand">EDI&nbsp;direct&nbsp;T-matrix</span><a href="../index.html">Home</a><a href="results.html">Results</a><a href="augmentation.html">Augmentation</a><a href="mobility.html" style="color:#fff;text-decoration:underline">Mobility</a><a href="https://rjguo1208.github.io/claude-sternheimer/">Sternheimer site &rarr;</a></div></nav>
+
+<header><div class="header-inner"><h1>Defect-Limited Carrier Mobility from the $T$-matrix</h1>
+<p class="subtitle">Two routes from the machinery of this site to electron/hole mobility: (A) the <strong>Boltzmann transport equation</strong> with scattering rates from the on-shell imaginary self-energy, and (B) the <strong>Kubo formula</strong> evaluated directly on the disorder-averaged spectral function $A(k,\omega)$. Formulas and their derivation sketches only &mdash; <em>no numerical implementation yet</em>.</p>
+<div class="meta"><span class="pill">theory page</span><span class="pill">dilute defects</span><span class="pill">elastic scattering</span><span class="pill">2D conventions</span><span class="pill">status: derivation only</span></div></div></header>
+
+<main>
+
+<section id="sec-setup"><h2>0&nbsp;&middot;&nbsp;Setup: from one impurity to a dilute random array</h2>
+<p>Everything on this site so far is <em>single-impurity</em>: the vertex $\tilde V(k_i,k_f)=W_{PP}+W_{PQ}[\omega_0-H_{QQ}]^{-1}W_{QP}$ (A1-augmented, artifact-free) and the torus $T$-matrix $T(k,k';\omega)=\big[1-\tilde V G^0(\omega)\big]^{-1}\tilde V$ on the $N_k$-cell supercell. Transport needs the <em>disorder-averaged</em> Green function for a random array of identical defects with concentration $c$ per primitive cell (areal density $n_{\rm imp}=c/A_{\rm cell}$; our supercells correspond to $c=1/36$). To lowest order in $c$ (dilute, non-overlapping impurities &mdash; the standard non-crossing $T$-matrix approximation of disorder theory):</p>
+<div class="math">$$\boxed{\;\Sigma_{n}(k,\omega)\;=\;c\,N_k\,T_{nk,\,nk}(\omega)\;+\;\mathcal O(c^2)\;}$$</div>
+<p>Our torus $T$ scales as $1/N_k$ (because $\tilde V=M/N_k$), so $c\,N_k\,T$ is finite and $N_k$-independent in the thermodynamic limit &mdash; the combination $N_kT$ is the physical per-impurity scattering amplitude, and $c$ counts impurities. The averaged retarded Green function and spectral function are then</p>
+<div class="math">$$\bar G^R_{n}(k,\omega)=\frac{1}{\omega-\varepsilon_{nk}-\Sigma_n(k,\omega)},\qquad
+A_n(k,\omega)=-\tfrac1\pi\,{\rm Im}\,\bar G^R_n(k,\omega)
+=\frac{1}{\pi}\,\frac{\Gamma_{nk}(\omega)/2}{\big[\omega-\varepsilon_{nk}-{\rm Re}\,\Sigma\big]^2+\big[\Gamma_{nk}(\omega)/2\big]^2},$$</div>
+<p>with the (energy-dependent) broadening $\Gamma_{nk}(\omega)=-2\,{\rm Im}\,\Sigma_n(k,\omega)\ge0$. Two immediate connections to what is already computed: (i) the maps of &sect;9 of the <a href="augmentation.html#sec-spectral">Augmentation page</a> are exactly $A_n(k,\omega)$ at $c=1/N_k$ (one impurity per torus) plus a visualization broadening $\eta$; (ii) <strong>the linewidth of a quasiparticle peak in those maps, minus $\eta$, is the scattering rate</strong> scaled to that concentration. For transport the $\eta$ used for plotting must never enter &mdash; only the physical $\Gamma$ does.</p>
+</section>
+
+<section id="sec-bte"><h2>A&nbsp;&middot;&nbsp;Route 1: Boltzmann transport with $T$-matrix rates</h2>
+
+<h3>A.1&nbsp;&nbsp;On-shell rate: "Im $\Sigma$ = scattering rate &times; factor"</h3>
+<p>The quasiparticle (out-scattering) lifetime follows from evaluating $\Sigma$ <em>on shell</em>, $\omega\to\varepsilon_{nk}$:</p>
+<div class="math">$$\boxed{\;\frac{1}{\tau^{\rm qp}_{nk}}\;=\;\frac{2}{\hbar}\,\big|{\rm Im}\,\Sigma_n(k,\varepsilon_{nk})\big|
+\;=\;\frac{2\,c\,N_k}{\hbar}\,\big|{\rm Im}\,T_{nk,nk}(\varepsilon_{nk}+i0^+)\big|\;}$$</div>
+<p>&mdash; the "factor" is precisely $2/\hbar$ (lifetime vs. amplitude decay) together with the concentration $cN_k$ hidden inside $\Sigma$. The generalized optical theorem turns the diagonal Im&nbsp;$T$ into an explicit golden rule with the <em>full</em> $T$ replacing the bare vertex (all scattering orders, exact for one impurity):</p>
+<div class="math">$${\rm Im}\,T_{nk,nk}(\varepsilon+i0^+)=-\pi\sum_{n'k'}\big|T_{nk,\,n'k'}(\varepsilon)\big|^2\,\delta\big(\varepsilon-\varepsilon_{n'k'}\big)
+\;\;\Longrightarrow\;\;
+\frac{1}{\tau^{\rm qp}_{nk}}=\frac{2\pi}{\hbar}\,c\,N_k\sum_{n'k'}\big|T_{nk,n'k'}(\varepsilon_{nk})\big|^2\,\delta\big(\varepsilon_{nk}-\varepsilon_{n'k'}\big).$$</div>
+<p>Because the defect is static the scattering is <em>elastic</em>: only the constant-energy contour of $\varepsilon_{nk}$ contributes, and the temperature enters transport solely through occupation factors.</p>
+
+<h3>A.2&nbsp;&nbsp;Quasiparticle rate vs. transport rate</h3>
+<p>Forward scattering degrades current much less than backscattering. The momentum-relaxation (transport) rate weights each event by the relative velocity loss:</p>
+<div class="math">$$\boxed{\;\frac{1}{\tau^{\rm tr}_{nk}}=\frac{2\pi}{\hbar}\,c\,N_k\sum_{n'k'}\big|T_{nk,n'k'}(\varepsilon_{nk})\big|^2\,
+\delta\big(\varepsilon_{nk}-\varepsilon_{n'k'}\big)\left(1-\frac{\mathbf v_{nk}\!\cdot\!\mathbf v_{n'k'}}{|\mathbf v_{nk}|\,|\mathbf v_{n'k'}|}\right)\;}$$</div>
+<p>with band velocities $\mathbf v_{nk}=\hbar^{-1}\nabla_k\varepsilon_{nk}$ (from the same Wannier $H(R)$ used in &sect;9: $\mathbf v$ is the gauge-covariant $\partial_k H_W$ sandwich). The $(1-\cos\theta)$ form is exact for isotropic dispersions; the general anisotropic statement is the linearized BTE below. Near a $T$-matrix <em>resonance</em> (a defect level grazing a band edge, e.g. our O$_S$ band-edge doublets) $|T|^2$ is strongly enhanced and strongly angle-dependent &mdash; exactly the regime where using the full $T$ instead of the Born approximation matters.</p>
+
+<h3>A.3&nbsp;&nbsp;RTA mobility, and the exact linearized BTE</h3>
+<p>In the relaxation-time approximation the dc conductivity tensor (2D, spin degeneracy $g_s{=}2$, sample area $A$) and mobility are</p>
+<div class="math">$$\sigma_{\alpha\beta}= \frac{g_s e^2}{A}\sum_{nk}\tau^{\rm tr}_{nk}\,v^{\alpha}_{nk}v^{\beta}_{nk}\left(-\frac{\partial f}{\partial\varepsilon}\right)_{\!\varepsilon_{nk}},
+\qquad
+\mu_{\alpha\beta}=\frac{\sigma_{\alpha\beta}}{e\,n_c},\qquad
+n_c=\frac{g_s}{A}\sum_{nk} f(\varepsilon_{nk})\ \ (\text{electrons; analogous for holes}),$$</div>
+<p>with $f$ the Fermi function at temperature $T$ and chemical potential $\mu_c$ (set by the doping level). Since impurity scattering is elastic, $\mu(T)$ varies only through $(-\partial f/\partial\varepsilon)$ sampling the energy dependence of $\tau^{\rm tr}(\varepsilon)$ &mdash; strong $T$-dependence is a fingerprint of resonances near the band edge.</p>
+<p>Beyond RTA, the linearized steady-state BTE for the deviation $\delta f_{nk}=f-f^0$ under field $\mathbf E$ is solved exactly (for elastic scattering) by iterating</p>
+<div class="math">$$-e\,\mathbf E\!\cdot\!\mathbf v_{nk}\left(-\frac{\partial f}{\partial\varepsilon}\right)=\sum_{n'k'}P_{nk\to n'k'}\big(\delta f_{nk}-\delta f_{n'k'}\big),
+\qquad P_{nk\to n'k'}=\frac{2\pi}{\hbar}\,c\,N_k\big|T_{nk,n'k'}\big|^2\delta(\varepsilon_{nk}-\varepsilon_{n'k'}),$$</div>
+<p>which reduces to the $\tau^{\rm tr}$ form for isotropic bands and is the gold standard otherwise (EDI's transport module already carries the <code>iterative_bte</code> scaffolding for exactly this kernel).</p>
+</section>
+
+<section id="sec-kubo"><h2>B&nbsp;&middot;&nbsp;Route 2: Kubo formula on the spectral function</h2>
+
+<h3>B.1&nbsp;&nbsp;Kubo&ndash;Greenwood bubble</h3>
+<p>Linear response gives the dc conductivity as the current&ndash;current correlator. Keeping the disorder-averaged Green functions and the bare velocity vertex (the "bubble"), the dc Kubo&ndash;Greenwood formula reads</p>
+<div class="math">$$\boxed{\;\sigma^{\rm bubble}_{\alpha\beta}
+=\frac{g_s\,\pi\hbar e^2}{A}\int\! d\omega\left(-\frac{\partial f}{\partial\omega}\right)
+\sum_{k}\,{\rm Tr}\Big[\,\hat v^{\alpha}_k\,\hat A(k,\omega)\,\hat v^{\beta}_k\,\hat A(k,\omega)\Big]\;}$$</div>
+<p>where $\hat A(k,\omega)=\frac{i}{2\pi}\big[\bar G^R-\bar G^A\big]$ and $\hat v^\alpha_k$ are <em>matrices</em> in the band index (interband elements included). If the spectral operator is band-diagonal &mdash; a good approximation when $\Gamma$ is small against band splittings &mdash; this collapses to the intraband form</p>
+<div class="math">$$\sigma^{\rm bubble}_{\alpha\beta}\simeq\frac{g_s\,\pi\hbar e^2}{A}\int\! d\omega\left(-\frac{\partial f}{\partial\omega}\right)\sum_{nk} v^{\alpha}_{nk}v^{\beta}_{nk}\,\big[A_n(k,\omega)\big]^2,$$</div>
+<p>i.e. <strong>the square of exactly the $A(k,\omega)$ computed in &sect;9</strong> (with $\eta\to0^+$, the physical $\Gamma$ doing the broadening). For a Lorentzian $A_n$ the $\omega$-integral gives $\int A_n^2\,d\omega = 1/(\pi\Gamma_{nk})=\tau^{\rm qp}_{nk}/(\pi\hbar)$, and the bubble collapses to the RTA expression <em>with the quasiparticle time</em>:
+$\sigma^{\rm bubble}\to \frac{g_se^2}{A}\sum \tau^{\rm qp}v^\alpha v^\beta(-\partial f/\partial\varepsilon)$. The bubble alone therefore <em>overestimates</em> scattering's effect on nothing &mdash; rather it misses the forward-scattering correction: it knows $\tau^{\rm qp}$, not $\tau^{\rm tr}$.</p>
+
+<h3>B.2&nbsp;&nbsp;Vertex corrections: the ladder restores $(1-\cos\theta)$</h3>
+<p>Dressing one velocity vertex with the ladder of impurity lines (the diagrams consistent with the non-crossing self-energy &mdash; a Ward-identity requirement) replaces $v\to\tilde v$ solving</p>
+<div class="math">$$\tilde v^{\alpha}_{nk}(\omega)=v^{\alpha}_{nk}+c\,N_k\sum_{n'k'}\big|T_{nk,n'k'}(\omega)\big|^2\,\bar G^R_{n'}(k',\omega)\bar G^A_{n'}(k',\omega)\,\tilde v^{\alpha}_{n'k'}(\omega),$$</div>
+<p>and the standard result (Mahan, Rammer) is that <strong>Kubo + ladder $\equiv$ linearized BTE</strong> for dilute elastic scatterers: the geometric series of $\bar G^R\bar G^A\,|T|^2$ generates exactly the $(1-\cos\theta)$ weight, turning $\tau^{\rm qp}$ into $\tau^{\rm tr}$. Diagrams beyond the ladder (maximally crossed) add weak localization &mdash; a quantum correction outside the BTE, relevant at low $T$ in 2D.</p>
+</section>
+
+<section id="sec-compare"><h2>C&nbsp;&middot;&nbsp;The two routes side by side</h2>
+<div class="table-wrap"><table><thead><tr><th></th><th>Route A: BTE</th><th>Route B: Kubo</th></tr></thead><tbody>
+<tr><td>input</td><td>on-shell $|T_{nk,n'k'}|^2$ on the elastic contour + $\mathbf v_{nk}$</td><td>full $A_n(k,\omega)$ (or $\bar G^{R/A}$) + $\mathbf v_{nk}$ matrices</td></tr>
+<tr><td>vertex physics</td><td>$(1-\cos\theta)$ explicit; exact via linearized BTE</td><td>bubble $=\tau^{\rm qp}$-RTA; ladder required for $\tau^{\rm tr}$ (then $\equiv$ BTE)</td></tr>
+<tr><td>strong scattering / resonances</td><td>valid while quasiparticles exist ($\Gamma\ll\varepsilon_F$-scale)</td><td>survives quasiparticle breakdown; band tails, in-gap resonances, hopping-like regimes</td></tr>
+<tr><td>interband / intrinsic effects</td><td>absent (semiclassical)</td><td>included via velocity matrices (and Kubo&ndash;Bastin for Hall/Berry terms)</td></tr>
+<tr><td>quantum corrections</td><td>none</td><td>weak localization via crossed diagrams (beyond ladder)</td></tr>
+<tr><td>cost</td><td>cheap: Fermi-contour sums</td><td>$\omega$-integrals of $[A]^2$; ladder solve on the grid</td></tr>
+<tr><td>agree when</td><td colspan="2">dilute + elastic + well-defined quasiparticles: Kubo(ladder) $=$ BTE exactly; our O$_S$/V$_S$ cases at $c\lesssim1/36$ sit in this regime except very close to band-edge resonances</td></tr>
+</tbody></table></div>
+</section>
+
+<section id="sec-inventory"><h2>D&nbsp;&middot;&nbsp;What is already in hand vs. what an implementation needs</h2>
+<div class="grid cards">
+<div class="card"><strong>Already computed</strong><span>$T_{nk,n'k'}(\omega)$ on the $144\,k$ grid (A1-augmented, artifact-free); Wannier gauge $U(k)$, $H(R)$ and the interpolation kernel of &sect;9; $A_n(k,\omega)$ maps validating the whole chain.</span></div>
+<div class="card"><strong>Needed for Route A</strong><span>On-shell interpolation of $T$ onto fine elastic contours; velocities $\mathbf v_{nk}$ from $\partial_kH_W(R)$; adaptive Fermi-surface sums; $(T,\mu_c)$ loops; optional iterative-BTE solve (EDI scaffolding exists).</span></div>
+<div class="card"><strong>Needed for Route B</strong><span>$\Sigma(k,\omega)=cN_kT_{kk}(\omega)$ on a fine $\omega$ mesh with $\eta\to0^+$ (never the visualization $\eta$); $[A]^2$ quadratures; ladder solve for the vertex; interband velocity matrices if $\Gamma$ is not small.</span></div>
+<div class="card"><strong>Validity ledger</strong><span>Dilute $c\ll1$; non-overlapping defects; elastic only (no phonons); neutral defects as computed &mdash; charged centers would need long-range $\Delta V$ treatment. Self-consistent $T$-matrix (SCTMA) is the next rung if $c$ grows.</span></div>
+</div>
+<p class="small">Status: <strong>derivation page only</strong> &mdash; no mobility numbers have been produced yet. The single-impurity inputs are validated end-to-end on this site (levels to 0.1 meV, DOS to 0.02 states/eV in the defect region, $A(k,\omega)$ with conservation checks), so both routes are ready to implement on demand.</p>
+</section>
+
+</main>
+<footer>Defect-limited mobility formalism &mdash; companion theory page of the explicit / EDI-direct electron&ndash;defect $T$-matrix site (Banff). Equations via MathJax v3.</footer>
+</body></html>
