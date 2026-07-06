@@ -157,6 +157,29 @@ $\sigma^{\rm bubble}\to \frac{g_se^2}{A}\sum \tau^{\rm qp}v^\alpha v^\beta(-\par
 <tr><td>400</td><td>398&ndash;545</td><td>76 &plusmn; 14</td><td>143 &plusmn; 18</td><td>299 &plusmn; 68</td></tr>
 </tbody></table></div>
 <p><strong>Finalized quotes (300 K, $c=1/36$; exact $1/c$ scaling):</strong> $\mu_h({\rm O}_S)=(3.4$&ndash;$4.9)\times10^2$, $\mu_e({\rm O}_S)=(0.7$&ndash;$1.0)\times10^2$, $\mu_h({\rm V_S})=(1.2$&ndash;$1.5)\times10^2$, $\mu_e({\rm V_S})=(2.5$&ndash;$4.1)\times10^2$ cm$^2$/V&middot;s. The O$_S$ hole range is quoted as [linear extrapolation, hardest rung]: the last-three-rung slopes decrease (convex ladder), so linear-in-$1/N$ is the aggressive edge while a three-point quadratic lands at $\approx$480, essentially the $N=60$ value &mdash; the truth sits between the two forms. This supersedes the interim $\mu_h\approx6\times10^2$: the $\eta=25$ meV kernel over-connected the elastic shells and inflated the hole backflow by $\sim$30%. The electron revision is upward and mild (56$\to$83&plusmn;16), grid- rather than $\eta$-driven. Caveats: the 100 K row carries the widest systematics ($\eta\gtrsim k_BT$ entangles the elastic kernel with the thermal window); V$_{\rm S}$ electrons remain grid-limited (24$\to$36 jump $+37\%$, 36$\to$48 $+5\%$) and would want an $N=60$ rung for a tighter band.</p>
+
+<h3>E.5&nbsp;&nbsp;On-shell $\Sigma_n(k)$ along $\Gamma$&ndash;K&ndash;M&ndash;$\Gamma$ &mdash; and an exact low-rank solver</h3>
+<p>The $k$-resolved anatomy of everything above: the on-shell diagonal self-energy
+$\Sigma_n(k)=c\,N_k\,T_{nn}(k,\varepsilon_{nk}+i\eta)$ for the highest valence and lowest conduction band,
+each with its physical downfolding pin ($\omega_0$=VBM / CBM), solved <em>exactly on shell at every one of the
+286 path points</em> (no energy binning), $\eta=16.7$ meV on the $36^2$ torus (a ladder rung of &sect;E.4).</p>
+<figure><img src="../assets/onshell_sigma_path.svg" alt="On-shell diagonal self-energy along Gamma-K-M-Gamma, highest VB and lowest CB" style="width:100%;max-width:1000px">
+<figcaption><strong>Top: $-{\rm Im}\,\Sigma$ (meV), bottom: ${\rm Re}\,\Sigma$ (meV); blue O$_S$ (A1-cured), orange V$_{\rm S}$.</strong>
+Valence band: V$_{\rm S}$ dominates everywhere (peaks $\sim$20 meV mid-$\Gamma$K and near M vs O$_S$'s 2&ndash;8 meV) &mdash; the $k$-resolved reason $\mu_h({\rm V_S})\ll\mu_h({\rm O}_S)$; the O$_S$ bump mid-$\Gamma$K is the VBM-edge resonance swept on shell; both collapse to 1&ndash;2 meV at K itself (band-edge phase-space pinch). Conduction band: O$_S$ shows <em>twin $\sim$60 meV peaks flanking K</em> where $\varepsilon_{nk}$ crosses the CB-edge resonance, with K itself a $\sim$10 meV valley and ${\rm Re}\,\Sigma$ plunging to $-60$ meV between the peaks (level attraction below the resonance); V$_{\rm S}$ is milder with ${\rm Re}\,\Sigma$ mostly $+10..+45$ meV. The residual $\sim$0.5 meV ripple is the $36^2/\eta$ contour discreteness quantified in &sect;E.4.</figcaption></figure>
+<p><strong>The exact low-rank (Woodbury) solver.</strong> The densified vertex is interpolative by construction,
+$\tilde V_{\rm fine}=\tilde L\,V_c\,\tilde L^\dagger$ with $\tilde L=L\otimes\mathbb 1_{11}$, so
+${\rm rank}\,\tilde V_{\rm fine}\le 1584$ (the coarse-grid dimension) <em>algebraically, however dense the torus</em>.
+The Dyson series then folds exactly onto the coarse space:</p>
+<p>$$\tau(\omega)=\bigl[1-V_c\,\tilde g(\omega)\bigr]^{-1}V_c,\qquad
+\tilde g(\omega)=\tfrac{N_k}{N_{\rm int}^2}\,\Phi^\dagger\,{\rm diag}\!\Bigl(\tfrac{1}{\omega-\varepsilon_{qn}+i\eta}\Bigr)\,\Phi,\qquad
+\Sigma_n(k_p)=c\,N_k\,v^\dagger\tau\,v,$$</p>
+<p>with $\Phi_{(qn),(jb)}=L_{qj}\,C^*_{q,bn}$ precomputed once and $v$ an interpolation-row $\times$ band-vector outer product.
+Eigen-truncating $V_c$ at $10^{-9}$ relative gives effective ranks 1026/1011 (O$_S$) and 865/866 (V$_{\rm S}$ &mdash; the vacancy vertex is the more local one), and the per-$\omega$ cost drops from a dense $O(N_{\rm int}^6)$ LU to one $r^2\times(N_{\rm int}^2\cdot 11)$ GEMM $+$ an $r^3$ solve: <strong>210 ms vs 9 s per $\omega$ at $36^2$ (40$\times$), and linear instead of cubic in torus size</strong> ($60^2$: sub-second vs 5&ndash;6 min). The same factorization retrofits the &sect;E.4 IBTE ladder &mdash; the window projection satisfies $T_{\rm win}=\Phi_{\rm win}\,\tau\,\Phi_{\rm win}^\dagger$ &mdash; making future $N=72/96$ rungs cheap.</p>
+<p><strong>Validation, and a lesson.</strong> Binned-mode A/B against the dense-LU reference: max $|\Delta\Sigma|=0.001/0.002$ &mu;eV
+across both bands and both defects &mdash; machine-precision equivalence of the factorized and dense solvers. The A/B gate also caught a real bug
+on first flight: the $V_c$ eigenbasis rotation used $U^{T}$ instead of $U^\dagger$, scrambling $\Sigma$ by $\sim$30% while
+<em>passing the causality assertion</em> &mdash; the anti-hermitian part of $\tau$ is negative-definite for <em>any</em> quadratic form, so
+${\rm Im}\,\Sigma\le0$ cannot detect basis-rotation errors. Only a pin-to-reference A/B can; it is now a permanent fixture of the pipeline.</p>
 </section>
 
 </main>
