@@ -9,7 +9,7 @@
 
 <header><div class="header-inner"><h1>Defect-Limited Carrier Mobility from the $T$-matrix</h1>
 <p class="subtitle">Two routes from the machinery of this site to electron/hole mobility: (A) the <strong>Boltzmann transport equation</strong> with scattering rates from the on-shell imaginary self-energy, and (B) the <strong>Kubo formula</strong> evaluated directly on the disorder-averaged spectral function $A(k,\omega)$. Formulas with derivation sketches, now implemented through all three Route-A rungs and cross-validated against the Route-B bubble (&sect;E).</p>
-<div class="meta"><span class="pill">theory page</span><span class="pill">dilute defects</span><span class="pill">elastic scattering</span><span class="pill">2D conventions</span><span class="pill">status: computed through IBTE (&sect;E)</span></div></div></header>
+<div class="meta"><span class="pill">theory page</span><span class="pill">dilute defects</span><span class="pill">elastic scattering</span><span class="pill">2D conventions</span><span class="pill">status: $\eta\to0$ finals (&sect;E.7)</span></div></div></header>
 
 <main>
 
@@ -156,7 +156,7 @@ $\sigma^{\rm bubble}\to \frac{g_se^2}{A}\sum \tau^{\rm qp}v^\alpha v^\beta(-\par
 <tr><td><strong>300</strong></td><td><strong>335&ndash;490</strong></td><td><strong>83 &plusmn; 16</strong></td><td><strong>207 &plusmn; 26</strong></td><td><strong>194 &plusmn; 41</strong></td></tr>
 <tr><td>400</td><td>398&ndash;545</td><td>76 &plusmn; 14</td><td>233 &plusmn; 27</td><td>182 &plusmn; 34</td></tr>
 </tbody></table></div>
-<p><strong>Finalized quotes (300 K, $c=1/36$; exact $1/c$ scaling):</strong> $\mu_h({\rm O}_S)=(3.4$&ndash;$4.9)\times10^2$, $\mu_e({\rm O}_S)=(0.7$&ndash;$1.0)\times10^2$, $\mu_h({\rm V_S})=(1.8$&ndash;$2.3)\times10^2$, $\mu_e({\rm V_S})=(1.5$&ndash;$2.4)\times10^2$ cm$^2$/V&middot;s (regauged, three-rung ladders on both sides). The O$_S$ hole range is quoted as [linear extrapolation, hardest rung]: the last-three-rung slopes decrease (convex ladder), so linear-in-$1/N$ is the aggressive edge while a three-point quadratic lands at $\approx$480, essentially the $N=60$ value &mdash; the truth sits between the two forms. This supersedes the interim $\mu_h\approx6\times10^2$: the $\eta=25$ meV kernel over-connected the elastic shells and inflated the hole backflow by $\sim$30%. The electron revision is upward and mild (56$\to$83&plusmn;16), grid- rather than $\eta$-driven. Caveats: the 100 K row carries the widest systematics ($\eta\gtrsim k_BT$ entangles the elastic kernel with the thermal window); V$_{\rm S}$ electrons remain grid-limited (regauged jumps 24$\to$36 $+25\%$, 36$\to$48 $+8.5\%$) &mdash; an $N{=}60$ rung would tighten the band further.</p>
+<p><strong>Finalized quotes (300 K, $c=1/36$; exact $1/c$ scaling):</strong> $\mu_h({\rm O}_S)=(3.4$&ndash;$4.9)\times10^2$, $\mu_e({\rm O}_S)=(0.7$&ndash;$1.0)\times10^2$, $\mu_h({\rm V_S})=(1.8$&ndash;$2.3)\times10^2$, $\mu_e({\rm V_S})=(1.5$&ndash;$2.4)\times10^2$ cm$^2$/V&middot;s (regauged, three-rung ladders on both sides). The O$_S$ hole range is quoted as [linear extrapolation, hardest rung]: the last-three-rung slopes decrease (convex ladder), so linear-in-$1/N$ is the aggressive edge while a three-point quadratic lands at $\approx$480, essentially the $N=60$ value &mdash; the truth sits between the two forms. This supersedes the interim $\mu_h\approx6\times10^2$: the $\eta=25$ meV kernel over-connected the elastic shells and inflated the hole backflow by $\sim$30%. The electron revision is upward and mild (56$\to$83&plusmn;16), grid- rather than $\eta$-driven. <em>These bands are confirmed and superseded by the direct $\eta\to0$ values of &sect;E.7.</em> Caveats: the 100 K row carries the widest systematics ($\eta\gtrsim k_BT$ entangles the elastic kernel with the thermal window); V$_{\rm S}$ electrons remain grid-limited (regauged jumps 24$\to$36 $+25\%$, 36$\to$48 $+8.5\%$) &mdash; an $N{=}60$ rung would tighten the band further.</p>
 
 <h3>E.5&nbsp;&nbsp;On-shell $\Sigma_n(k)$ along $\Gamma$&ndash;K&ndash;M&ndash;$\Gamma$ &mdash; and an exact low-rank solver</h3>
 <p>The $k$-resolved anatomy of everything above: the on-shell diagonal self-energy
@@ -207,6 +207,45 @@ it <em>suppressed</em> V$_{\rm S}$ hole mobility by $\sim$50% (300 K ladder 98/1
 and <em>inflated</em> V$_{\rm S}$ electron mobility by 35&ndash;40% (113/141 regauged vs 171/234) &mdash; diluting the real K-valley
 channels into weak uniform background weakens the resummed backscattering. O$_S$ is untouched (same-provenance throughout).
 All V$_{\rm S}$ tables above now carry the regauged values.</p>
+
+<h3>E.7&nbsp;&nbsp;The Wannier-basis Koster&ndash;Slater engine: $\eta\to0^+$ directly, no extrapolation</h3>
+<p><strong>Structural upgrade.</strong> The downfolded vertex is static and local, so the Dyson equation can be solved
+<em>inside its own support</em>: $\tau(\omega)=[\mathbb 1-v\,\tilde g(\omega)]^{-1}v$, with $v$ the $1584$-dimensional
+coarse-grid vertex (unitarily the $(R,R')$ Wannier-pair representation; effective rank $\sim$1000 at $10^{-9}$),
+and <em>all</em> $\omega$-dependence in the projected host lattice Green function $\tilde g(\omega)$. The dense $k$-torus
+of &sect;E.1&ndash;E.4 is thereby demoted from &ldquo;the space the Dyson equation is discretized on&rdquo; to a mere
+<em>quadrature</em> for the analytically $k$-diagonal host &mdash; evaluated once as a centroid-corrected spectral density
+(1 meV bins inside the transport windows, 25 meV elsewhere, $480^2$ sampling), after which any $(\omega,\eta)$ costs one
+batched GEMM: <strong>135 ms per $\omega$</strong>. The two errors the &sect;E.4 ladder had to extrapolate jointly &mdash;
+host-propagator discreteness and kernel discreteness &mdash; decouple: the former is simply converged away, the latter
+remains as a single clean limit (elastic-kernel grid $N_W$ with matched $\eta=600/N_W$ meV, rungs 96/144/192, i.e.
+$\eta$ down to 3.1 meV vs the old floor of 10).</p>
+<figure><img src="../assets/ks_prodA.svg" alt="eta-to-zero on-shell rates from the KS engine" style="width:100%;max-width:1000px">
+<figcaption><strong>On-shell rates at the $\eta\to0^+$ limit.</strong> O$_S$ (top): $480^2$ curves at $\eta$=4 and 2 meV coincide
+everywhere <em>including the resonance cores</em>; the old $36^2/\eta{=}16.7$ torus (gray) was not only ragged &mdash; it
+suppressed the CB twin-peak heights three-fold (true $\sim$75/70 meV vs $\sim$22 broadened). V$_{\rm S}$ (bottom, regauged):
+$\eta$=8/4/2 meV essentially coincide; CB spikes saturate at $\sim$56/52 meV.</figcaption></figure>
+<p><strong>One more assertion-caught lesson.</strong> Feeding $\eta$=2 meV rates into a kernel sampled on a $48^2$ window grid
+violated the optical theorem by 170% (Lorentzian comb undersampling) and, more subtly, quadrature error at sharp resonances
+pushes some kernel row sums <em>above</em> the exact out-rate &mdash; even-sector eigenvalues of $\tau P$ then exceed 1 and no
+damping can fix a real $\lambda>1$ (the V$_{\rm S}$ electron solve stalled exactly so). The cure is physical:
+<em>enforce the optical theorem on the kernel</em> (row-rescale to $\Gamma_s/\hbar$, re-symmetrize; residual deviation
+0.4&ndash;0.9% median), after which every configuration converges.</p>
+<figure><img src="../assets/ks_mob_verdict.svg" alt="eta-to-zero mobilities vs extrapolation bands" style="width:100%;max-width:980px">
+<figcaption><strong>The verdict: all four quadrants land inside their &sect;E.4 bands.</strong> Kernel-ladder rungs (dots),
+linear $1/N_W$ fits (dashes), $\eta\to0$ values (stars) against the &sect;E.4 extrapolation bands (shaded). Ladder residuals
+$\leq$3 cm$^2$/Vs. Both electron-side values land <em>low</em> in their bands &mdash; the systematic fingerprint of the true
+resonance heights (finite-$\eta$ broadening suppressed resonance scattering, biasing the old ladder's $\mu_e$ high).</figcaption></figure>
+<div class="table-wrap"><table><thead><tr><th>$T$ (K)</th><th>O$_S$ $\mu_h$</th><th>O$_S$ $\mu_e$</th><th>V$_{\rm S}$ $\mu_h$</th><th>V$_{\rm S}$ $\mu_e$</th></tr></thead><tbody>
+<tr><td>100</td><td>171</td><td>65</td><td>89</td><td>194</td></tr>
+<tr><td>200</td><td>314</td><td>69</td><td>155</td><td>174</td></tr>
+<tr><td><strong>300</strong></td><td><strong>410</strong></td><td><strong>67</strong></td><td><strong>211</strong></td><td><strong>166</strong></td></tr>
+<tr><td>400</td><td>483</td><td>63</td><td>247</td><td>161</td></tr>
+</tbody></table></div>
+<p class="small">$\eta\to0$ IBTE finals, $c=1/36$, $n=10^{12}$ cm$^{-2}$, cm$^2$/V&middot;s ($1/c$ scaling). These are the
+<strong>definitive numbers of this page</strong>: each &sect;E.4 band collapses to a point that lies inside it &mdash; the
+extrapolation methodology is independently confirmed, and superseded. Remaining systematics: kernel-unitarity rescale
+(few %), and the $12^2$ resolution of the measured vertex itself.</p>
 </section>
 
 </main>
