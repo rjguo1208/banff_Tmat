@@ -220,7 +220,7 @@ T_{PP}(\omega)=\big[1-\tilde V G^A(\omega)\big]^{-1}\tilde V,$$</div>
 <tr class="ok"><td>gap $[+0.10,+1.55]$</td><td>0.56</td><td>0.041</td></tr>
 <tr><td>CB continuum $[+1.75,+2.15]$</td><td>8.5</td><td>5.2</td></tr>
 </tbody></table></div>
-<figure><img src="../assets/ks_dos_pins.svg" alt="T-matrix DOS with omega0=VBM vs CBM pins, both defects" style="width:100%;max-width:960px">
+<figure><img src="../assets/ks_dos_pins_gt.svg" alt="T-matrix DOS pins vs supercell DFT ground truth" style="width:100%;max-width:960px">
 <figcaption><strong>The static-fold cost made visible: the same $T$-matrix DOS with the two downfolding pins</strong>
 (KS continuum engine, $\eta$=10 meV, one impurity per 6$\times$6; dotted: host). Each pin is exact at its own anchor and the
 curves agree there (O$_S$: pins coincide to 0.03 states/eV median near the VBM; V$_{\rm S}$: to 0.01 near the CBM), while the
@@ -229,7 +229,14 @@ trustworthy side, matching the &sect;E.7 fine-engine result) but drifts to CBM$+
 fold bracket; <em>(ii)</em> the V$_{\rm S}$ deep-gap $a_1$ level at $+0.32$ eV is reproduced by the VBM pin but <em>displaced into
 the VBM edge</em> by the CBM pin (1.34 eV from its anchor) &mdash; deep-gap states demand the valence pin; <em>(iii)</em> the O$_S$
 gap stays clean under <em>both</em> pins (median $|\Delta{\rm DOS}|=0.001$) &mdash; the A1 cure is pin-independent. Together these
-justify the site-wide convention: $\omega_0$=VBM for hole/valence physics, CBM for electron/conduction physics.</figcaption></figure>
+justify the site-wide convention: $\omega_0$=VBM for hole/valence physics, CBM for electron/conduction physics.
+<em>Against the gray supercell-DFT ground truth (deep-state aligned):</em> the V$_{\rm S}$ $e$ level sits at $+1.161$ eV in truth
+&mdash; the CBM pin lands closer ($+1.185$) than the VBM pin ($+1.210$); the deep-gap $a_1$ is at $+0.102$ in truth while the
+downfolded machinery places it at $+0.325$ under the VBM pin &mdash; the &sect;9.1 &ldquo;static-fold note&rdquo; quantified: the
+$a_1$ has substantial weight outside the 11-band active manifold, so its downfolded position carries an $\mathcal O(0.2$ eV$)$
+error regardless of pin (the <em>raw</em> $H_{\rm eff}$ diagonalization, which needs no downfolding, reproduces it &mdash; the
+golden test). The O$_S$ conduction resonance has no discrete counterpart in a supercell spectrum by nature; its ground-truth
+fingerprint is level repulsion &mdash; see the Mobility page &sect;E.7.</figcaption></figure>
 </section>
 
 <section id="sec-spectral"><h2>9&nbsp;&middot;&nbsp;$A(k,\omega)$ along $\Gamma$&ndash;K&ndash;M&ndash;$\Gamma$: the cure, $k$-resolved</h2>
