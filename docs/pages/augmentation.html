@@ -306,6 +306,35 @@ the S site are <strong>99.5% inside the 70-band host span</strong> &mdash; for t
 <code>PP_HEADER</code> attribute <code>number_of_wfc</code>. Grafting <code>PP_CHI</code> blocks without patching that header
 (SG15 ships <code>0</code>) yields &ldquo;aug species pseudopotential carries no usable PSWFC&rdquo; at EDI init &mdash; patch
 both, and remember the regex footgun that <code>l="</code> also matches inside <code>label="</code>.</p>
+
+<h3>10.3&nbsp;&nbsp;What augmentation actually changes for Se$_S$: observables, ranked</h3>
+<p>With the semicore removed (SG15), the &sect;10.2 Gram spectrum ($3$&ndash;$5\times10^{-3}$) promises that augmentation is a
+small correction &mdash; but <em>how small depends on the observable</em>. Three production A/B/no-aug comparisons on the same
+$300^2$/$480^2$ engines:</p>
+
+<figure><img src="../assets/ses_spectral_aug_vs_noaug.png" alt="Se_S spectral function aug vs no-aug" style="width:100%;max-width:1080px">
+<figcaption><strong>$A(k,\omega)$: augmentation is cosmetic.</strong> Left/centre: with (4 native $\chi$) and without
+augmentation &mdash; visually identical, gap empty in both. Right: the difference map is white to the eye; max
+$|\Delta A|=0.23$ states/eV = <strong>1.8% of the peak</strong> (median $2\times10^{-4}$), confined to derivative-pair fringes
+hugging the dispersive VB line (sub-meV line shifts); deep-gap window $|\Delta A|\le0.008$. For level positions, DOS and
+spectral maps, SG15-Se$_S$ genuinely does not need augmentation.</figcaption></figure>
+
+<figure><img src="../assets/ks_rates_SES_aug_vs_noaug.png" alt="Se_S scattering rates aug vs no-aug" style="width:100%;max-width:1080px">
+<figcaption><strong>$\Gamma^{\rm QP}_{nk}$: augmentation is <em>not</em> optional.</strong> No-aug (grey) sits systematically
+<em>above</em> augmented (colour) &mdash; $\Delta\Gamma<0$ for 98&ndash;100% of states: the un-absorbed rest-space weight acts
+as spurious extra scattering (the mild sibling of the uncured-O$_S$ 2&ndash;3&times; VB over-scattering, &sect;E.7 control).
+Magnitude ranks by orbital character: <strong>holes +30%</strong> (VB is chalcogen-$p$ &mdash; exactly what $\chi=$ Se 4s/4p
+corrects), <strong>Q-valley electrons +10%</strong>, <strong>K-valley electrons +3%</strong> (Mo-$d_{z^2}$ CBM, nearly
+$\chi$-blind). The VBM-edge column shows $\pm$tens-of-meV state-by-state reshuffle (position jitter of a sharp resonance), not
+a bias. Consequence: a no-aug vertex would underestimate $\mu_h$ by $\sim$20&ndash;30% while barely touching room-$T$ $\mu_e$
+(K-valley dominated).</figcaption></figure>
+
+<p><strong>Convergence closure:</strong> the two independent augmentation bases &mdash; arm A (13 dojo $\chi$ incl. semicore
+shapes) vs arm B (4 native SG15 $\chi$) &mdash; agree state-by-state to <strong>0.026 meV / 0.6% (holes)</strong> and
+<strong>0.095 meV / 1.9% (electrons)</strong>, while no-aug deviates 29.7% / 9.7%. The augmented rate is
+basis-provenance-independent, i.e. <em>converged</em>; the no-aug bias is real and one-sided. Ranked rule for isovalent,
+well-covered defects: <em>levels / DOS / $A(k,\omega)$ &mdash; augmentation optional (&le;2%); ${\rm Im}\,\Sigma$ / transport
+&mdash; keep it</em> (4 orbitals, negligible cost).</p>
 </section>
 
 </main>
