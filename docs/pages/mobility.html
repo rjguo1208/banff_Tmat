@@ -327,6 +327,69 @@ flower (up to $\sim$11 meV) that limits $\mu_h$; the conduction side is weak and
 $\mu_e({\rm V_S})\gg\mu_e({\rm O}_S)$. Production resolution ($240^2$, $\eta$=2 meV).</figcaption></figure>
 </section>
 
+<section id="sec-ses"><h2>F&nbsp;&middot;&nbsp;Se$_S$ campaign: the isovalent benchmark (SG15 defect pseudo, native augmentation)</h2>
+
+<p>Third defect, deployed end-to-end with the Wannier Koster&ndash;Slater engine: the <strong>isovalent substitution
+S&nbsp;&rarr;&nbsp;Se</strong> (frozen host geometry, same 6&times;6/108-atom protocol). Se$_S$ is the control experiment the
+pair O$_S$/V$_{\rm S}$ was missing &mdash; a defect that supercell DFT certifies as <em>featureless</em>: zero in-gap states,
+doubly-degenerate band edges, gap $1.6582$ vs host $1.6571$ eV, VBM shift $+6.9$ meV. Getting the downfolded machinery to
+agree took one genuinely new lesson &mdash; the <strong>semicore disease</strong> and its same-pseudopotential augmentation cure,
+documented as <a href="augmentation.html#sec-ses">&sect;10 of the augmentation page</a>. Production vertex: SG15 Se
+(z_valence=6) defect SCF + projectors, <strong>4 native $\chi$</strong> (4s+4p solved from the SG15 pseudo-atom itself,
+$n_{\rm bt}=74$); validation gate: golden levels match the supercell truth pair-by-pair (edge doublet $-14.1{\times}2$ vs
+$-14.8{\times}2$ meV, CBM edge $1.6608$ vs $1.6582$ eV), and a 13-orbital dojo-$\chi$ comparison arm agrees to
+<strong>0.1 meV</strong> &mdash; the augmentation basis provenance is irrelevant.</p>
+
+<figure><img src="../assets/ks_rates_SES_qp.png" alt="Se_S QP scattering rates 300^2">
+<figcaption><strong>QP-shifted scattering rates $\Gamma^{\rm QP}_{nk}$ on the $300^2$ grid</strong> ($c=1/36$, two-pass
+$\Gamma=2|{\rm Im}\,\Sigma_{nk}(\varepsilon_{nk}+{\rm Re}\,\Sigma_{nk})|$, absolute energies). Electrons: $1.8$&ndash;$7.2$ meV
+with the K-valley floor at $\sim$2 meV and <em>no resonance ridge anywhere</em> (O$_S$ reached 186 meV). Holes: 2&ndash;7 meV
+bulk with a genuine VBM-edge enhancement column to 53 meV &mdash; the $k$-space face of the $-14.8$ meV edge doublet seen in
+the supercell truth. QP shifts are cosmetic here: median $|\Gamma^{\rm QP}-\Gamma^{\rm bare}|<0.2$ meV, Re$\,\Sigma$ only
+10&ndash;22 meV (no O$_S$-style edge renormalization).</figcaption></figure>
+
+<figure><img src="../assets/ks_dos_pins_SES.svg" alt="Se_S dual-pin dDOS vs supercell truth">
+<figcaption><strong>$\Delta$DOS, dual downfolding pin vs supercell DFT.</strong> Top: truth (6&times;6 $\Gamma$-comb, deep-state
+aligned $-10.6$ meV, $\sigma$=10 meV Gaussian) &mdash; derivative-type wiggles at the band edges only; the deep-gap window
+$[+0.10,+1.56]$ eV is <em>exactly zero</em>. Bottom: engine $\Delta$DOS ($\eta$=10 meV) &mdash; VBM-edge peak 11.4 vs truth 12.2
+states/eV, gap residual 0.13 (Lorentzian in-leak), and the two pins ($\omega_0$=VBM vs CBM) <strong>superpose to 1.2
+states/eV</strong>. Contrast O$_S$, where the resonance made the pins bracket an 80 meV window: no resonance &rArr; no pin
+sensitivity.</figcaption></figure>
+
+<figure><img src="../assets/ses_spectral_GKMG_bands.png" alt="Se_S spectral function">
+<figcaption><strong>$A(k,\omega)$ along $\Gamma$&ndash;K&ndash;M&ndash;$\Gamma$</strong> (144k vertex &rarr; 11-band static
+downfold &rarr; w90 R-space interpolation; dashed = interpolated host bands). The gap is <em>empty</em> &mdash; no flat defect
+line (V$_{\rm S}$ shows its $e$-doublet at $+1.21$ eV in this exact pipeline), no broken ridges. $A\ge0$ everywhere;
+display window weight 2.1&ndash;4.8 of 11 (narrow window; full-range sum rule validated on the host).</figcaption></figure>
+
+<h3>F.1&nbsp;&nbsp;Mobility: the $\eta\to0$ IBTE ladder</h3>
+
+<figure><img src="../assets/ks_mob_SES_ladder.svg" alt="Se_S mobility ladder">
+<figcaption><strong>IBTE ladder</strong> $N_W\in\{96,144,192\}$, $\eta=600/N_W$ meV, $480^2$ continuum $g$; stars = linear
+$1/N_W\to0$ extrapolation. Kernel unitarity enforced (optical-theorem deviation median 0.5&ndash;0.7% after row scaling);
+deflated fixed-point solver, spec$(\tau P)=0.98$&ndash;$0.99$.</figcaption></figure>
+
+<div class="table-wrap"><table><thead><tr><th>$T$ (K)</th><th>$\mu_e$ N96/N144/N192</th><th>$\mu_e$ ($\eta\to0$)</th>
+<th>$\mu_h$ N96/N144/N192</th><th>$\mu_h$ ($\eta\to0$)</th></tr></thead><tbody>
+<tr><td>100</td><td>1051 / 1007 / 953</td><td><strong>868</strong></td><td>156 / 134 / 125</td><td><strong>94</strong></td></tr>
+<tr><td>200</td><td>1074 / 1032 / 1000</td><td><strong>932</strong></td><td>340 / 319 / 311</td><td><strong>280</strong></td></tr>
+<tr><td>300</td><td>1174 / 1133 / 1109</td><td><strong>1046</strong></td><td>498 / 481 / 477</td><td><strong>453</strong></td></tr>
+<tr><td>400</td><td>1299 / 1260 / 1240</td><td><strong>1182</strong></td><td>626 / 614 / 613</td><td><strong>597</strong></td></tr>
+</tbody></table></div>
+
+<p><strong>Three-defect verdict @300 K, $c=1/36$ (cm$^2$/V&middot;s, IBTE $\eta\to0$):</strong></p>
+<div class="table-wrap"><table><thead><tr><th>defect</th><th>$\mu_h$</th><th>$\mu_e$</th><th>character</th></tr></thead><tbody>
+<tr><td>O$_S$</td><td>410</td><td>67</td><td>CB-edge resonance rings throttle electrons</td></tr>
+<tr><td>V$_{\rm S}$</td><td>211</td><td>166</td><td>deep gap states; six-fold valence flower</td></tr>
+<tr><td>Se$_S$</td><td><strong>453</strong></td><td><strong>1046</strong></td><td>isovalent: no resonance, K-valley nearly transparent</td></tr>
+</tbody></table></div>
+
+<p>The isovalent defect is the gentlest scatterer of the three &mdash; $\mu_e$ is <strong>12&ndash;15&times; the O$_S$
+value</strong> at the same concentration, and the only structure it imprints is the VBM-edge column, which the
+$(1-\cos\theta)$ ladder largely forgives (hole SERTA&rarr;IBTE backflow &times;3.9 at 300 K, the largest of the three defects
+&mdash; edge scattering is strongly forward-peaked).</p>
+</section>
+
 </main>
 <footer>Defect-limited mobility formalism &mdash; companion theory page of the explicit / EDI-direct electron&ndash;defect $T$-matrix site (Banff). Equations via MathJax v3.</footer>
 </body></html>
