@@ -388,6 +388,32 @@ deflated fixed-point solver, spec$(\tau P)=0.98$&ndash;$0.99$.</figcaption></fig
 value</strong> at the same concentration, and the only structure it imprints is the VBM-edge column, which the
 $(1-\cos\theta)$ ladder largely forgives (hole SERTA&rarr;IBTE backflow &times;3.9 at 300 K, the largest of the three defects
 &mdash; edge scattering is strongly forward-peaked).</p>
+
+<h3>F.2&nbsp;&nbsp;Why O$_S$ throttles electrons and Se$_S$ does not: the ground-truth proof</h3>
+
+<p>The factor-15 gap in $\mu_e$ traces to the O$_S$ conduction-edge <em>resonance</em> &mdash; and both halves of that claim
+can be proven from supercell DFT alone, with no downfolding or $T$-matrix machinery in the loop.</p>
+
+<figure><img src="../assets/ses_os_fingerprint.svg" alt="level-displacement fingerprint O_S vs Se_S" style="width:100%;max-width:980px">
+<figcaption><strong>Proof 1 &mdash; level capture (Krein/Friedel fingerprint).</strong> In a finite supercell the
+defect-induced displacement of each folded continuum level <em>is</em> the scattering phase shift:
+$\Delta\varepsilon_n\approx-\delta(\varepsilon_n)\cdot\Delta_{\rm spacing}/\pi$. Left: the pristine 6&times;6 CB ladder
+(doublet at CBM, six-fold cluster at $+278$ meV, shell at $+546$). O$_S$ (red) <em>shatters</em> it &mdash;
+symmetry-selective capture of specific cluster members by up to $-174$ meV ($\approx0.6\times$ the spacing &rArr; phase shift
+approaching $\pi$ = resonance; the same channel selectivity that draws the K/K$'$ resonance rings of the &sect;E.7 BZ maps).
+Se$_S$ (blue) leaves every cluster intact. Right: $|\Delta\varepsilon|$ state-by-state &mdash; O$_S$ median 12.5 / max 174
+meV vs Se$_S$ median <strong>1.3</strong> / max 14 meV; the Born-level strength ratio $(12.5/1.3)^2\approx90$ matches the
+independently computed $T$-matrix rate contrast (O$_S$ ridge 186 meV vs Se$_S$ 2&ndash;7 meV).</figcaption></figure>
+
+<figure><img src="../assets/ses_os_pdos_frac.svg" alt="O vs Se Lowdin fractions" style="width:100%;max-width:760px">
+<figcaption><strong>Proof 2 &mdash; orbital attribution (projwfc L&ouml;wdin fractions, same windows, same recipe).</strong>
+The stoichiometric dilution baseline is $6/936=0.64$%. In O$_S$ the O character <em>concentrates</em> exactly where the rates
+blow up: 1.45% at the CBM edge (2.3&times;), <strong>3.93% in the resonance window (6&times;)</strong> &mdash; the resonance
+states are O-orbital descendants (quasi-localized seed: the O$_S$ $e$-doublet at CBM$+10$ meV). In Se$_S$ the Se fraction
+never rises above the baseline anywhere in the CB &mdash; 0.12% at the CBM edge (5&times; <em>depleted</em>: the K-valley CBM
+is Mo-$d_{z^2}$), 0.44% in the same window. No quasi-localized state, no seed, no resonance &mdash; only weak potential
+scattering. Microscopic root: O-2p is more compact and deeper than the S-3p it replaces (builds a split-off CB-edge state);
+Se-4p is nearly degenerate with S-3p and more diffuse (dissolves into the host continuum).</figcaption></figure>
 </section>
 
 </main>
