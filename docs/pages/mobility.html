@@ -437,18 +437,22 @@ the same clean background (0.026 states/eV) away from the resonances &mdash; the
 The flat-band energies coincide with the supercell level-capture fingerprint of Proof 1 (&sect;F.2) and the on-shell ridge of
 the rate maps: three independent probes, one resonance.</figcaption></figure>
 
-<figure><img src="../assets/ses_os_sv_cbm_kzoom_hd2.png" alt="three-defect K-zoom anatomy, high resolution" style="width:100%;max-width:1180px">
-<figcaption><strong>K-valley anatomy, all three defects, at full resolution</strong> (dense K-centred segment, <strong>721 $k$-points</strong> $\approx18\times$ the path density; $\Delta\omega$=0.25 meV, $\eta$=5 meV &mdash; comb-artifact check passed: smooth-tail
-residual rms $8\times10^{-4}$; V$_{\rm S}$ = regauged v5 vertex, 70 bands). Sharpening $\eta$ from 10 to 5 meV
-<strong>resolves the resonance multiplets</strong>. O$_S$: the two &ldquo;flat bands&rdquo; are a <strong>five-member
-ladder</strong> &mdash; CBM$+0.193$ (dominant, detector 0.80), $+0.227$, $+0.268$, $+0.337$ (0.37), $+0.402$ eV &mdash; each
-line producing its own avoided crossing on the host parabola (dark QP-line breaks); the $+0.193/+0.227$ pair matches the
-supercell capture fingerprint (182/229$\times$2 meV) and $+0.337$ the 305/311$\times$2 family: <em>the fourth independent
-probe of the same resonance, now with its internal structure</em>. V$_{\rm S}$: its CB resonance is a resolved
-<strong>doublet at $+0.270/+0.289$ eV</strong> (0.30/0.17) plus the band-bottom avoided crossing at K. Se$_S$: nothing but
-the faint host upper-valley onset shared by all three curves near $1.9$&ndash;$2.05$ eV. The CB-scattering hierarchy &mdash;
-five-line ladder (O$_S$) &gt; weak doublet (V$_{\rm S}$) &gt; none (Se$_S$) &mdash; maps one-to-one onto $\mu_e$ = 67 &lt;
-166 &lt; 1046 cm$^2$/Vs.</figcaption></figure>
+<figure><img src="../assets/ses_os_sv_cbm_kzoom_dyson.png" alt="three-defect K-zoom, Dyson construction" style="width:100%;max-width:1180px">
+<figcaption><strong>K-valley anatomy at full resolution &mdash; Dyson construction (final).</strong> 721 $k$-points,
+$\Delta\omega$=0.25 meV, $\eta$=5 meV, downfold pin $\omega_0$=CBM. The spectral function is built as
+$A=-\tfrac{1}{\pi}{\rm Im\,Tr}\,[\omega+i\eta-H_{\rm band}(k)-\Sigma(k,\omega)]^{-1}$ with
+$\Sigma(k,\omega)=cN_k\,T(k,k,\omega)$ &mdash; the same self-energy object as the transport pipeline. This construction is
+<em>structurally positive</em>: ${\rm Im}\,T=T^{\dagger}{\rm Im}\,G_0\,T\preceq0$ holds for the computed $T$ regardless
+of interior-grid error, so $A\ge0$ unconditionally (verified: negative fraction exactly 0 for all three defects; the earlier
+$G_0+G_0TG_0$ assembly at $\eta\le10$ meV showed up to 1.1% negative pixels from the 144-$k$-interior vs interpolated-leg
+pole mismatch &mdash; the &ldquo;ragged seam&rdquo; artifact, now cured). O$_S$: the resonance ladder hybridizes with the host
+parabola through clean avoided-crossing gaps, and the K-point QP itself <em>splits</em> near the CBM (the spectral face of the
+QP-shift result Re$\,\Sigma\approx-60$ meV of &sect;E.7); detector peaks at CBM$+0.166$ (dominant), $+0.235$, $+0.264$,
+<strong>$+0.302/+0.318$ &mdash; matching the supercell capture family 305/311$\times$2 line-by-line</strong>, $+0.397$.
+Pin systematics: the VBM/CBM static-fold bracket ($+0.193$ vs $+0.166$ for the dominant line) straddles the supercell truth
+(182 meV). V$_{\rm S}$: resolved doublet $+0.269/+0.288$. Se$_S$: spotless. CB-scattering hierarchy &rarr; $\mu_e$ mapping
+unchanged: ladder (O$_S$) &gt; doublet (V$_{\rm S}$) &gt; none (Se$_S$) $\leftrightarrow$ 67 &lt; 166 &lt; 1046
+cm$^2$/Vs.</figcaption></figure>
 </section>
 
 </main>
