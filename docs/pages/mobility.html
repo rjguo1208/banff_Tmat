@@ -453,6 +453,32 @@ Pin systematics: the VBM/CBM static-fold bracket ($+0.193$ vs $+0.166$ for the d
 (182 meV). V$_{\rm S}$: resolved doublet $+0.269/+0.288$. Se$_S$: spotless. CB-scattering hierarchy &rarr; $\mu_e$ mapping
 unchanged: ladder (O$_S$) &gt; doublet (V$_{\rm S}$) &gt; none (Se$_S$) $\leftrightarrow$ 67 &lt; 166 &lt; 1046
 cm$^2$/Vs.</figcaption></figure>
+
+<h3>F.4&nbsp;&nbsp;Pseudopotential-family robustness of the O$_S$ verdict (SG15 arm)</h3>
+
+<p>The full O$_S$ chain was re-run with the <strong>SG15 oxygen</strong> pseudopotential on the defect side (same recipe as the
+Se$_S$ campaign: plain SG15-O defect SCF; augmentation $\chi$ = 2s/2p <em>solved from the SG15 pseudo-atom itself</em>, solver
+re-validated on dojo-O at 0.99996&ndash;0.99999 overlap; host-save ghost swap; single Banff node, 29 min end-to-end).
+Three-tier verdict:</p>
+
+<ul>
+<li><strong>Supercell truth: family-identical.</strong> dojo-O vs SG15-O eigenvalues agree state-by-state to
+0.0&ndash;0.3 meV; with the standard deep-state alignment ($+46.3$ meV, identical for both) the $e$-doublet lands at
+<strong>CBM$+10.7$ meV in both</strong> &mdash; the &ldquo;conduction-edge resonance, not a bound state&rdquo; verdict carries
+zero pseudo-family systematic.</li>
+<li><strong>The no-aug disease is element physics, not pseudo physics:</strong> the uncured SG15-O golden shows the same
+push-up doublet at $+0.709$ eV (dojo: $+0.72$); Gram weights 0.17&ndash;0.21 (dojo 0.16&ndash;0.17) &mdash; O-2p compactness,
+cured by A1 identically.</li>
+<li><strong>Downfolded resonance ladder: agrees within the pipeline's own systematic.</strong> Dominant line $+148$ (SG15) vs
+$+166$ meV (dojo); the $+302/+318$ pair merges into $+309$; weakest members shift $\le$12 meV &mdash; a 4&ndash;18 meV
+family scatter, inside the $\sim$30 meV static-fold/basis error bar that separates either arm from the supercell fingerprint.
+The ladder's existence, multiplicity and the $\mu_e$ verdict are family-independent.</li>
+</ul>
+
+<figure><img src="../assets/os_family_ladder.svg" alt="O_S ladder dojo vs SG15" style="width:100%;max-width:820px">
+<figcaption>Flat-band detector (median$_k$ $A$, Dyson $\eta$=5 meV) for the two O$_S$ arms; cyan dotted lines mark the
+supercell capture fingerprint 182/229$\times$2/305/311$\times$2 meV, which both arms bracket within their common
+truncated-basis systematic.</figcaption></figure>
 </section>
 
 </main>
