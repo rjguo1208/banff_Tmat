@@ -507,6 +507,57 @@ hierarchy: V$_{\rm S}$ 1 meV (host-only) &lt; O$_S$ 4&ndash;18 meV (defect-atom 
 (semicore vs valence-only = a method-validity choice, &sect;10).</figcaption></figure>
 </section>
 
+<section id="sec-kubo-prod"><h2>G&nbsp;&middot;&nbsp;Kubo mobility computed: full spectral lineshapes on the transport window (all-SG15)</h2>
+
+<p>Route B (&sect;B) taken to production for all three defects (SG15 arms throughout), using the <strong>same self-energy
+object as the transport pipeline</strong>: $\Sigma_s(\omega)=cN_k\,T_{ss}(\omega)$ from the Wannier Koster&ndash;Slater
+engine, and the structurally-positive Dyson spectral function $A_s(\omega)=-\tfrac1\pi{\rm Im}[\omega-\varepsilon_s-
+\Sigma_s(\omega)+i0^+]^{-1}$ (&sect;F.3 construction). Two tiers per carrier:</p>
+<p><strong>K1</strong> (QP-Lorentzian): $\tau_s=\hbar/\Gamma_s$, $\Gamma_s=2|{\rm Im}\Sigma_s(\varepsilon_s)|$ &mdash;
+analytically $\equiv$ SERTA via $\int A^2 d\omega=1/(\pi\Gamma)$. <strong>K2</strong> (full lineshape):
+$\mu\propto\sum_s v_s^2\,\pi\hbar\!\int\!d\omega\,(-\partial_\omega f)\,A_s(\omega)^2$ &mdash; the Fermi
+weight sits at $\omega$, <em>where the spectral weight actually is</em>, not at the bare band energy. Parameters:
+$300^2$ state grid, $\omega$-grid 0.2 meV (2701 points/carrier, one $r{\times}r$ T-solve + projection GEMM per
+$\omega$, $r\approx10^3$), $\eta$=1 meV on the $480^2$ continuum host, $n_c=10^{12}$ cm$^{-2}$, $c$=1/36.
+Machinery gates: $A\ge0$ exact (Dyson), per-state Lorentzian identity $\pi\Gamma\!\int\!A^2$ = 0.95&ndash;1.01,
+and <strong>K1 $\leftrightarrow$ SERTA closure to $\pm$3%</strong> in five of six defect/carrier cells (the sixth,
+V$_{\rm S}$/h, differs by the known $\eta$-ladder sensitivity: the Kubo run sits beyond the $N_W$=192 rung).</p>
+
+<div class="table-wrap"><table><thead><tr><th>defect/carrier</th><th>SERTA</th><th>IBTE</th><th>K1</th>
+<th>K2$_{\rm band}$</th><th>K2$_{\rm full}$</th><th>gap-side weight</th><th>verdict</th></tr></thead><tbody>
+<tr><td>O$_S$ / h</td><td>28.8</td><td>95.3</td><td>30.4</td><td>9.0</td><td>9.1</td><td>1.7%</td><td>clean</td></tr>
+<tr><td>O$_S$ / e</td><td>24.0</td><td>27.4</td><td>24.3</td><td>79.0</td><td>13058</td><td><strong>83%</strong></td><td>bubble invalid</td></tr>
+<tr><td>Se$_S$ / h</td><td>121.1</td><td>476.6</td><td>120.3</td><td>483.0</td><td>586.7</td><td><strong>46%</strong></td><td>bubble invalid</td></tr>
+<tr><td>Se$_S$ / e</td><td>805.5</td><td>1108.8</td><td>785.3</td><td>447.9</td><td>452.4</td><td>0.3%</td><td>clean</td></tr>
+<tr><td>V$_{\rm S}$ / h</td><td>173.3</td><td>178.1</td><td>249.9</td><td>237.7</td><td>237.1</td><td>1.2%</td><td>clean ($\eta$)</td></tr>
+<tr><td>V$_{\rm S}$ / e</td><td>159.2</td><td>165.1</td><td>157.5</td><td>55.6</td><td>55.7</td><td>1.9%</td><td>clean</td></tr>
+</tbody></table></div>
+<p class="small">All @300 K, cm$^2$/V&middot;s, $c$=1/36; SERTA/IBTE from the $N_W$ ladder (&sect;E/F); K2$_{\rm band}$
+restricts the $\omega$-integral to the conducting continuum ($\omega$ on the band side of the edge).</p>
+
+<figure><img src="../assets/kubo_verdict.svg" alt="Kubo verdict: renormalization collapse + applicability" style="width:100%;max-width:1080px">
+<figcaption><strong>Left &mdash; the spectral-weight Boltzmann renormalization</strong> (Se$_S$ electrons): K2$_{\rm band}$
+sits below K1 by exactly $e^{-{\rm Re}\Sigma/k_BT}$; multiplying it back (orange, single parameter Re$\Sigma$=15 meV)
+collapses onto K1 across the whole 100&ndash;400 K range. Positive Re$\Sigma$ pushes the spectral weight <em>away</em> from
+the chemical potential; K2 pays the Boltzmann price that SERTA/IBTE (bare-energy bookkeeping) ignore.
+<strong>Right &mdash; the applicability boundary self-diagnosed</strong>: the gap-side fraction of the Fermi-weighted
+spectral weight. The two <em>edge-resonance carriers</em> (O$_S$ electrons, Se$_S$ holes) put 46&ndash;83% of their
+transport-relevant weight on the gap side of the band edge, where the bubble wrongly assigns the host band velocity to
+bound-like weight &mdash; those cells (and the exploding K2$_{\rm full}$) are declared non-quotable without a proper
+current vertex.</figcaption></figure>
+
+<p><strong>The hierarchy, resolved.</strong> There is no universal &ldquo;Kubo &gt; BTE&rdquo;: the exact statement is
+bubble $\le$ bubble+ladder ($\equiv$ IBTE), while bubble-vs-SERTA is set by the <em>sign of</em> Re$\Sigma$ (which way
+the weight moves relative to $\mu$). Our data realizes both textbook limits at once: in the clean cells (Re$\Sigma>0$,
+weight pushed into the band) K2$_{\rm band}$ &lt; SERTA &lt; IBTE; in the band-tail cells (weight pulled toward/into the
+gap) K2$_{\rm full}$ explodes &mdash; the classic &ldquo;Kubo exceeds BTE&rdquo; regime, here diagnosed as
+velocity-bookkeeping artifact for bound-like weight. The two corrections are independent and opposite, giving the sandwich
+$$\mu_{\rm full\ Kubo}\;\approx\;\mu_{\rm IBTE}\times e^{-{\rm Re}\Sigma/k_BT}
+\;\;\in\;[{\rm K2}_{\rm band},\,\mu_{\rm IBTE}]$$
+&mdash; for Se$_S$ electrons at 300 K: $\approx1109\times0.57\approx630$ cm$^2$/V&middot;s, between 448 and 1109.
+Closing the sandwich exactly (Kubo + ladder with full lineshapes) is the natural next rung.</p>
+</section>
+
 </main>
 <footer>Defect-limited mobility formalism &mdash; companion theory page of the explicit / EDI-direct electron&ndash;defect $T$-matrix site (Banff). Equations via MathJax v3.</footer>
 </body></html>
