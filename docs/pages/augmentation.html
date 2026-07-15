@@ -307,6 +307,27 @@ the S site are <strong>99.5% inside the 70-band host span</strong> &mdash; for t
 (SG15 ships <code>0</code>) yields &ldquo;aug species pseudopotential carries no usable PSWFC&rdquo; at EDI init &mdash; patch
 both, and remember the regex footgun that <code>l="</code> also matches inside <code>label="</code>.</p>
 
+<h3>10.4&nbsp;&nbsp;Band unfolding: augmentation necessity <em>measured</em> from pure supercell DFT</h3>
+
+<p>The final and most direct proof that A1 augmentation is necessary for O$_S$ and unnecessary for Se$_S$ &mdash; obtained
+without the downfolding, T-matrix or augmentation machinery anywhere in the loop. Each supercell eigenstate
+$|\Psi_m\rangle$ (SG15 arms, $\Gamma$-only 6&times;6) is (i) unfolded exactly onto the 36 folded primitive $k$-channels
+by plane-wave residue classes (norm check $\sum_k P_m(k)=1.0000$), and (ii) projected onto the primitive host bands:
+$w_{N_b}(m)=\sum_{k,n\le N_b}|\langle\psi_{kn}|\Psi_m\rangle|^2$. The deficit $1-w_{N_b}$ is precisely the weight a
+truncated-Bloch method cannot represent &mdash; what the $\chi$ orbitals must supply.</p>
+
+<figure><img src="../assets/unfold_audit.svg" alt="unfolding audit" style="width:100%;max-width:1080px">
+<figcaption><strong>Left:</strong> missing weight per CB-window supercell state. The O$_S$ resonance family
+(CBM$+184$, $+230{\times}2$, $+412{\times}2/+427$) carries <strong>0.9&ndash;2.3%</strong> of its weight outside the
+70-band manifold &mdash; <strong>200&ndash;2000&times; the Se$_S$ baseline</strong> ($\le$0.011%, blue). Adding 90 more
+bands (open symbols, $N_b$=160) recovers only $\sim$20% of the deficit: the missing weight lives on the
+$\mathcal{O}(10^2)$ eV tails, so &ldquo;more bands&rdquo; cannot cure it &mdash; the A1 mechanism
+(&sect;2&ndash;3) re-derived from raw DFT. The symmetry-selective capture of &sect;F.2 is confirmed state-by-state: the
+uncaptured cluster members at $+307/+312$ have <em>zero</em> missing weight (host-pure, merely repelled), only the
+captured members carry O character. <strong>Right:</strong> the DFT resonance family (stem height = missing weight)
+against the T-matrix ladders of the two static-fold pins &mdash; each DFT member falls inside its
+[CBM-pin, VBM-pin] bracket ($184\in[166,193]$, $230\in[227,235]$, $412/427$ vs $397/402$).</figcaption></figure>
+
 <h3>10.3&nbsp;&nbsp;What augmentation actually changes for Se$_S$: observables, ranked</h3>
 <p>With the semicore removed (SG15), the &sect;10.2 Gram spectrum ($3$&ndash;$5\times10^{-3}$) promises that augmentation is a
 small correction &mdash; but <em>how small depends on the observable</em>. Three production A/B/no-aug comparisons on the same
