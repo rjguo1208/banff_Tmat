@@ -562,18 +562,20 @@ $$\mu_{\rm full\ Kubo}\;\approx\;\mu_{\rm IBTE}\times e^{-{\rm Re}\Sigma/k_BT}
 Closing the sandwich exactly (Kubo + ladder with full lineshapes) is the natural next rung.</p>
 
 <h3>G.1&nbsp;&nbsp;Sixth probe: 9&times;9-supercell band unfolding lands on the Dyson map</h3>
-<p>A 243-atom O$_S$ supercell ($c$=1/81, SG15-O) was computed with NSCF k-points chosen so that each target primitive
-$k$ on the CBM-zoom segment folds onto it; the eigenstates are unfolded <em>exactly</em> by plane-wave residue classes
-(norm 1.0000) &mdash; raw DFT, no downfolding, T-matrix or augmentation machinery anywhere. First half (K&rarr;K+0.45KM,
-4 $k$-points) below; the $\Gamma$K side is in production.</p>
-<figure><img src="../assets/os9_unfold_B.png" alt="9x9 unfolding vs Dyson map, K-M side" style="width:100%;max-width:900px">
-<figcaption><strong>Cyan circles = unfolded 9&times;9 DFT states</strong> (size $\propto$ unfolded weight $P_m(k)$;
-alignment anchored on the CB quasiparticle, residual scatter $\pm$25 meV &mdash; partly the physics itself, since the
-anchor states are resonance-fragmented). The QP branch rides the bright Dyson line point-by-point; at $s'$=0.2 and 0.3 the
-DFT state splits into two nearly equal-weight components (0.67/0.23 and 0.47/0.43) <em>straddling the avoided crossings</em>
-exactly where the T-matrix map bends the QP line around the flat bands; satellite circles land on the horizontal resonance
-bands. Intensities are mutually consistent once the concentration ratio (1/81 vs 1/36) is folded in. The avoided-crossing
-anatomy of &sect;F.3 is thereby confirmed state-by-state by a bare supercell calculation.</figcaption></figure>
+<p>A 243-atom O$_S$ supercell ($c$=1/81, SG15-O; SCF once, then one NSCF per target $k$ at its folded supercell
+$\mathbf K_{sc}=9\mathbf k\bmod 1$) was unfolded <em>exactly</em> by plane-wave residue classes (norm 1.0000 per state)
+onto <strong>16 points of the CBM-zoom segment</strong> &mdash; raw DFT, no downfolding, T-matrix or augmentation machinery
+anywhere in the loop.</p>
+<figure><img src="../assets/os9_unfold_full16.png" alt="16-point 9x9 unfolding vs Dyson map" style="width:100%;max-width:980px">
+<figcaption><strong>Cyan circles = unfolded 9&times;9 DFT states</strong> (size $\propto P_m(k)$; energies aligned by the
+CB-anchor convention, median shift $-17$ meV, scatter $\pm$20 meV &mdash; partly physics, the anchors themselves being
+resonance-fragmented). The verdict is state-by-state: the QP branch rides the bright Dyson line along both arms; at every
+avoided crossing the DFT weight splits into pairs straddling the gap exactly where the map bends (e.g.\ 0.67/0.23 and
+0.47/0.43 splittings); satellites populate all four resonance flat bands across the segment; and at K itself the
+quasiparticle is <strong>halved ($P=0.50$)</strong> &mdash; the bare-DFT face of the split band-bottom QP seen in the Dyson
+map and in the QP-shift analysis of &sect;E.7. Intensities are mutually consistent under the concentration ratio
+(1/81 vs 1/36). The T-matrix spectral anatomy is thereby confirmed by a supercell calculation with zero shared
+machinery.</figcaption></figure>
 </section>
 
 </main>
