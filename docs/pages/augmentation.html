@@ -35,6 +35,56 @@
 <div class="math">$$\chi^{k}_{lm}(\mathbf G)\;=\;i^{\,l}\;e^{-i(\mathbf k+\mathbf G)\cdot\boldsymbol\tau}\;Y_{lm}\!\big(\widehat{\mathbf k+\mathbf G}\big)\;\tilde\chi_l\big(|\mathbf k+\mathbf G|\big),$$</div>
 <p>with $\tilde\chi_l(q)$ the radial Fourier&ndash;Bessel transform (QE's <code>tab_at</code> interpolation table). This is the standard <code>atomic_wfc</code> construction, evaluated with a private single-site structure factor so the ghost species carries no atoms in the primitive cell.</p>
 
+<h4>3.1.1&nbsp;&nbsp;From real space to the primitive-cell $k$-space, step by step</h4>
+
+<p><strong>(0) The starting object, and why a <em>family</em> rather than one orbital.</strong> The UPF stores the radial
+function $u_l(r)=r\,R_l(r)$ on a numerical mesh; the real-space orbital is
+$\varphi_{lm}(\mathbf r)=\tfrac{u_l(r)}{r}Y_{lm}(\hat{\mathbf r})$, centred at the defect site $\boldsymbol\tau$.
+The conceptual move is to build not one localized orbital but the <em>primitive-periodic Bloch family</em></p>
+<div class="math">$$\chi_{k,lm}(\mathbf r)=\frac{1}{\sqrt N}\sum_{\mathbf R}
+e^{i\mathbf k\cdot(\mathbf R+\boldsymbol\tau)}\,\varphi_{lm}(\mathbf r-\mathbf R-\boldsymbol\tau),
+\qquad k\in\{144\text{-grid}\}.$$</div>
+<p>A defect state is (localized orbital) $\times$ (smooth envelope); the envelope space is generated completely by
+$\{\chi_k\}$ over the $k$-grid ($n_\chi\times N_k$ dimensions). This is exactly what the A2 experiment (&sect;2) showed
+was missing: supercell-$\Gamma$ eigenstates sample only a low-dimensional slice of that envelope space, so
+&ldquo;onion layers&rdquo; kept surfacing &mdash; augment the <em>generators</em>, not the answers.</p>
+
+<p><strong>(1) Radial real$\to$reciprocal: the spherical-Bessel transform.</strong> For a plane wave of wavevector
+$\mathbf q=\mathbf k+\mathbf G$, the radial content of the orbital is</p>
+<div class="math">$$\tilde\chi_l(q)=\frac{4\pi}{\sqrt\Omega}\int_0^\infty\! dr\; r\,j_l(qr)\,u_l(r),$$</div>
+<p>tabulated once on a uniform $q$-mesh ($dq\approx0.01$ a.u., QE's <code>init_at_1</code>) and spline-interpolated at run
+time (<code>interp_atwfc</code>). All of the orbital's <em>localization</em> is now encoded in the $q$-tail of
+$\tilde\chi_l$: the more compact the orbital (O-2p), the longer the tail &mdash; the reciprocal-space face of
+&ldquo;the missing weight lives on 100-eV bands&rdquo;.</p>
+
+<p><strong>(2) Assembly at each $(k,\mathbf G)$: three factors, three jobs.</strong> The coefficient formula above is the
+product of a Bessel phase $(-i)^l$, a <em>structure factor</em> $e^{-i(\mathbf k+\mathbf G)\cdot\boldsymbol\tau}$ that
+pins the orbital to the site, a spherical harmonic evaluated on the <em>direction</em> of $\mathbf k+\mathbf G$ (the
+s/p/d character), and the radial table evaluated on its <em>modulus</em> (the localization). Two hard requirements:
+the $\mathbf G$ sphere and cutoff must be <em>identical</em> to the host wavefunctions' (all later overlaps are plain
+G-space dot products), and the $k$ label in the structure factor must be <em>the same label the wavefunction file
+carries</em> &mdash; a $+1/2$ vs $-1/2$ boundary-label mismatch shifts the phase by $e^{i\mathbf G\cdot\boldsymbol\tau}$
+and silently corrupts the matrix elements (the k-label trap of the $r_c$-scan campaign; hence the explicit
+$0\ldots1$ crystal $k$-list rule).</p>
+
+<p><strong>(3) Per-$k$ projection: keep only what is new.</strong>
+$|\chi'_{k,i}\rangle=(1-\sum_{n\le70}|\psi_{kn}\rangle\langle\psi_{kn}|)|\chi_{k,i}\rangle$. The Gram matrix of the
+projected set, $G_{ij}=\langle\chi'_i|\chi'_j\rangle$, <em>is</em> the missing-weight spectrum &mdash; the augmentation
+necessity gauge printed per run (O 0.16&ndash;0.21; SG15-Se 0.003&ndash;0.005), and the same object the &sect;10.4 band
+unfolding measures from raw supercell DFT ($1-\sum_{n\le N_b}|\langle\psi_{kn}|\Psi_m\rangle|^2$): the two audits close
+on one mathematical quantity from opposite directions.</p>
+
+<p><strong>(4) L&ouml;wdin via the Gram eigendecomposition.</strong> $G=V\,{\rm diag}(g)\,V^\dagger$;
+$|\tilde\chi_{k,a}\rangle=\sum_i|\chi'_{k,i}\rangle[Vg^{-1/2}]_{ia}$, directions with $g_a<$ <code>aug_tol</code>
+dropped. The result is orthonormal among itself and, by construction, to all 70 bands at that $k$.</p>
+
+<p><strong>(5) Downstream, they are just extra bands.</strong> Vertex rows
+$\langle\tilde\chi_k|\Delta V|\psi_{k'n'}\rangle$ come from the same EDI pair engine; the diagonal block
+$\langle\tilde\chi_k|H_p|\tilde\chi_k\rangle$ from one <code>h_psi</code> call with the supercell-replica identities
+(&sect;3.4); the cross block $\langle\psi|H_p|\tilde\chi\rangle$ vanishes by the orthogonality of step (3)&ndash;(4), so
+every downstream consumer &mdash; golden diagonalization, static downfold, $T$-matrix, spectral maps &mdash; treats the
+$\tilde\chi$ as ordinary ultra-high rest bands (&sect;8).</p>
+
 <h3>3.2&nbsp;&nbsp;Projection and L&ouml;wdin orthonormalization</h3>
 <p>Only the part of $\chi$ <em>outside</em> the kept bands is new information. Per $k$-point, project and orthonormalize:</p>
 <div class="math">$$|\bar\chi^{\,k}_j\rangle=(1-P_k)\,|\chi^k_j\rangle,\quad P_k=\sum_{n\le N_b}|\psi_{nk}\rangle\langle\psi_{nk}|;\qquad
