@@ -1,0 +1,79 @@
+<!doctype html><html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Spin-orbit coupling: the spinor campaign (MoS2+SOC)</title>
+<link rel="stylesheet" href="../assets/style.css">
+<script>window.MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']],displayMath:[['$$','$$'],['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head><body>
+<nav class="topnav"><div class="inner"><span class="brand">EDI&nbsp;direct&nbsp;T-matrix</span><a href="../index.html">Home</a><a href="results.html">Results</a><a href="augmentation.html">Augmentation</a><a href="mobility.html">Mobility</a><a href="soc.html" style="color:#fff;text-decoration:underline">SOC</a><a href="https://rjguo1208.github.io/claude-sternheimer/">Sternheimer site &rarr;</a></div></nav>
+
+<header><div class="header-inner"><h1>Spin&ndash;Orbit Coupling: the Spinor Campaign</h1>
+<p class="subtitle">The full pipeline &mdash; fully-relativistic pseudopotentials, spinor NSCF, <strong>spinor basis augmentation</strong> ($\chi\otimes\{\uparrow,\downarrow\}$, <code>edi_v7a.x</code>), 22-WF spinor Wannier gauge, downfolded T-matrix &mdash; rerun for MoS$_2$ with SOC at the same frozen geometry and 100&nbsp;Ry as the scalar campaign. Every defect level is Kramers-paired; the V$_S$ in-gap $e$ doublet splits into <strong>two flat spectral lines 51 meV apart</strong>, and three independent routes (spectral function / $H_{\rm eff}$ / supercell DFT) agree on the splitting to 3.4&nbsp;meV.</p>
+<div class="meta"><span class="pill">SG15 FR pseudos</span><span class="pill">noncolin + lspinorb</span><span class="pill">140 spinor bands + 8 spinor $\tilde\chi$</span><span class="pill">edi_v7a.x</span><span class="pill">V$_S$ split: 51.0 / 49.8 / 47.6 meV</span><span class="pill">O$_S$ verdict survives SOC</span></div></div></header>
+
+<main>
+
+<section id="sec-setup"><h2>1&nbsp;&middot;&nbsp;What changes with SOC, and what was validated first</h2>
+<p>With spin&ndash;orbit coupling the Kohn&ndash;Sham states become two-component spinors, $\psi_{nk}=(\psi^{\uparrow}_{nk},\psi^{\downarrow}_{nk})$, the nonlocal pseudopotential acquires the $j$-resolved form $\sum_{ij}|\beta_i\rangle D^{\sigma\sigma'}_{ij}\langle\beta_j|$ (QE's <code>dvan_so</code>, four spin blocks), and every band of the scalar campaign doubles. The EDI direct-mode vertex $M(nk,mk')=\langle\psi_{nk}|\Delta V|\psi_{mk'}\rangle$ inherits all of this; the basis-augmentation machinery (<a href="augmentation.html">A1</a>) needs a genuine extension:</p>
+<ul>
+<li><strong>Spinor augmentation.</strong> The scalar pseudo-atomic orbitals $\chi_{lm}$ of the defect species are promoted to spinors as $\chi\otimes|{\uparrow}\rangle,\ \chi\otimes|{\downarrow}\rangle$ ($n_\chi\to 2n_\chi$: O 2s+2p gives 8 spinor generators per $k$). This spans the same space as the $j$-coupled combinations (a unitary rotation), so nothing is lost by staying scalar-radial. Projection, L&ouml;wdin orthogonalization, and the $\langle\chi|H_p|\chi\rangle$ blocks (kinetic per spin component, local per component, Kleinman&ndash;Bylander via <code>dvan_so</code>) all gained explicit two-component branches &mdash; <code>edi_v7a.x</code>.</li>
+<li><strong>Scalar path untouched (A/B gate).</strong> Running v7a and the scalar-production v6b on identical scalar inputs in the same directory: augmented and unaugmented $M$ binaries <em>bitwise identical</em>, L&ouml;wdin Gram spectra identical to every printed digit, and the $4\times4$ $h^p$ block equal to $10^{-14}$ relative (compiler re-vectorization noise in the rewritten kinetic loop). The spinor code cannot have corrupted any scalar result on this site.</li>
+<li><strong>Pseudopotential repairs.</strong> SG15 FR-1.0 UPFs ship Fortran field-overflow artifacts &mdash; literal <code>index="*"</code> attributes (W: 5, Se: 1, Mo: 1). The indices were rebuilt from the self-labeling block tags. SG15 also ships <em>empty</em> <code>PP_PSWFC</code>: the augmentation orbitals were grafted in from scalar-relativistic donors on the identical 602-point radial mesh (O: the production-validated native-$\chi$ file of the scalar campaign; Se: solved with the radial KS solver, 4S $-1.270$, 4P $-0.483$ Ry). A grafted FR file additionally needs <code>PP_RELWFC</code> entries ($j_\chi=l+\tfrac12$) or QE's reader aborts. <em>Trap for reproducers:</em> solving the radial atom directly on an FR pseudopotential is wrong &mdash; a scalar solver sums the two $j$ channels of the KB projectors instead of $(2j{+}1)$-averaging them (O 2s came out $-1.09$ instead of $-1.77$ Ry).</li>
+</ul>
+</section>
+
+<section id="sec-host"><h2>2&nbsp;&middot;&nbsp;Host validation: textbook SOC numbers, exact Kramers</h2>
+<p>MoS$_2$ host (SG15-FR, 100 Ry, frozen scalar geometry $a=3.18518$&nbsp;&Aring;), 12&times;12 grid, 170 spinor bands:</p>
+<table>
+<tr><th></th><th>SOC campaign</th><th>scalar campaign</th><th>reference</th></tr>
+<tr><td>direct gap at K</td><td><b>1.6041 eV</b></td><td>1.657 eV</td><td>SOC closes the gap by $\sim\Delta_{\rm VB}/2$</td></tr>
+<tr><td>K-valley VB splitting</td><td><b>149.0 meV</b></td><td>&mdash;</td><td>$\approx$148&ndash;150 meV (textbook)</td></tr>
+<tr><td>K-valley CB splitting</td><td><b>3.0 meV</b></td><td>&mdash;</td><td>$\approx$3 meV</td></tr>
+<tr><td>Kramers splitting at the 4 TRIM points</td><td><b>0.0000 meV</b></td><td>&mdash;</td><td>exact (time reversal)</td></tr>
+<tr><td>$E_n(k)=E_n(-k)$ over the full grid</td><td><b>0.0000 meV</b> (138 pairs)</td><td>&mdash;</td><td>exact</td></tr>
+</table>
+<p>The 22-band active manifold (14 valence + 8 conduction spinor bands, 13&ndash;34) is isolated on <em>both</em> sides (6.13 eV below, 0.562 eV above), so the 22-WF spinor Wannier gauge (<code>spinors=.true.</code>, Mo:$d$ + S:$p$, no disentanglement) is a square unitary per $k$ &mdash; the scalar pipeline's structure carries over unchanged. Gauge quality: $\Omega_{\rm tot}=37.52$ &Aring;$^2$ (exactly 2&times; the scalar 18.75), $H(R)$ far-shell decay $5.9\times10^{-6}$, grid-point band reproduction 0.03 meV.</p>
+</section>
+
+<section id="sec-verdicts"><h2>3&nbsp;&middot;&nbsp;Defect-level verdicts against supercell DFT</h2>
+<p>All three defects of the scalar campaign were rerun with SOC end-to-end: 6&times;6 spinor supercells (pristine + defect), potential extraction, EDI vertex on 144 $k$ &times; 140 bands (+8 spinor $\tilde\chi$ for the new-element defects), and the $H_{\rm eff}$ diagonalization (21312-dim) judged against the deep-state-aligned supercell spectra. Every level below is a Kramers pair.</p>
+<table>
+<tr><th>defect</th><th>supercell-DFT truth ($E-E_{\rm VBM}$)</th><th>$H_{\rm eff}$ (144k)</th><th>verdict</th></tr>
+<tr><td>V$_S$</td><td>$a_1$ +0.053; $e$ pair <b>+1.0880 / +1.1356</b> (split <b>47.6 meV</b>)</td><td>$a_1$ +0.186 (slow mode, as in every basis); pair <b>+1.1334 / +1.1832</b> (split <b>49.8 meV</b>)</td><td>splitting reproduced to <b>2.2 meV</b>; absolute +46 meV = the familiar common-mode</td></tr>
+<tr><td>O$_S$</td><td>gap empty; resonance family at CBM+12 meV</td><td>gap <b>clean</b> (spinor $\tilde\chi$ cures the +0.7 eV push-up exactly as in the scalar A1); CBM-edge family at $-26$ meV common-mode, SOC sub-splitting 1.3 meV</td><td>the scalar "conduction-edge resonance, not an in-gap state" verdict <b>survives SOC</b></td></tr>
+<tr><td>Se$_S$</td><td>benign isovalent: gap empty</td><td>gap empty; band edges to $\sim$10 meV</td><td>golden; L&ouml;wdin Gram range $3.4\times10^{-3}$&ndash;$5.6\times10^{-3}$ &mdash; the host basis already covers 99.5% of the Se orbitals (cf. O$_S$: 0.16&ndash;0.21), an independent echo of the augmentation-necessity measurement</td></tr>
+</table>
+<p>Data quality gates on every vertex binary: $\max|M-M^\dagger|=0$ bitwise, diagonal $\mathrm{Im}\,M_{ii}\sim10^{-15}$ eV, supercell commensurability $9.9\times10^{-5}$ bohr.</p>
+</section>
+
+<section id="sec-spectral"><h2>4&nbsp;&middot;&nbsp;Spectral functions: the SOC-split vacancy doublet</h2>
+<p>$A(k,\omega)$ along $\Gamma$&ndash;K&ndash;M&ndash;$\Gamma$ from the downfolded active-space vertex (static fold at $\omega_0$, full-order rest-space inverse including the $\tilde\chi$ sector), Wannier-interpolated to the path and resummed with the exterior T-matrix relation in the Dyson form ($\Sigma=T$, $A\ge0$ structurally). Same machinery as the scalar <a href="augmentation.html">&sect;9</a> maps, now with $n_w=22$ spinor WFs.</p>
+
+<figure><img src="../assets/soc_vs_gap.png" alt="V_S in-gap zoom: SOC-split e pair as two flat lines">
+<figcaption><strong>The money shot &mdash; V$_S$ in-gap zoom.</strong> The scalar campaign's single flat defect line at +1.21 eV splits under SOC into <strong>two flat lines at +1.1550 and +1.2060 eV: splitting 51.0 meV</strong>, in 3.4 meV agreement with $H_{\rm eff}$ (49.8) and supercell DFT (47.6). Flatness across the path: 1.4 / 1.9 meV rms &mdash; genuine bound states. The gentle approach of the two lines near K is hybridization with the K-valley conduction tail entering from above. ($\eta=8$ meV, $\Delta\omega=1$ meV, K-segment densified 2&times;; $A\ge0$ pointwise, negative fraction 0.0000.)</figcaption></figure>
+
+<figure><img src="../assets/soc_vs_full.png" alt="V_S full-path spectral map with SOC">
+<figcaption><strong>V$_S$ full map.</strong> Host bands carry their SOC splittings everywhere (the 149 meV VB splitting is resolved at K); the split $e$ pair crosses the entire zone as two flat lines at $\sim$1.16/1.21 eV, and the fainter $a_1$ line sits near +0.27 eV with the same $k$-intensity modulation seen in the scalar campaign. ($\eta=20$ meV, Dyson form.)</figcaption></figure>
+
+<figure><img src="../assets/soc_os_cbm.png" alt="O_S CBM-edge zoom with SOC">
+<figcaption><strong>O$_S$ CBM-edge zoom</strong> ($\omega_0$ pinned at the CBM). The K-valley conduction parabola with its 3 meV SOC splitting, and the O resonance appearing as sub-CBM brightening concentrated around K ($H_{\rm eff}$ counterpart: the CBM-edge family at $-15$ meV with 1.3 meV SOC sub-splitting; eigenvector fingerprint IPR$_k\approx0.5$ = K-valley-concentrated, i.e. a $k$-localized, real-space-extended resonance). The gap below stays clean &mdash; the third independent confirmation of the resonance verdict.</figcaption></figure>
+
+<p>Quality gates common to all three maps: $H(R)$ far-shell decay $1.3\times10^{-4}$ (the scalar-era gate value), grid-point band reproduction $1.5\times10^{-9}$ eV, $A(k,\omega)\ge0$ everywhere.</p>
+</section>
+
+<section id="sec-pitfalls"><h2>5&nbsp;&middot;&nbsp;Pitfalls box (what actually bit, in order)</h2>
+<ul>
+<li><strong><code>index="*"</code> in SG15 FR UPFs</strong> &mdash; Fortran I1 overflow in the shipped files; QE tolerates it with a warning, but $\beta$-projector indexing pairs with <code>dvan_so</code>, so repair (from the block-tag numbers), don't trust.</li>
+<li><strong>Radial solves on FR pseudopotentials double-count $j$ channels</strong> &mdash; graft $\chi$ from SR donors on the identical mesh.</li>
+<li><strong>Grafted FR files need <code>PP_RELWFC</code></strong> &mdash; QE's reader requires one entry per wavefunction when <code>has_so</code>; validated by the noncolin atomic-wfc counting (12 = O 6 + S/Se 6).</li>
+<li><strong>No $\Gamma$-trick for spinors</strong> &mdash; noncolin supercells must use the complex $\Gamma$ point.</li>
+<li><strong>A leftover scalar-only guard</strong> (<code>aug_orbitals: collinear case only</code>) survived the v7 patch set and killed the first spinor-augmentation runs; the A/B regression was scalar by construction and could never have caught it. Removed in v7a.</li>
+<li><strong>Spinor EDI memory</strong> &mdash; the scalar single-node pool topology OOMs at $n_{\rm pol}=2$; 4 nodes &times; 36 single-rank pools is the working layout. Runtime $\sim$71 min (MoS$_2$, 148 spinor states) per defect.</li>
+<li><strong>$k$-fold boundary fuzz</strong> &mdash; crystal-coordinate reconstruction through a truncated cell matrix can land at $0.99999\ldots$; every $k$-matching key needs the double-mod fold <code>round(x % 1, 5) % 1</code>.</li>
+</ul>
+<p class="small">Companion arm: the same spinor pipeline is running for WSe$_2$ (O$_{\rm Se}$ / V$_{\rm Se}$ / S$_{\rm Se}$, 75 Ry). Status: S$_{\rm Se}$ golden; V$_{\rm Se}$ e-pair splitting 148 meV vs supercell truth 163 meV after a 280-band boost (Ritz-descent trend closing); O$_{\rm Se}$ requires a harder basis (100 Ry arm pending). A dedicated page will follow when that campaign closes.</p>
+</section>
+
+</main>
+<footer><div class="inner small">EDI direct T-matrix site &mdash; SOC campaign page. Generated from the MoS$_2$+SOC verdict set (July 2026).</div></footer>
+</body></html>
