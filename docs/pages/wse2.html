@@ -1,0 +1,71 @@
+<!doctype html><html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>WSe2+SOC: giant splitting, edge resonances, and a basis lesson</title>
+<link rel="stylesheet" href="../assets/style.css">
+<script>window.MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']],displayMath:[['$$','$$'],['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head><body>
+<nav class="topnav"><div class="inner"><span class="brand">EDI&nbsp;direct&nbsp;T-matrix</span><a href="../index.html">Home</a><a href="results.html">Results</a><a href="augmentation.html">Augmentation</a><a href="mobility.html">Mobility</a><a href="soc.html">SOC</a><a href="soc_mobility.html">SOC&nbsp;mobility</a><a href="wse2.html" style="color:#fff;text-decoration:underline">WSe$_2$</a><a href="https://rjguo1208.github.io/claude-sternheimer/">Sternheimer site &rarr;</a></div></nav>
+
+<header><div class="header-inner"><h1>WSe$_2$ with Spin&ndash;Orbit Coupling</h1>
+<p class="subtitle">The second material of the spinor campaign: O$_{\rm Se}$ / V$_{\rm Se}$ / S$_{\rm Se}$ in monolayer WSe$_2$ (SG15 fully-relativistic, 75 Ry, all pipeline stages of the <a href="soc.html">MoS$_2$+SOC page</a>). Headlines: a <strong>466 meV valence splitting</strong> (3.1&times; MoS$_2$), a vacancy pair whose SOC splitting converges onto the supercell truth (73 &rarr; 148 &rarr; 163 meV) as the basis grows, mobilities where <strong>edge resonances beat valley locking</strong> (V$_{\rm Se}$ holes at 70 cm$^2$/Vs despite the giant splitting; S$_{\rm Se}$ h/e asymmetry &times;33), and an honest boundary: at 75 Ry the O$_{\rm Se}$ deep levels stay basis-limited.</p>
+<div class="meta"><span class="pill">SG15 FR, 75 Ry</span><span class="pill">W 4f semicore in valence</span><span class="pill">$\Delta_{\rm VB}$(K) = 465.6 meV</span><span class="pill">V$_{\rm Se}$ split &rarr; 163 meV</span><span class="pill">$\mu$: locking vs resonances</span><span class="pill">no scalar arm &mdash; cross-material vs MoS$_2$</span></div></div></header>
+
+<main>
+
+<section id="sec-host"><h2>1&nbsp;&middot;&nbsp;Host: textbook giant SOC, and two infrastructure traps</h2>
+<p>Relaxed geometry $a=3.320$ &Aring;, $z_{\rm Se}=\pm0.070c$ (75 Ry, SG15-SR); host cell carries the 4-species ghost table (W, Se, O, S &mdash; all FR) so the defect pseudopotential tables are loaded for EDI. NSCF 144 $k$ &times; 180 spinor bands:</p>
+<table>
+<tr><td>direct gap at K</td><td><b>1.2724 eV</b></td><td>Kramers at TRIMs / TRS over the grid</td><td><b>0.0000 meV</b> exact</td></tr>
+<tr><td>K-valley VB splitting</td><td><b>465.6 meV</b> (3.1&times; MoS$_2$)</td><td>K-valley CB splitting</td><td><b>38.4 meV</b> ($\approx1.5\,k_BT$ at 300 K)</td></tr>
+<tr><td>Q valley above K</td><td><b>+49 meV</b> (thermally reachable)</td><td>band layout</td><td>W5s / W5p / W4f (2.2 eV $j$-split) / Se4s / <b>VB 27&ndash;40</b> / <b>CB 41&ndash;48</b></td></tr>
+</table>
+<p>The 22-band active window (27&ndash;48) is <em>not</em> isolated on the conduction side (unlike MoS$_2$), but the square 22-WF Wannier gauge (user's choice, MoS$_2$-consistent) works cleanly: $\Omega_D=0.12$ &Aring;$^2$ only, $H(R)$ decay $6.9\times10^{-5}$, grid reproduction 0.04 meV &mdash; the band-crossing ringing lives outside the $\pm$0.45 eV observation windows. Two traps worth recording: <strong>(i)</strong> SG15 FR-1.0 UPFs ship <code>index="*"</code> Fortran overflows (W&times;5, Se&times;1 &mdash; repaired from the block tags); <strong>(ii)</strong> a truncated cell vector ($a_{2y}=2.8752$ vs the exact $\sqrt3 a/2=2.87520434$) splits wannier90's coordination shells by $2\times10^{-6}$ and kills the automatic b-vector search &mdash; keep the QE-consistent cell and set <code>kmesh_tol = 1e-4</code>.</p>
+</section>
+
+<section id="sec-verdicts"><h2>2&nbsp;&middot;&nbsp;Defect verdicts: golden, converging, and basis-limited</h2>
+<p>Same machinery as MoS$_2$+SOC (spinor supercells &rarr; extraction &rarr; <code>edi_v7a.x</code> vertex, band_ed 1&ndash;162 &rarr; $H_{\rm eff}$ vs deep-state-aligned supercell truth). All levels Kramers-paired; vertex Hermiticity bitwise zero.</p>
+<table>
+<tr><th>defect</th><th>supercell truth ($E-E_{\rm VBM}$, eV)</th><th>$H_{\rm eff}$ verdict</th></tr>
+<tr><td>S$_{\rm Se}$</td><td>gap empty; CB-edge states at CBM$+3$ meV</td><td><b>golden</b>: 0 in-gap (= truth), edges to 4 meV</td></tr>
+<tr><td>V$_{\rm Se}$</td><td>$a_1$ at $-0.011$ (pinned at the VBM); $e$ pair <b>0.772 / 0.935</b>, SOC splitting <b>163 meV</b> (3.4&times; the V$_S$@MoS$_2$ 47.6)</td><td>162b: pair 0.945/1.018, split 73; <b>280-band boost: 0.813/0.961, split 148 &mdash; monotonic Ritz descent with the splitting opening toward the truth</b>; residuals +41/+26 meV. A third shallow pair (1.14, descending) has no 6&times;6 counterpart &rarr; concentration-sensitive bound state (hybridized into the CB at 6&times;6, bound in the dilute limit).</td></tr>
+<tr><td>O$_{\rm Se}$</td><td>gap essentially empty; <b>shallow trap pair at CBM$-32$/$-37$ meV</b> (the O family flips from MoS$_2$'s above-edge resonance to an in-gap trap)</td><td><b>basis-limited at 75 Ry</b>: the CB-derived localized trio is still $\sim$300 meV from its truth homes at 280 bands and descending too slowly for band-boosting to pay &mdash; the compact O orbitals + W-$d$ local ring need a harder basis (100 Ry arm pending). Edge/transport-window physics is unaffected (see &sect;4 gates).</td></tr>
+</table>
+<p>The V$_{\rm Se}$ diagnosis chain is a template: eigenvector fingerprints (IPR$_k\sim1/144$ = real-space localized, CB-derived, $\tilde\chi$-weight $\sim$0.002), bitwise Hermiticity, then the <strong>band-count scan on the same vertex binary</strong> (zero new EDI) separating variational descent from data corruption &mdash; monotonic in both materials, decelerating only where converged.</p>
+</section>
+
+<section id="sec-spectral"><h2>3&nbsp;&middot;&nbsp;Spectral functions</h2>
+<figure><img src="../assets/wse2_vsefull.png" alt="V_Se full-path spectral map">
+<figcaption><strong>V$_{\rm Se}$ full map.</strong> The 466 meV valence splitting resolved at K; the K/Q conduction competition (+49 meV) visible on the $\Gamma$&ndash;K arm; the in-gap flat trio near 1.00/1.05/1.22; and the $a_1$ resonance smearing the very apex of the valence band at K &mdash; the spectral face of the hole-mobility collapse in &sect;4. ($\eta=20$ meV, $\Delta\omega=4$ meV, Dyson form, $A\ge0$.)</figcaption></figure>
+<figure><img src="../assets/wse2_vsegap.png" alt="V_Se in-gap zoom">
+<figcaption><strong>V$_{\rm Se}$ in-gap zoom</strong> ($\eta=5$ meV, $\Delta\omega=0.25$ meV, 721 path points). Two flat bound lines plus the shallow third line at 1.238. <em>Positions carry the 162-band + static-VBM-pin rendering</em> (pair at 1.010/1.041 here); the converged level physics is the &sect;2 story (280-band $H_{\rm eff}$ 0.813/0.961, splitting 148 &rarr; truth 163 meV) &mdash; quote the structure from this map and the numbers from the verdict table.</figcaption></figure>
+<figure><img src="../assets/wse2_ssecbm.png" alt="S_Se CBM-edge zoom">
+<figcaption><strong>S$_{\rm Se}$ CBM-edge zoom.</strong> The 38.4 meV SOC-split conduction parabola fully resolved (impossible at MoS$_2$'s 3 meV), the CB-edge state brightening right at CBM$+3$ meV, and the in-band resonance ladder near 1.40/1.55 eV &mdash; the electron scatterers that hold $\mu_e$ at 167 despite a benign isovalent defect.</figcaption></figure>
+<figure><img src="../assets/wse2_osecbm.png" alt="O_Se CBM-edge zoom">
+<figcaption><strong>O$_{\rm Se}$ CBM-edge zoom.</strong> Sub-CBM tail glow at K &mdash; the spectral weight of the CBM$-35$ meV shallow trap pair &mdash; plus soft in-band resonances; visibly gentler than S$_{\rm Se}$, matching $\mu_e$ 276 vs 167.</figcaption></figure>
+</section>
+
+<section id="sec-mob"><h2>4&nbsp;&middot;&nbsp;Mobility: locking sets baselines, edge resonances set exceptions</h2>
+<p>Production tier as established on the <a href="soc_mobility.html">SOC mobility page</a>: per-state assembly on the $\eta\to0$ continuum Koster&ndash;Slater host, $N_W=192$, IBTE, $g_s{=}1$, $c=1/36$, $n=10^{12}$ cm$^{-2}$; the independent Kubo K1 tier as the cross-gate.</p>
+<table>
+<tr><th>defect</th><th>$\mu_h$ (cm$^2$/Vs)</th><th>$\mu_e$</th><th>K1 gate h / e</th><th>reading</th></tr>
+<tr><td>V$_{\rm Se}$</td><td><b>69.5</b></td><td><b>175</b></td><td>2.1% / 13.8%$^{*}$</td><td>the $a_1$ level pinned <em>at</em> the VBM is a resonant hole scatterer &mdash; it defeats the 466 meV locking. Contrast V$_S$@MoS$_2$: $a_1$ at $+0.053$ (off the edge) &rarr; $\mu_h=926$. <strong>Same defect class, 13&times; apart, decided by one level's 60 meV placement.</strong></td></tr>
+<tr><td>O$_{\rm Se}$</td><td><b>732</b></td><td><b>276</b></td><td>1.0% / 6.3%</td><td>moderate on both sides; the in-gap trap pair scatters electrons only through off-shell tails.</td></tr>
+<tr><td>S$_{\rm Se}$</td><td><b>5589</b>$^{\dagger}$</td><td><b>167</b></td><td>0.7% / 6.5%</td><td><b>h/e asymmetry &times;33</b>: locked, resonance-free holes vs a perfect CBM$+3$ meV electron edge resonance.</td></tr>
+</table>
+<p class="small">$^{*}$V$_{\rm Se}$/e: the largest gate residual &mdash; the 75-Ry-limited cell with 62% gap-side spectral weight; quote with that caveat. $^{\dagger}$S$_{\rm Se}$/h drifts $+1$%/rung along the $\eta$ ladder (slight lower bound). All other channels $N_W$-converged to 1&ndash;2%; under-resolution audits clean except S$_{\rm Se}$/h (both engines $\eta$-consistent at $\sim$5500&ndash;5900).</p>
+<p>Cross-material moral (WSe$_2$ has no scalar arm; the comparison is against MoS$_2$+SOC): tripling the valence splitting does <em>not</em> triple hole mobility &mdash; <strong>defect-level placement relative to the band edges dominates over phase-space topology</strong>. Valley locking is the tide; edge resonances are the rocks.</p>
+</section>
+
+<section id="sec-pitfalls"><h2>5&nbsp;&middot;&nbsp;WSe$_2$-specific pitfalls</h2>
+<ul>
+<li><strong>W 4f in valence</strong> (SG15 FR $z=28$): 14 semicore $f$ states with a 2.2 eV $j$-splitting sit in the band stack; NSCF band counts and the active-window indices must account for them (active = 27&ndash;48).</li>
+<li><strong>75 Ry is a vacancy-friendly but O-hostile basis</strong>: V$_{\rm Se}$ levels converge with bands (splitting opens onto truth); compact O orbitals do not &mdash; the harder-basis law from the scalar PAW study, re-encountered.</li>
+<li><strong>Gauge provenance across NSCF reruns</strong>: the 280-band arm lives in its own outdir; its vertex binaries must never be mixed with the 180-band arm's <code>u.mat</code> &mdash; every Kramers pair carries an arbitrary 2&times;2 gauge rotation between runs.</li>
+<li><strong>kmesh_tol for truncated cells</strong>, <code>index="*"</code> UPF repair, no $\Gamma$-trick for spinors, and the SLURM-grep/pipefail trap &mdash; inherited from the campaign log (&sect;1, and the <a href="soc.html">SOC page</a> pitfalls box).</li>
+</ul>
+</section>
+
+</main>
+<footer><div class="inner small">EDI direct T-matrix site &mdash; WSe$_2$+SOC campaign page. July 2026.</div></footer>
+</body></html>
