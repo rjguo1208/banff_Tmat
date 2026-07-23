@@ -43,15 +43,36 @@
 <p>The V$_{\rm Se}$ diagnosis chain is a template: eigenvector fingerprints (IPR$_k\sim1/144$ = real-space localized, CB-derived, $\tilde\chi$-weight $\sim$0.002), bitwise Hermiticity, then the <strong>band-count scan on the same vertex binary</strong> (zero new EDI) separating variational descent from data corruption &mdash; monotonic in both materials, decelerating only where converged.</p>
 </section>
 
-<section id="sec-spectral"><h2>3&nbsp;&middot;&nbsp;Spectral functions</h2>
-<figure><img src="../assets/wse2_vsefull.png" alt="V_Se full-path spectral map">
-<figcaption><strong>V$_{\rm Se}$ full map.</strong> The 466 meV valence splitting resolved at K; the K/Q conduction competition (+49 meV) visible on the $\Gamma$&ndash;K arm; the in-gap flat trio near 1.00/1.05/1.22; and the $a_1$ resonance smearing the very apex of the valence band at K &mdash; the spectral face of the hole-mobility collapse in &sect;4. ($\eta=20$ meV, $\Delta\omega=4$ meV, Dyson form, $A\ge0$.)</figcaption></figure>
+<section id="sec-spectral"><h2>3&nbsp;&middot;&nbsp;Spectral functions: the full matrix</h2>
+<p>All three defects mapped three ways: the full panorama ($-1\ldots2$ eV, $\eta=20$ meV, $\Delta\omega=4$ meV) and scalar-grade zooms at both band edges ($\eta=5$ meV, $\Delta\omega=0.25$ meV, 721 path points, $\omega_0$ pinned to the carrier-side edge). Positions of the deep V$_{\rm Se}$/O$_{\rm Se}$ in-gap lines carry the 162-band + static-pin rendering (quote structure from the maps, numbers from the &sect;2 verdicts); everything at the band edges is quantitative.</p>
+
+<h3 id="sec-fullmaps">3.1&nbsp;&nbsp;Panoramas</h3>
+<figure><img src="../assets/wse2_vsefull_v2.png" alt="V_Se full-path spectral map">
+<figcaption><strong>V$_{\rm Se}$.</strong> The 466 meV valence splitting resolved at K; the in-gap flat trio near 1.00/1.05/1.22; and the $a_1$ resonance smearing the valence apex at K &mdash; the spectral face of $\mu_h=70$.</figcaption></figure>
+<figure><img src="../assets/wse2_osefull.png" alt="O_Se full-path spectral map">
+<figcaption><strong>O$_{\rm Se}$.</strong> The CB-derived localized trio as three flat lines (0.59/0.85/1.02 in this rendering; 75 Ry basis caveat of &sect;2) over an otherwise clean gap.</figcaption></figure>
+<figure><img src="../assets/wse2_ssefull.png" alt="S_Se full-path spectral map">
+<figcaption><strong>S$_{\rm Se}$.</strong> Gap entirely clean; only a faint resonance band hugging the CBM from above &mdash; the panorama version of the golden verdict.</figcaption></figure>
+
+<h3 id="sec-ingap">3.2&nbsp;&nbsp;V$_{\rm Se}$ in-gap zoom</h3>
 <figure><img src="../assets/wse2_vsegap.png" alt="V_Se in-gap zoom">
-<figcaption><strong>V$_{\rm Se}$ in-gap zoom</strong> ($\eta=5$ meV, $\Delta\omega=0.25$ meV, 721 path points). Two flat bound lines plus the shallow third line at 1.238. <em>Positions carry the 162-band + static-VBM-pin rendering</em> (pair at 1.010/1.041 here); the converged level physics is the &sect;2 story (280-band $H_{\rm eff}$ 0.813/0.961, splitting 148 &rarr; truth 163 meV) &mdash; quote the structure from this map and the numbers from the verdict table.</figcaption></figure>
+<figcaption>Two flat bound lines plus the shallow third line at 1.238. <em>Positions carry the 162-band + static-VBM-pin rendering</em> (pair at 1.010/1.041 here); the converged level physics is the &sect;2 story (280-band $H_{\rm eff}$ 0.813/0.961, splitting 148 &rarr; truth 163 meV; the 6&times;6 band structure of &sect;2.1 shows the pair at 0.778/0.943 with 164 meV splitting).</figcaption></figure>
+
+<h3 id="sec-vbmzooms">3.3&nbsp;&nbsp;VBM-edge triptych: the hole-mobility ledger</h3>
+<figure><img src="../assets/wse2_vsevbm.png" alt="V_Se VBM zoom">
+<figcaption><strong>V$_{\rm Se}$ &mdash; the $a_1$ pinned at the edge.</strong> A flat resonance line threads <em>exactly along the VBM</em> (truth $-0.011$ eV) and the K apex glows where the quasiparticle band meets it; deeper resonances at $-0.18/-0.24/-0.28/-0.39$ eV cut avoided crossings into the band flanks. This is the resonant hole scatterer that defeats the 466 meV valley locking ($\mu_h=70$) &mdash; contrast V$_S$@MoS$_2$, whose $a_1$ sits 0.25 eV off the edge ($\mu_h=926$).</figcaption></figure>
+<figure><img src="../assets/wse2_osevbm.png" alt="O_Se VBM zoom">
+<figcaption><strong>O$_{\rm Se}$.</strong> Only mild structure at the apex ($-0.010$ eV, the occupied edge family) &mdash; no resonant line through it: holes pass at 732.</figcaption></figure>
+<figure><img src="../assets/wse2_ssevbm.png" alt="S_Se VBM zoom">
+<figcaption><strong>S$_{\rm Se}$.</strong> Clean split apex on the host guides &mdash; the locked, resonance-free hole channel ($\mu_h=5589$).</figcaption></figure>
+
+<h3 id="sec-cbmzooms">3.4&nbsp;&nbsp;CBM-edge triptych</h3>
+<figure><img src="../assets/wse2_vsecbm.png" alt="V_Se CBM zoom">
+<figcaption><strong>V$_{\rm Se}$.</strong> The third (concentration-sensitive) pair appears at 1.208 = CBM$-66$ meV in this rendering, with the in-band ladder at 1.50/1.53/1.62/1.65 eV &mdash; cross-checked by the &sect;2.1 band structure (marginal pair) and the $H_{\rm eff}$ scan.</figcaption></figure>
 <figure><img src="../assets/wse2_ssecbm.png" alt="S_Se CBM-edge zoom">
-<figcaption><strong>S$_{\rm Se}$ CBM-edge zoom.</strong> The 38.4 meV SOC-split conduction parabola fully resolved (impossible at MoS$_2$'s 3 meV), the CB-edge state brightening right at CBM$+3$ meV, and the in-band resonance ladder near 1.40/1.55 eV &mdash; the electron scatterers that hold $\mu_e$ at 167 despite a benign isovalent defect.</figcaption></figure>
+<figcaption><strong>S$_{\rm Se}$.</strong> The 38.4 meV SOC-split conduction parabola fully resolved, the CB-edge state brightening right at CBM$+3$ meV, and the in-band resonance ladder near 1.40/1.55 eV &mdash; the electron scatterers that hold $\mu_e$ at 167 despite a benign isovalent defect.</figcaption></figure>
 <figure><img src="../assets/wse2_osecbm.png" alt="O_Se CBM-edge zoom">
-<figcaption><strong>O$_{\rm Se}$ CBM-edge zoom.</strong> Sub-CBM tail glow at K &mdash; the spectral weight of the CBM$-35$ meV shallow trap pair &mdash; plus soft in-band resonances; visibly gentler than S$_{\rm Se}$, matching $\mu_e$ 276 vs 167.</figcaption></figure>
+<figcaption><strong>O$_{\rm Se}$.</strong> Sub-CBM tail glow at K &mdash; the spectral weight of the CBM$-35$ meV shallow trap pair &mdash; plus soft in-band resonances; visibly gentler than S$_{\rm Se}$, matching $\mu_e$ 276 vs 167.</figcaption></figure>
 </section>
 
 <section id="sec-mob"><h2>4&nbsp;&middot;&nbsp;Mobility: locking sets baselines, edge resonances set exceptions</h2>
