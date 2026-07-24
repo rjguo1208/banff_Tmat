@@ -21,7 +21,7 @@
 
 <section id="sec-recon"><h2>2&nbsp;&middot;&nbsp;Reconstruction (no new calculation)</h2>
 <p>The $\Sigma$-field is stored per <em>state</em> (each grid $k$ &times; band within the transport window), not per $(k,\omega)$-path. To place it on a path, the deterministic $300^2$ state grid of the mobility run is rebuilt in the same Wannier gauge and the same energy window &mdash; the reconstructed state energies match the stored ones to $10^{-4}$ meV, a bit-level check that the state$\to(k,\mathrm{band})$ map is exact. The carrier-band states are then barycentrically interpolated (Delaunay, built once, applied to all 2701 frequency slices) onto a dense K-centred path. Everything runs on the login node &mdash; it is interpolation, not a new T-solve.</p>
-<figure><img src="../assets/sig2a_skw_os_v2.png" alt="O_S Sigma(k,omega) field" style="width:100%;max-width:1040px">
+<figure><img src="../assets/sig2a_skw_os_v3.png" alt="O_S Sigma(k,omega) field" style="width:100%;max-width:1040px">
 <figcaption><strong>The reconstructed field, O$_S$.</strong> $-\mathrm{Im}\,\Sigma(k,\omega)$ over the K-zoom path, VBM side (left) and CBM side (right), bare band in cyan. The $k$-flat resonance ridge at $\omega\approx1.81$ eV (conduction) and the edge-hugging resonance (valence) are the frequency-resolved parents of the on-shell hotspots of the <a href="mobility.html#sec-qpzoom">mobility page &sect;E.5.1</a>.</figcaption></figure>
 </section>
 
