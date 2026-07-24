@@ -186,6 +186,18 @@ on first flight: the $V_c$ eigenbasis rotation used $U^{T}$ instead of $U^\dagge
 ${\rm Im}\,\Sigma\le0$ cannot detect basis-rotation errors. Only a pin-to-reference A/B can; it is now a permanent fixture of the pipeline. The ragged first version of this
 figure then led one level deeper &mdash; to a genuine gauge-provenance bug in the V$_{\rm S}$ data itself (&sect;E.6).</p>
 
+<h3 id="sec-qpzoom">E.5.1&nbsp;&nbsp;The quasiparticle band, drawn: $\varepsilon+\mathrm{Re}\,\Sigma$ with the rate as color</h3>
+<p>A three-step visual built from the $\eta=2$ meV continuum zone maps of the sections above (on-shell $\Sigma$ interpolated from the 240$^2$ grid onto a dense K-centred path; bare bands Wannier-interpolated): <strong>(1)</strong> the bare conduction band at the K valley, <strong>(2)</strong> the quasiparticle band $\varepsilon_{nk}+\mathrm{Re}\,\Sigma_n(k)$ against it, <strong>(3)</strong> the same quasiparticle band colored by the on-shell scattering rate $|\mathrm{Im}\,\Sigma_n(k)|$.</p>
+<figure><img src="../assets/qpz_os_bare.png" alt="O_S bare CBM zoom" style="width:100%;max-width:760px">
+<figcaption><strong>(1) O$_S$, bare.</strong> The K-valley conduction band (CBM = 1.657 eV).</figcaption></figure>
+<figure><img src="../assets/qpz_os_qp.png" alt="O_S QP band" style="width:100%;max-width:760px">
+<figcaption><strong>(2) O$_S$, quasiparticle.</strong> The whole valley is pulled down $\sim$60 meV (the O$_S$ family sits above and pushes conduction states down &mdash; the zone-map's negative Re$\Sigma$, path-resolved; the QP minimum lands <em>below</em> the bare CBM line), and S-shaped resonance kinks appear on both flanks near 1.76&ndash;1.93 eV where the band traverses the in-band resonance.</figcaption></figure>
+<figure><img src="../assets/qpz_os_qpim.png" alt="O_S QP band colored by ImSigma" style="width:100%;max-width:860px">
+<figcaption><strong>(3) O$_S$, rate-colored.</strong> The kink region is exactly the scattering hotspot: $|\mathrm{Im}\,\Sigma|$ darkens to $\sim$65 meV where the quasiparticle band crosses the resonance, and relaxes to $\sim$20 meV at the valley bottom.</figcaption></figure>
+<figure><img src="../assets/qpz_sv_qpim.png" alt="V_S QP band colored" style="width:100%;max-width:860px">
+<figcaption><strong>V$_S$ companion.</strong> Same rendering: rates stay below $\sim$9 meV &mdash; a mild, nearly featureless valley (the V$_S$ electron channel is resonance-free at this energy).</figcaption></figure>
+<figure><img src="../assets/qpz_ses_qpim.png" alt="Se_S QP band colored" style="width:100%;max-width:860px">
+<figcaption><strong>Se$_S$ companion.</strong> Rates $\le$7 meV &mdash; the gentlest of the three, consistent with its top-of-table electron mobility.</figcaption></figure>
 <h3>E.6&nbsp;&nbsp;Errata: the V$_{\rm S}$ gauge-provenance bug &mdash; found, fixed, and triple-validated</h3>
 <p><strong>What was wrong.</strong> The V$_{\rm S}$ vertex (edi_direct_v4) had been computed against the wavefunctions of an
 <em>earlier</em> NSCF run than the one the Wannier $U(k)$ matrices were generated from. Two independent diagonalizations give
