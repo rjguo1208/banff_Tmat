@@ -37,7 +37,15 @@
 <p>Bottom line: the self-energy field and the spectral function are mutually derivable, and the round trip is clean once the Dyson-vs-bubble pole convention is accounted for. The 70 meV discrepancy is not a failure &mdash; it is the same $\mathrm{Re}\,\Sigma$ physics seen from the other side.</p>
 </section>
 
-<section id="sec-scripts"><h2>4&nbsp;&middot;&nbsp;Reproducing</h2>
+<section id="sec-kk"><h2>4&nbsp;&middot;&nbsp;The reverse map: recovering $\Sigma$ from the <em>existing</em> spectral function</h2>
+<p>&sect;3 built $A$ from a $\Sigma$-field. The inverse is also possible &mdash; and with nothing but the already-published spectral map, no new calculation. The imaginary part of the Green function is handed over directly, $\mathrm{Im}\,G=-\pi A$; its real part is fixed by causality (Kramers&ndash;Kronig / Hilbert transform), $\mathrm{Re}\,G(\omega)=\mathcal P\!\int\! \frac{A(\omega')}{\omega-\omega'}\,d\omega'$; and the self-energy follows from Dyson inverted:</p>
+<div class="math">$$\Sigma_n(k,\omega)=\omega-\varepsilon_{nk}-\frac{1}{G_n(k,\omega)},\qquad G=\mathrm{Re}\,G+i\,\mathrm{Im}\,G.$$</div>
+<p>This $\Sigma$ is <strong>self-consistent by construction</strong>: fed back through $A=-\frac1\pi\mathrm{Im}\,[\omega-\varepsilon-\Sigma]^{-1}$ it returns the input spectral function exactly. The round trip closes to <strong>$1.4\times10^{-12}$ states/eV</strong> for O$_S$ (and $1.7\times10^{-12}$ for V$_S$) &mdash; machine precision.</p>
+<figure><img src="../assets/sig2a_kk_os.png" alt="Sigma from KK inversion of A" style="width:100%;max-width:1180px">
+<figcaption><strong>O$_S$ CBM zoom, self-energy by Kramers&ndash;Kronig inversion.</strong> Left: $-\mathrm{Im}\,\Sigma(k,\omega)$ recovered from the published $A$. Middle: the published $A$ (the input). Right: $A$ rebuilt from the recovered $\Sigma$ &mdash; identical to the input to $10^{-12}$. The self-energy map is the photographic negative of the spectral function: the bright quasiparticle ridge of $A$ is the dark "anti-ridge" of $\Sigma$ (where $G$ has its pole and $\mathrm{Im}\,\Sigma$ is comparatively small), while $-\mathrm{Im}\,\Sigma$ diverges toward $\sim10^4$ meV off the band where $A\to0$ and $1/G$ blows up &mdash; the expected behavior of a single-band inversion.</figcaption></figure>
+<p>Caveat, stated plainly: this treats the multi-band trace $A$ as a single carrier band (exact where that band dominates &mdash; the zoom window &mdash; approximate deeper) and the Kramers&ndash;Kronig principal value is evaluated on the finite stored frequency window. Within those bounds the recovered $\Sigma$ reproduces the spectral function to machine precision. It is the direct answer to &ldquo;can existing data give a self-consistent self-energy?&rdquo; &mdash; yes, by causality alone.</p>
+</section>
+<section id="sec-scripts"><h2>5&nbsp;&middot;&nbsp;Reproducing</h2>
 <p class="small">Field reconstruction: <code>post/sigma_kw_path.py</code> (grid rebuild + barycentric interpolation, with the $10^{-4}$ meV state-energy gate). Spectral round-trip and A/B overlay: inline Dyson from the reconstructed <code>skw_*.npz</code> against the stored <code>spectral_path.npz</code>. Data: the Kubo $\Sigma$-fields <code>sigfield_{OSSG15,SVSG15,SESSG15}_{e,h}.npy</code> from the <a href="mobility.html">mobility campaign</a>.</p>
 </section>
 
