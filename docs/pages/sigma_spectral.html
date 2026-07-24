@@ -1,0 +1,46 @@
+<!doctype html><html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Self-energy ↔ spectral function: the Dyson consistency loop</title>
+<link rel="stylesheet" href="../assets/style.css">
+<script>window.MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']],displayMath:[['$$','$$'],['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head><body>
+<nav class="topnav"><div class="inner"><span class="brand">EDI&nbsp;direct&nbsp;T-matrix</span><a href="../index.html">Home</a><a href="results.html">Results</a><a href="augmentation.html">Augmentation</a><a href="mobility.html">Mobility</a><a href="soc.html">SOC</a><a href="soc_mobility.html">SOC&nbsp;mobility</a><a href="wse2.html">WSe$_2$</a><a href="sigma_spectral.html" style="color:#fff;text-decoration:underline">Σ&harr;A</a><a href="https://rjguo1208.github.io/claude-sternheimer/">Sternheimer site &rarr;</a></div></nav>
+
+<header><div class="header-inner"><h1>Self-Energy $\leftrightarrow$ Spectral Function</h1>
+<p class="subtitle">The energy-dependent self-energy $\Sigma_n(k,\omega)$ and the spectral function $A(k,\omega)$ are two faces of the same object, linked by Dyson's equation. This page closes the loop: the stored per-state Kubo $\Sigma$-field (scalar MoS$_2$) is reconstructed onto a $k$-path, turned back into a spectral function analytically, and checked against the independently computed spectral map. The features reproduce; the differences are three named, physical conventions &mdash; and one of them independently re-derives the O$_S$ conduction-band pull-down.</p>
+<div class="meta"><span class="pill">$A=-\frac1\pi\mathrm{Im}\,G$</span><span class="pill">state reconstruction exact to $10^{-4}$ meV</span><span class="pill">login-node post-processing</span><span class="pill">Dyson vs bubble diagnosed</span></div></div></header>
+
+<main>
+
+<section id="sec-relation"><h2>1&nbsp;&middot;&nbsp;The relation</h2>
+<p>For a single carrier band the retarded Green function is $G_n(k,\omega)=[\omega-\varepsilon_{nk}-\Sigma_n(k,\omega)]^{-1}$, so the spectral function follows directly from the self-energy:</p>
+<div class="math">$$A_n(k,\omega)=-\frac1\pi\,\mathrm{Im}\,\frac{1}{\omega-\varepsilon_{nk}-\Sigma_n(k,\omega)}.$$</div>
+<p>The Kubo mobility engine already builds this object internally &mdash; the transport integrand is $[A_s(\omega)]^2$ &mdash; so the stored $\Sigma$-field <em>is</em> the input to a spectral function by construction. The question this page answers: does feeding that field through Dyson reproduce the spectral maps computed the other way (the exterior T-matrix relation of the <a href="augmentation.html#sec-spectral">augmentation page &sect;9</a>)?</p>
+</section>
+
+<section id="sec-recon"><h2>2&nbsp;&middot;&nbsp;Reconstruction (no new calculation)</h2>
+<p>The $\Sigma$-field is stored per <em>state</em> (each grid $k$ &times; band within the transport window), not per $(k,\omega)$-path. To place it on a path, the deterministic $300^2$ state grid of the mobility run is rebuilt in the same Wannier gauge and the same energy window &mdash; the reconstructed state energies match the stored ones to $10^{-4}$ meV, a bit-level check that the state$\to(k,\mathrm{band})$ map is exact. The carrier-band states are then barycentrically interpolated (Delaunay, built once, applied to all 2701 frequency slices) onto a dense K-centred path. Everything runs on the login node &mdash; it is interpolation, not a new T-solve.</p>
+<figure><img src="../assets/sig2a_skw_os.png" alt="O_S Sigma(k,omega) field" style="width:100%;max-width:1040px">
+<figcaption><strong>The reconstructed field, O$_S$.</strong> $-\mathrm{Im}\,\Sigma(k,\omega)$ over the K-zoom path, VBM side (left) and CBM side (right), bare band in cyan. The $k$-flat resonance ridge at $\omega\approx1.81$ eV (conduction) and the edge-hugging resonance (valence) are the frequency-resolved parents of the on-shell hotspots of the <a href="mobility.html#sec-qpzoom">mobility page &sect;E.5.1</a>.</figcaption></figure>
+</section>
+
+<section id="sec-ab"><h2>3&nbsp;&middot;&nbsp;The consistency check</h2>
+<figure><img src="../assets/sig2a_os_ab.png" alt="A from Sigma vs direct spectral" style="width:100%;max-width:1180px">
+<figcaption><strong>O$_S$ CBM zoom.</strong> Left: $A(k,\omega)$ obtained from the reconstructed $\Sigma$-field through the single-band Dyson formula above. Right: the spectral function computed directly by the exterior T-matrix relation (multi-band trace), the earlier <code>spectral_path.py</code> output. The quasiparticle parabola, its avoided-crossing upper arm, and the flat resonance line at $1.80$ eV all reproduce.</figcaption></figure>
+<p>The maps agree in structure but are <strong>not</strong> bit-identical, for three understood reasons &mdash; each a physics statement, not an error:</p>
+<ul>
+<li><strong>Dyson vs bubble (the informative one).</strong> The $\Sigma$-field Dyson result moves the quasiparticle pole down by $\mathrm{Re}\,\Sigma$: the K-valley peak sits at $1.587$ eV, whereas the direct map peaks at $1.657$ eV (the bare CBM). The 70 meV gap is exactly the $\mathrm{Re}\,\Sigma$ pull-down &mdash; the direct map used the bubble form $G_0+G_0^2T$ (pole fixed at the bare band, T adds a satellite), while the single-band $G=[\omega-\varepsilon-\Sigma]^{-1}$ moves it. This <strong>independently re-derives the O$_S$ conduction-band pull-down</strong> of <a href="mobility.html#sec-qpzoom">&sect;E.5.1</a>, now from a completely different data path.</li>
+<li><strong>Linewidth.</strong> The Kubo field carries $\eta=1$ meV; the direct map was broadened at $\eta=5$ meV &mdash; hence the sharper lines on the left.</li>
+<li><strong>Single-band vs multi-band trace.</strong> The Dyson reconstruction uses only the carrier band; the direct map traces the full 11-band active space. They coincide where the carrier band dominates (the zoom window) and diverge deeper, where other active bands contribute weight.</li>
+</ul>
+<p>Bottom line: the self-energy field and the spectral function are mutually derivable, and the round trip is clean once the Dyson-vs-bubble pole convention is accounted for. The 70 meV discrepancy is not a failure &mdash; it is the same $\mathrm{Re}\,\Sigma$ physics seen from the other side.</p>
+</section>
+
+<section id="sec-scripts"><h2>4&nbsp;&middot;&nbsp;Reproducing</h2>
+<p class="small">Field reconstruction: <code>post/sigma_kw_path.py</code> (grid rebuild + barycentric interpolation, with the $10^{-4}$ meV state-energy gate). Spectral round-trip and A/B overlay: inline Dyson from the reconstructed <code>skw_*.npz</code> against the stored <code>spectral_path.npz</code>. Data: the Kubo $\Sigma$-fields <code>sigfield_{OSSG15,SVSG15,SESSG15}_{e,h}.npy</code> from the <a href="mobility.html">mobility campaign</a>.</p>
+</section>
+
+</main>
+<footer><div class="inner small">EDI direct T-matrix site &mdash; $\Sigma\leftrightarrow A$ consistency page. Scalar MoS$_2$, July 2026.</div></footer>
+</body></html>
