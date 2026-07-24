@@ -53,7 +53,14 @@
 <figcaption><strong>V$_S$ CBM zoom.</strong> No sharp resonance stripe &mdash; a smooth $-\mathrm{Im}\,\Sigma\lesssim13$ meV and correspondingly small $\mathrm{Re}\,\Sigma$; the resonance-free conduction channel that leaves V$_S$ electron transport near-isotropic.</figcaption></figure>
 <p>Two self-energies, one spectral function: the KK inversion (&sect;4) and the multi-band $T$-matrix (&sect;5) both reproduce the same published $A$ &mdash; the former as an effective single-band object, the latter as the physical many-band self-energy. Which one to quote depends on the question: the KK $\Sigma$ for an exact single-band round trip, the $T$-matrix $\Sigma$ for the physical level shift and lifetime.</p>
 </section>
-<section id="sec-scripts"><h2>6&nbsp;&middot;&nbsp;Reproducing</h2>
+<section id="sec-trio"><h2>6&nbsp;&middot;&nbsp;Three faces, one window</h2>
+<p>The quasiparticle band, the self-energy, and the spectral function are the same physics read three ways. Here they are on <strong>one energy window (1.55&ndash;2.05 eV), one $k$-path, one figure scale</strong> &mdash; all three derived from the single self-consistent run (721-point path, $\eta=5$ meV), so nothing is stitched across settings.</p>
+<figure><img src="../assets/sig2a_trio_os.png" alt="O_S QP band, self-energy, spectral trio" style="width:100%;max-width:1280px">
+<figcaption><strong>O$_S$ CBM zoom.</strong> Left: the on-shell quasiparticle band $\varepsilon_{nk}+\mathrm{Re}\,\Sigma$ (bare band dashed), colored by the on-shell scattering rate $-\mathrm{Im}\,\Sigma$. Middle: the energy-dependent self-energy $-\mathrm{Im}\,\Sigma(k,\omega)$. Right: the spectral function $A(k,\omega)$. Follow the resonance at $\omega\approx1.80$ eV across all three: the QP band kinks and darkens where it crosses (left), the self-energy has its stripe there (middle), and the spectral weight forms the flat line (right) &mdash; the same feature, three representations.</figcaption></figure>
+<figure><img src="../assets/sig2a_trio_sv.png" alt="V_S QP band, self-energy, spectral trio" style="width:100%;max-width:1280px">
+<figcaption><strong>V$_S$ CBM zoom.</strong> The resonance-free counterpart: a smooth QP band with low, featureless scattering across all three panels.</figcaption></figure>
+</section>
+<section id="sec-scripts"><h2>7&nbsp;&middot;&nbsp;Reproducing</h2>
 <p class="small">Field reconstruction: <code>post/sigma_kw_path.py</code> (grid rebuild + barycentric interpolation, with the $10^{-4}$ meV state-energy gate). Spectral round-trip and A/B overlay: inline Dyson from the reconstructed <code>skw_*.npz</code> against the stored <code>spectral_path.npz</code>. Data: the Kubo $\Sigma$-fields <code>sigfield_{OSSG15,SVSG15,SESSG15}_{e,h}.npy</code> from the <a href="mobility.html">mobility campaign</a>.</p>
 </section>
 
