@@ -1,0 +1,114 @@
+<!doctype html><html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Porting the pipeline to Anvil: one node, 34 minutes</title>
+<link rel="stylesheet" href="../assets/style.css">
+<script>window.MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']],displayMath:[['$$','$$'],['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head><body>
+<nav class="topnav"><div class="inner"><span class="brand">EDI&nbsp;direct&nbsp;T-matrix</span><a href="../index.html">Home</a><a href="results.html">Results</a><a href="augmentation.html">Augmentation</a><a href="mobility.html">Mobility</a><a href="soc.html">SOC</a><a href="soc_mobility.html">SOC&nbsp;mobility</a><a href="wse2.html">WSe$_2$</a><a href="sigma_spectral.html">Σ&harr;A</a><a href="anvil.html" style="color:#fff;text-decoration:underline">Anvil&nbsp;port</a><a href="https://rjguo1208.github.io/claude-sternheimer/">Sternheimer site &rarr;</a></div></nav>
+
+<header><div class="header-inner"><h1>Porting the Pipeline to Anvil</h1>
+<p class="subtitle">The whole MoS$_2$+SOC O$_S$ $T$-matrix chain &mdash; 20 736 EDI matrix-element pairs at $n_{\rm tot}=148$, then the downfold, Wannier interpolation and 926-point $\omega$ sweep that turn them into $A(k,\omega)$ &mdash; moved from Banff to Anvil and made to run <strong>end to end on a single node in 34 minutes</strong>. Two independent optimizations get it there: the <strong>v8 EDI kernel</strong> (nonlocal vertex reformulated as GEMM, plus threaded BLAS) and a rewritten <strong>post-processing $\omega$ loop</strong>. Both are validated numerically, not just timed.</p>
+<div class="meta"><span class="pill">Anvil highmem, 1 node</span><span class="pill">ifx + Intel&nbsp;MPI + MKL</span><span class="pill">EDI kernel $26.6\times$</span><span class="pill">post-processing $12.5\times$</span><span class="pill">$M$ agrees cross-cluster to $1.1\times10^{-13}$</span><span class="pill">$A$ reproduced to $4.3\times10^{-16}$</span></div></div></header>
+
+<main>
+
+<section id="sec-why"><h2>1&nbsp;&middot;&nbsp;Why, and the constraints that shaped it</h2>
+<p>The motivation was mundane: Banff queue latency. The interesting part is that Anvil does not simply accept the Banff job layout, and the constraints it imposes turned out to be the thing that forced &mdash; and then rewarded &mdash; the optimization work.</p>
+<p>Anvil's <code>highmem</code> partition carries a QOS of <code>cpu=128, node=1</code>: <strong>every job is capped at one node</strong>, and at most two run concurrently. There is a <code>wide-highmem</code> QOS (16 nodes) but the allocation is not authorized for it. So the Banff production layout &mdash; 4 nodes $\times$ 36 ranks, <code>-nk 144</code>, one $k_i$ per pool &mdash; is simply not expressible. A multi-node pending job cannot even be repartitioned into <code>highmem</code>; <code>scontrol update</code> is refused by the QOS.</p>
+<p>The redesign: <strong>48 pools of 3 $k_i$ each</strong> on one node, <code>--cpus-per-task=2</code>. Total work is unchanged (20 736 pairs); what changes is that throughput is now set by 128 cores rather than by 144 single-threaded ranks spread over four nodes. That only becomes a win if the per-pair kernel is fast <em>and</em> can use more than one core &mdash; which is exactly what v8 provides.</p>
+<p class="small">Ironically, the one-node cap costs less memory headroom than it sounds: a single <code>highmem</code> node has 1031 GB, more than two <code>wholenode</code> nodes combined (2&times;257 GB). The binding resource on Anvil is cores, not memory. Measured EDI footprint at 48 pools: <strong>12.6 GB/rank</strong>, 605 GB of 1031 &mdash; matching the <em>a priori</em> estimate $n_r\!\cdot\!n_{\rm pol}\!\cdot\!n_{\rm tot}\!\cdot\!n_{k,\rm local}\!\cdot\!16$ B to the gigabyte.</p>
+</section>
+
+<section id="sec-build"><h2>2&nbsp;&middot;&nbsp;Rebuilding QE 7.5 + EDI with ifx + MKL</h2>
+<p>The pre-existing Anvil tree was built with AOCC against netlib BLAS, which measures <strong>7.2 GFLOP/s</strong> on a complex GEMM &mdash; and led, briefly, to the wrong conclusion that "Anvil GEMM is slow." It is not: Anvil MKL measures <strong>51.6 GFLOP/s single-threaded</strong>, statistically identical to Banff's 50.6. The slowness was a property of that particular link, not of the machine. (AMD BLIS is a dead end here for a different reason: <code>-lblis-mt</code> links but computes nothing &mdash; the symbol table exports <code>bli_zgemm</code> and no BLAS-compatible <code>zgemm_</code>, so the result is silently zero.)</p>
+<p>Four traps, all hit in one rebuild, all now captured in a single <code>intelenv.sh</code>:</p>
+<div class="table-wrap"><table>
+<tr><th>#</th><th>symptom</th><th>cause &amp; fix</th></tr>
+<tr><td>1</td><td>link fails on <code>for_alloc_allocatable_handle</code></td><td><code>module load intel/2024.1</code> sets <code>PATH</code> but not <code>LIBRARY_PATH</code>. Add the compiler <code>lib</code> directory.</td></tr>
+<tr><td>2</td><td><code>cannot find -lmpifort / -lmpi</code></td><td>Intel MPI splits its libraries across <code>$MPIROOT/lib</code> <em>and</em> <code>$MPIROOT/lib/release</code>. Both are needed.</td></tr>
+<tr><td>3</td><td><code>Cannot open include file 'mpif.h'</code></td><td>QE's <code>configure</code> does not put the MPI include directory into <code>IFLAGS</code>. Patch it. Note also that Anvil ships <code>mpi.mod</code> for <strong>gfortran only</strong>, so <code>-D__MPI_MODULE</code> is unusable &mdash; the build must go through <code>mpif.h</code>.</td></tr>
+<tr><td>4</td><td>EDI dies in <code>pw2wan_edi.f90</code>: <code>post_proc_flag</code> not found in <code>w90_io</code></td><td><code>make pw</code> never triggers the <code>w90lib</code> target, so <code>libwannier.a</code> is never built and a copied tree keeps a stale <code>external/wannier90/make.inc</code> pointing at the old compiler. <code>configure</code> generates the correct <code>install/make_wannier90.inc</code> &mdash; it just has to be copied over, then <code>make lib</code> invoked directly (bypassing <code>update_submodule</code>'s git step).</td></tr>
+</table></div>
+<p>Working configuration: <code>-D__DFTI -D__MPI</code>, <code>MPIF90=mpiifx F90=ifx CC=icx</code>, MKL for BLAS/LAPACK/FFT. QE's <code>fft_scalar.DFTI.f90</code> does <code>#include "mkl_dfti.f90"</code> straight from <code>$MKLROOT/include</code>, so DFTI needs only an <code>-I</code> and no extra library &mdash; which also removes the external FFTW dependency the AOCC build had.</p>
+</section>
+
+<section id="sec-v8"><h2>3&nbsp;&middot;&nbsp;EDI v8: what the two optimizations are actually worth</h2>
+<p>v8 combines two changes to the direct-mode kernel. <strong>P6</strong> reformulates the nonlocal vertex as a matrix product: with the KB channel index flattened as $p=(\kappa,\sigma)$, the per-pair sum</p>
+<div class="math">$$M^{\rm nl}_{ij}=\sum_{pp'} B^{*}_{pi}\,D_{pp'}\,C_{p'j} \;=\; \big(B^{\dagger}DC\big)_{ij}$$</div>
+<p>becomes two ZGEMMs per $(k_i,k_f)$ pair, with $D$ block-diagonal per atom and independent of $k$, so $DC$ is built once per $k_f$. <strong>P7$'$</strong> adds a second parallel layer <em>inside</em> each pool, leaving the <code>-nk</code> logic untouched.</p>
+<p>Measuring these needed care. An earlier attempt on a small case (48 bands, 8 pairs) showed nothing at all &mdash; 543 / 525 / 524 s across three variants. The reason: <strong>fixed setup is $\approx$195 s</strong> and completely swamped a 12 s kernel; the spread was page cache, not signal. Solving 1-pair against 12-pair wall times for $(\,$setup, per-pair$\,)$ separates them cleanly, and two independent estimates of the setup cost (195.6 s from v7b, 193.9 s from v8) agree &mdash; so the decomposition can be trusted.</p>
+<div class="table-wrap"><table>
+<tr><th>configuration</th><th>setup</th><th>per pair</th><th>kernel speed-up</th></tr>
+<tr><td>v7b, sequential MKL (baseline)</td><td>195.6 s</td><td><b>19.36 s</b></td><td>1.00$\times$</td></tr>
+<tr><td>v8, sequential MKL &mdash; P6 GEMM only</td><td>193.9 s</td><td><b>4.09 s</b></td><td><b>4.73$\times$</b></td></tr>
+<tr><td>v8, 8 threads &mdash; P6 + threaded MKL</td><td>86.2 s</td><td><b>0.82 s</b></td><td><b>23.7$\times$</b></td></tr>
+</table></div>
+<p><strong>The surprise is where the second factor comes from.</strong> v8 contains exactly one explicit <code>!$OMP</code> region &mdash; the element-wise build of the local-potential GEMM operand. Its measured contribution is <em>zero</em> (243 s $\to$ 243 s at 8 threads). The entire second-level speed-up is <strong>MKL threading the two big ZGEMMs that P6 created</strong>. Once the hot loop is a GEMM, the right way to add a second parallel layer is to let the BLAS do it, not to hand-write OpenMP.</p>
+<figure><img src="../assets/anvil_perf.png" alt="Anvil port performance summary" style="width:100%;max-width:1240px">
+<figcaption><strong>(a)</strong> EDI per-pair cost against MKL threads, with the v7b no-GEMM baseline as the dashed line; the knee is at 4&ndash;6 threads and it saturates by 8. <strong>(b)</strong> Spectral-function cost per $\omega$ point: the original, the optimized code run serially (algorithmic gain alone), and four process$\times$thread splits. <strong>(c)</strong> Whole-pipeline wall time. All timings are the same physical calculation &mdash; MoS$_2$+SOC O$_S$, $n_{\rm tot}=148$, $144\times144$ pairs, 926 $\omega$ points.</figcaption></figure>
+<p>Thread efficiency falls steeply past 4&ndash;6 (100 / 81 / 62 / 58 / 52 / 35 / 33 % at 1 / 2 / 4 / 6 / 8 / 12 / 16), which sets the practical operating point. Extrapolated to a 144-pairs-per-pool production run: v7b 2984 s $\to$ v8 at 6 threads 240 s, <strong>12.4$\times$</strong>. Setup itself also threads ($195\to86$ s, 2.3$\times$) since the DFTI transforms and setup BLAS pick up the threads for free.</p>
+<p class="small"><strong>An immediately actionable corollary for Banff.</strong> The Banff <code>edi_v8.x</code> is <em>already</em> built with <code>-qopenmp</code> + <code>mkl_intel_thread</code> + <code>libiomp5</code>, and its job scripts already set <code>OMP_NUM_THREADS=${SLURM_CPUS_PER_TASK}</code>. The only thing capping it is <code>--cpus-per-task=1</code> in the production script: with <code>--exclusive</code> and the OOM-driven 4&nbsp;nodes&nbsp;$\times$&nbsp;36&nbsp;ranks layout, <strong>752 of 896 cores sit idle</strong>. Changing that one line to <code>6</code> (224/36$\,\approx\,$6.2) requires no rebuild and no code change, and threads share the rank's memory so the OOM constraint that forced the low rank density is unaffected.</p>
+</section>
+
+<section id="sec-valid"><h2>4&nbsp;&middot;&nbsp;Cross-cluster numerical validation</h2>
+<p>Speed is only interesting if the numbers survive. The Anvil <code>mos2_edmat_direct.bin</code> is byte-for-byte the same <em>size</em> as the Banff reference (7 267 228 440 B) with an identical header, and the matrix elements were compared directly over the first $k_i$ row (3 210 830 elements):</p>
+<div class="math">$$\max|\Delta M| = 6.4\times10^{-13}\ \mathrm{Ry},\qquad \frac{\max|\Delta M|}{\max|M|} = 1.07\times10^{-13}.$$</div>
+<p>That agreement holds across a <em>different compiler</em> (ifx 2024.1 vs 2025.0), a different MPI, a different MKL version, a different pool decomposition (48 vs 144), and a different algorithm for the nonlocal vertex (GEMM vs scalar triple loop). $10^{-13}$ is the expected floating-point noise of GEMM re-association &mdash; the same order as the $7.9\times10^{-14}$ measured in the controlled A/B on identical hardware.</p>
+<p>The A/B also gates the threading. Against the v7b reference: P6 alone passes at $7.9\times10^{-14}$ relative; the OpenMP-compiled binary at one thread, at 8 OMP threads, and with 8 MKL threads are all <strong>bitwise identical</strong> to each other &mdash; MKL parallelizes over $M/N$ rather than the contraction index at these shapes, so the summation order does not change.</p>
+</section>
+
+<section id="sec-post"><h2>5&nbsp;&middot;&nbsp;The post-processing: one stray variable, then three real optimizations</h2>
+<h3>5.1&nbsp;&middot;&nbsp;A 128-core node running on one core</h3>
+<p>The first full spectral run behaved oddly, and the reason is worth recording because nothing in the job output hints at it. Anvil's shell profile injects <strong><code>OPENBLAS_NUM_THREADS=1</code></strong> into every job environment. The user-site <code>numpy 2.4.3</code> is a pip wheel linked against <code>libscipy_openblas64_*.so</code>, <em>not</em> MKL &mdash; so the <code>MKL_NUM_THREADS=128</code> in the job script did nothing and the stray variable won. Diagnostic signature: <code>ps -o nlwp,pcpu</code> reports <code>NLWP=1, %CPU&asymp;100</code> and load average 1, while <code>taskset -pc</code> confirms the affinity mask is the full <code>0&ndash;127</code>. The job looks healthy and is using 1/128 of the machine.</p>
+<p>Measured on a compute node (complex GEMM, $n=3168$, the actual $\omega$-loop size):</p>
+<div class="table-wrap"><table>
+<tr><th>threads</th><th>numpy 2.4.3 (scipy-openblas)</th><th>numpy 1.26.4 conda (mkl-sdl)</th></tr>
+<tr><td>1</td><td>49.4 GFLOP/s</td><td>49.1 GFLOP/s</td></tr>
+<tr><td>16</td><td>734.7</td><td>649.2</td></tr>
+<tr><td>64</td><td><b>2065.6</b></td><td>982.4</td></tr>
+<tr><td>128</td><td><b>2107.3</b></td><td>628.8</td></tr>
+</table></div>
+<p>The OpenBLAS stack wins outright (42.7$\times$ at 128 threads); conda's <code>mkl-sdl</code> <em>degrades</em> past 16 threads. One methodological warning: <strong>this benchmark is meaningless on the Anvil login node</strong>, which is cgroup-limited to about one core &mdash; there, more threads measure as <em>slower</em>, which is how the wrong conclusion nearly got drawn twice.</p>
+
+<h3>5.2&nbsp;&middot;&nbsp;Why not rewrite it in Fortran</h3>
+<p>The obvious reaction to a slow Python post-processor is to port it. Profiling says otherwise. Per $\omega$ point, the work is dominated by four dense operations on $n=n_k n_w=3168$ matrices &mdash; $V_WG_0$, the inverse of $1-V_WG_0$, $G_0\!\cdot\!(\cdot)$, and $V_R K$ &mdash; totalling $1.69\times10^{11}$ complex MACs, <strong>99.8 %</strong> of the cost, all already dispatched by numpy to the same MKL/OpenBLAS kernels a Fortran port would call. The interpreted part &mdash; a 286-iteration loop over path points doing $22\times22$ algebra &mdash; costs a few seconds out of forty minutes. A language change buys essentially nothing; the gains are algorithmic and structural.</p>
+
+<h3>5.3&nbsp;&middot;&nbsp;The three optimizations</h3>
+<ul>
+<li><strong>O2 &mdash; exploit the block structure of $G_0$.</strong> In the Wannier gauge $G_0$ is block diagonal: $n_k=144$ blocks of $n_w=22$. Both products that used it were dense $n^3$ matmuls; as batched $(n_k,\cdot,n_w)\times(n_k,n_w,n_w)$ products they cost $n_k$ times less &mdash; $3.2\times10^{10}\to2.2\times10^{8}$ MACs.</li>
+<li><strong>O3 &mdash; never form the inverse.</strong> The chain $K=G_0(1-V_WG_0)^{-1}$, $T_1=V_RK$ becomes $Y=V_RG_0$ (cheap, blocked) followed by one triangular solve of $A^{\!\top}T_1^{\!\top}=Y^{\!\top}$: a single LU replaces an explicit inversion plus a matmul.</li>
+<li><strong>O1 &mdash; parallelize over $\omega$.</strong> The 926 frequency points are completely independent. Workers are <code>fork</code>ed <em>after</em> the large read-only arrays exist, so the $\approx$800 MB of interpolation kernels are shared copy-on-write and only the per-$\omega$ temporaries are private. Per-worker BLAS thread counts are set at runtime through the exported <code>scipy_openblas_set_num_threads64_</code> symbol &mdash; <code>threadpoolctl</code> 2.2 does not recognize the <code>libscipy_openblas64_*</code> naming and reports an empty pool.</li>
+</ul>
+<p>Together the per-$\omega$ arithmetic drops from $1.69\times10^{11}$ to $7.4\times10^{10}$ complex MACs before O1.</p>
+<div class="table-wrap"><table>
+<tr><th></th><th>per $\omega$</th><th>$\omega$ loop (926 pts)</th><th>whole job</th></tr>
+<tr><td>original</td><td>2760 ms</td><td>2556 s</td><td>2589 s</td></tr>
+<tr><td>optimized, serial (O2+O3 only)</td><td>2450 ms</td><td>&mdash;</td><td>&mdash;</td></tr>
+<tr><td>optimized, 16 proc $\times$ 8 threads</td><td><b>221 ms</b></td><td><b>205 s</b></td><td><b>278 s</b></td></tr>
+<tr><td colspan="4" class="small">speed-up: $\omega$ loop <b>12.5$\times$</b>, whole job <b>9.3$\times$</b>. Split sweep (96 $\omega$ each): 8$\times$16 = 395 ms, 16$\times$8 = 244, 32$\times$4 = <b>231</b>, 64$\times$2 = 250 &mdash; flat between 16 and 64 processes, clearly worse at 8.</td></tr>
+</table></div>
+<p><strong>Attribution.</strong> O2+O3 give 1.47$\times$ on their own (3.60 $\to$ 2.45 s/$\omega$); multiprocessing supplies the remaining 8.5$\times$. That split is the opposite of the naive expectation and has a clean explanation: the operations O2 and O3 remove are dense GEMMs, the <em>best</em>-threading part of the workload, while what remains (LU and triangular solves) scales poorly &mdash; so eliminating arithmetic helps less than giving each process a smaller, more efficient thread pool. A single $n=3168$ GEMM at 128 threads reaches only about a third of the achievable rate; sixteen of them at 8 threads do far better.</p>
+<p class="small">Regression: the optimized code reproduces the original over the full $286\times926 = 264\,836$-point map to <strong>$4.3\times10^{-16}$ relative</strong> &mdash; machine epsilon &mdash; with <code>E</code>, <code>dist</code>, <code>ticks</code>, <code>epk</code> and <code>VBM</code> bitwise identical. Serial and 16-process runs agree with each other to the same figure, so the parallel decomposition introduces nothing.</p>
+</section>
+
+<section id="sec-result"><h2>6&nbsp;&middot;&nbsp;The result: MoS$_2$+SOC, O$_S$ panorama</h2>
+<figure><img src="../assets/anvil_os_full.png" alt="MoS2 SOC O_S spectral function, Gamma-K-M-Gamma" style="width:100%;max-width:1180px">
+<figcaption><strong>$A(k,\omega)$ for O$_S$ in MoS$_2$ with spin&ndash;orbit coupling</strong>, along $\Gamma$&ndash;K&ndash;M&ndash;$\Gamma$, computed entirely on Anvil. Active space bands 13&ndash;34, $\omega_0=$ VBM, $\eta=20$ meV, Dyson form, 926 frequency points at 4 meV. Log colour scale.</figcaption></figure>
+<p>The physics is the expected one and is consistent with everything on the <a href="soc.html">SOC page</a>. The K-point valence spin splitting is resolved as two bright branches; the conduction splitting is visible around K and M. Most importantly the <strong>gap is clean</strong> &mdash; no spurious in-gap state &mdash; which is the spinor A1 augmentation ($\tilde\chi = (1-P)\chi\otimes\{\uparrow,\downarrow\}$) doing its job: without it, the O-2$p$ orbitals missing from the pristine Bloch basis produce a variational push-up that plants a false doublet mid-gap. The faint $k$-flat feature at $\omega\approx1.85$&ndash;1.95 eV, above the CBM, is the O$_S$ conduction-edge <em>resonance</em> &mdash; the same object identified in the scalar campaign and confirmed to survive SOC.</p>
+<p>This is a new panorama: the Banff SOC campaign produced VBM- and CBM-zoom maps for O$_S$ but never the full $-1.25$ to $+2.45$ eV window, because at the pre-optimization cost it was a 43-minute job competing for the same queue as everything else. At 4.6 minutes it is cheap enough to be routine.</p>
+</section>
+
+<section id="sec-bottom"><h2>7&nbsp;&middot;&nbsp;Bottom line</h2>
+<div class="grid cards">
+<div class="card"><strong>Whole chain, one node, 34 min</strong><span>EDI $144\times144$ in 29 min + spectral function in 4.6 min on a single Anvil <code>highmem</code> node, against 113 min spread over up to 4 Banff nodes &mdash; roughly a $10\times$ reduction in node-hours.</span></div>
+<div class="card"><strong>Validated, not just timed</strong><span>Matrix elements agree cross-cluster to $1.1\times10^{-13}$ relative; the optimized post-processing reproduces the reference spectral map to $4.3\times10^{-16}$ over 264 836 points. Every speed claim has a correctness gate behind it.</span></div>
+<div class="card"><strong>Once it is a GEMM, let the BLAS thread it</strong><span>The hand-written OpenMP region in v8 contributes zero; all of the second-level speed-up comes from threaded MKL on the ZGEMMs that P6 created. The same lesson reappears in the Python post-processing, from the other direction: rewriting in Fortran would buy nothing, because 99.8 % of the cost is already in BLAS.</span></div>
+<div class="card"><strong>Look at the environment before the code</strong><span>A single injected <code>OPENBLAS_NUM_THREADS=1</code> cost a factor of 42 while every log line looked normal. <code>NLWP</code> and the affinity mask diagnose in seconds what profiling would take an hour to suggest.</span></div>
+</div>
+<p class="small">Artifacts: EDI build recipe in <code>intelenv.sh</code> + <code>build_edi.slurm</code>; optimized post-processor <code>post/spectral_soc_fast.py</code> (same CLI and <code>SPEC_*</code> environment as <code>spectral_soc.py</code>, plus <code>SPEC_NPROC</code> / <code>SPEC_BLAS_THREADS</code>, defaulting to serial so it is a drop-in replacement); A/B gate <code>post/bench_ab.py</code>. The scalar and SOC physics conclusions are unchanged by any of this &mdash; that is the point of the regression gates.</p>
+</section>
+
+</main>
+<footer><div class="inner small">EDI direct T-matrix site &mdash; Anvil port &amp; performance page. MoS$_2$+SOC O$_S$, July 2026.</div></footer>
+</body></html>
