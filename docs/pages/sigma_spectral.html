@@ -9,7 +9,7 @@
 
 <header><div class="header-inner"><h1>Self-Energy $\leftrightarrow$ Spectral Function</h1>
 <p class="subtitle">The energy-dependent self-energy $\Sigma_n(k,\omega)$ and the spectral function $A(k,\omega)$ are two faces of the same object, linked by Dyson's equation. This page closes the loop: the stored per-state Kubo $\Sigma$-field (scalar MoS$_2$) is reconstructed onto a $k$-path, turned back into a spectral function analytically, and checked against the independently computed spectral map. The features reproduce; the differences are three named, physical conventions &mdash; and one of them independently re-derives the O$_S$ conduction-band pull-down.</p>
-<div class="meta"><span class="pill">$A=-\frac1\pi\mathrm{Im}\,G$</span><span class="pill">state reconstruction exact to $10^{-4}$ meV</span><span class="pill">login-node post-processing</span><span class="pill">Dyson vs bubble diagnosed</span></div></div></header>
+<div class="meta"><span class="pill">$A=-\frac1\pi\mathrm{Im}\,G$</span><span class="pill">state reconstruction exact to $10^{-4}$ meV</span><span class="pill">login-node post-processing</span><span class="pill">Dyson vs bubble diagnosed</span><span class="pill">full window: two $k$-flat ridges the zoom missed</span></div></div></header>
 
 <main>
 
@@ -60,8 +60,31 @@
 <figure><img src="../assets/sig2a_quad_sv.png" alt="V_S QP band, self-energy, spectral trio" style="width:100%;max-width:1280px">
 <figcaption><strong>V$_S$ CBM zoom.</strong> The resonance-free counterpart: a smooth QP band with low, featureless scattering across all four panels; the spectral weight rides close to the bare band (small Re$\,\Sigma$).</figcaption></figure>
 </section>
-<section id="sec-scripts"><h2>7&nbsp;&middot;&nbsp;Reproducing</h2>
-<p class="small">Field reconstruction: <code>post/sigma_kw_path.py</code> (grid rebuild + barycentric interpolation, with the $10^{-4}$ meV state-energy gate). Spectral round-trip and A/B overlay: inline Dyson from the reconstructed <code>skw_*.npz</code> against the stored <code>spectral_path.npz</code>. Data: the Kubo $\Sigma$-fields <code>sigfield_{OSSG15,SVSG15,SESSG15}_{e,h}.npy</code> from the <a href="mobility.html">mobility campaign</a>.</p>
+<section id="sec-full"><h2>7&nbsp;&middot;&nbsp;The full window: what the zoom could not see</h2>
+<p>Everything above is a <em>zoom</em> &mdash; a K-centred path over a few hundred meV around one band edge, which is where the transport physics lives and where the fine structure needs 0.25 meV frequency resolution to resolve. That framing has a blind spot, and it is worth measuring rather than assuming. This section computes the V$_S$ self-energy over the <strong>entire</strong> $-1.25$ to $+2.45$ eV window on the full $\Gamma$&ndash;K&ndash;M&ndash;$\Gamma$ path (926 frequency points at 4 meV, $\eta=20$ meV, scalar SG15 host, active bands 7&ndash;17), on exactly the axes used for the spectral panoramas.</p>
+
+<figure><img src="../assets/sigfull_sv.png" alt="V_S full-window spectral function and self-energy" style="width:100%;max-width:1400px">
+<figcaption><strong>V$_S$ in MoS$_2$, scalar, full window.</strong> Left: $A(k,\omega)$ (log). Centre: $-\mathrm{Im}\,\Sigma(k,\omega)$, the scattering rate, linear in meV (dark = strong). Right: $\mathrm{Re}\,\Sigma(k,\omega)$, the level shift, diverging scale. Same window, same path, same figure size; bare bands overlaid in cyan. <em>Display convention:</em> the stored self-energy is band-diagonal, $\Sigma_{nn}(k_p,\omega)$ over the 11 active bands. To place it on the same axes as $A$ each band is weighted by its share of the spectral weight there, $w_n=|G_n|^2/\sum_m|G_m|^2$ with $G_n=(\omega-\varepsilon_n-\Sigma_{nn})^{-1}$, so the band that dominates $A$ at $(k,\omega)$ dominates the $\Sigma$ map. The per-band data is stored untouched.</figcaption></figure>
+
+<p>The self-energy is dominated by <strong>two $k$-flat resonance ridges</strong>, both of which sit <em>outside</em> the CBM zoom window of &sect;3&ndash;&sect;6 ($1.45$&ndash;$2.16$ eV):</p>
+<div class="table-wrap"><table>
+<tr><th>ridge</th><th>$-\mathrm{Im}\,\Sigma$ peak ($k$-averaged)</th><th>FWHM</th><th>strength along $k$</th><th>$\mathrm{Re}\,\Sigma$ zero crossing</th></tr>
+<tr><td>$\omega = +0.306$ eV</td><td>94.9 meV</td><td>44 meV</td><td>13 &ndash; 148 meV</td><td>$+0.306$ eV, $-53/+45$ meV</td></tr>
+<tr><td>$\omega = +1.214$ eV</td><td><b>252.8 meV</b></td><td>44 meV</td><td>168 &ndash; <b>392</b> meV</td><td>$+1.210$ eV, $-122/+138$ meV</td></tr>
+</table></div>
+
+<p>The contrast is sharp. Over the full window $-\mathrm{Im}\,\Sigma$ has a median of 1.9 meV and a maximum of <strong>397 meV</strong>; restricted to the published zoom window the maximum is <strong>8 meV</strong>. The zoom sees <strong>1/50 of the peak scattering</strong> &mdash; not because it is wrong, but because it looks at a genuinely quiet stretch of the spectrum while the two structures that dominate the self-energy lie below it. This is the honest cost of a zoom, and it is the reason to compute the panorama once even when the transport question only needs the band edge.</p>
+
+<p><strong>What the ridges are.</strong> The upper one, $+1.214$ eV, is the V$_S$ <strong>$e$-doublet</strong>: four independent routes place it at $+1.19$&ndash;$1.21$ eV, the SG15 $T$-matrix value being $+1.219$ &mdash; agreement to 5 meV on a 4 meV grid with 20 meV broadening. The self-energy therefore <em>re-derives the defect level from a third direction</em>: not as an eigenvalue of $H_{\rm eff}$ and not as a peak in $A$, but as the pole of the scattering vertex. The lower ridge at $+0.306$ eV lives in the $a_1$ region, and here the page must be careful: $a_1$ is the known slow mode of this system, drifting with every basis ($+0.001$ at 70 bands, $+0.186$&ndash;$+0.2046$ at 160, against a supercell-DFT truth of $+0.1026$). <strong>The $e$-doublet position is converged; the $a_1$ ridge position is basis-limited</strong> and should not be quoted as a number.</p>
+
+<p><strong>An internal causality check comes for free.</strong> $\mathrm{Re}\,\Sigma$ crosses zero <em>exactly</em> at both $-\mathrm{Im}\,\Sigma$ maxima and flips sign dispersively across them ($-122/+138$ meV around the doublet). That is the Kramers&ndash;Kronig partner of a Lorentzian absorption peak, reproduced here with no KK transform anywhere in the calculation &mdash; the Re and Im parts come out of the same $T$-matrix solve. It is the same consistency the KK inversion of &sect;4 imposes by construction, arriving instead as an output.</p>
+
+<p>One structural remark visible only at this scale: the ridges are flat in <em>energy</em> but far from uniform in <em>strength</em> &mdash; the doublet ridge varies 168&ndash;392 meV along $\Gamma$&ndash;K&ndash;M&ndash;$\Gamma$ and the $a_1$ ridge 13&ndash;148 meV. The resonance energy is $k$-independent, as a localized defect level must be; what disperses is the coupling matrix element $|\langle\psi_{nk}|\Delta V|\phi_d\rangle|^2$ between the Bloch state and the defect orbital. A zoomed view at fixed $k$-range cannot separate those two statements.</p>
+<p class="small">Cost note: 51 s wall on one Anvil <code>highmem</code> node (38 s in the $\omega$ loop, 41 ms per frequency) using the optimized post-processor described on the <a href="anvil.html#sec-post">Anvil page &sect;5</a> &mdash; the band-diagonal $\Sigma$ is stored behind a <code>SPEC_SAVE_SIG=1</code> flag so the same code path serves both the spectral function and this figure.</p>
+</section>
+
+<section id="sec-scripts"><h2>8&nbsp;&middot;&nbsp;Reproducing</h2>
+<p class="small">Field reconstruction: <code>post/sigma_kw_path.py</code> (grid rebuild + barycentric interpolation, with the $10^{-4}$ meV state-energy gate). Spectral round-trip and A/B overlay: inline Dyson from the reconstructed <code>skw_*.npz</code> against the stored <code>spectral_path.npz</code>. Data: the Kubo $\Sigma$-fields <code>sigfield_{OSSG15,SVSG15,SESSG15}_{e,h}.npy</code> from the <a href="mobility.html">mobility campaign</a>. Full-window map (&sect;7): <code>post/spectral_soc_fast.py</code> with <code>SPEC_SAVE_SIG=1</code> (band-diagonal $\Sigma$ alongside $A$, same solve) and <code>post/plot_sigma_full.py</code> (pole-weighted band reduction); data <code>sv_sigma_full/spectral_sig.npz</code>.</p>
 </section>
 
 </main>
