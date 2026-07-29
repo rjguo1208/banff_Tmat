@@ -1,0 +1,88 @@
+<!doctype html><html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Geometry relaxation: what moves, what doesn't, and what only pretends to</title>
+<link rel="stylesheet" href="../assets/style.css">
+<script>window.MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']],displayMath:[['$$','$$'],['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head><body>
+<nav class="topnav"><div class="inner"><span class="brand">EDI&nbsp;direct&nbsp;T-matrix</span><a href="../index.html">Home</a><a href="results.html">Results</a><a href="augmentation.html">Augmentation</a><a href="mobility.html">Mobility</a><a href="soc.html">SOC</a><a href="soc_mobility.html">SOC&nbsp;mobility</a><a href="wse2.html">WSe$_2$</a><a href="sigma_spectral.html">Σ&harr;A</a><a href="anvil.html">Anvil&nbsp;port</a><a href="relaxation.html" style="color:#fff;text-decoration:underline">Relaxation</a><a href="https://rjguo1208.github.io/claude-sternheimer/">Sternheimer site &rarr;</a></div></nav>
+
+<header><div class="header-inner"><h1>Geometry Relaxation: the Chemical-Shell Arm</h1>
+<p class="subtitle">Every result on this site so far used <em>ideal</em> defect geometries &mdash; the defect atom placed exactly at the substituted site, all neighbours frozen at lattice positions. This page adds the relaxation arm for all three MoS$_2$+SOC defects: constrained BFGS (defect + nearest Mo triangle + the full second-neighbour S cage; strictly fixed cell), a rerun of the full SOC&nbsp;SCF&nbsp;&rarr;&nbsp;$\Delta V$&nbsp;&rarr;&nbsp;EDI&nbsp;&rarr;&nbsp;$H_{\rm eff}$/spectral chain at the relaxed geometries, and the supercell-DFT truth gate at both geometries. The findings split into a <strong>physics layer</strong> (O$_S$ changes qualitatively, V$_S$ and Se$_S$ barely move) and a <strong>methods layer</strong> (the truncated-Bloch $H_{\rm eff}$ degrades on distorted geometries &mdash; and would have reported a 0.22&nbsp;eV phantom shift for V$_S$ had the truth gate not been standing).</p>
+<div class="meta"><span class="pill">11 / 10 / 11 atoms relaxed</span><span class="pill">fixed cell (never vc-relax)</span><span class="pill">Mo&ndash;O 2.07&nbsp;&Aring;, Mo&ndash;Se 2.54&nbsp;&Aring;</span><span class="pill">truth gate at both geometries</span><span class="pill">V$_S$ phantom +0.22 eV caught</span></div></div></header>
+
+<main>
+
+<section id="sec-setup"><h2>1&nbsp;&middot;&nbsp;Setup: the chemical-shell constraint</h2>
+<p>The relaxation set is defined by neighbour shells of the defect site, not by a radius picked per defect. Around an S site the shells are: 3&nbsp;Mo at 2.413&nbsp;&Aring;, then a near-degenerate <em>S cage</em> &mdash; the cross-layer S at 3.126&nbsp;&Aring; and six in-plane S at 3.185&nbsp;&Aring;, only 0.06&nbsp;&Aring; apart &mdash; and a clean 0.8&nbsp;&Aring; gap before the next shell. The chemical-shell convention frees the defect atom + Mo triangle + the whole S cage: <strong>11 atoms for O$_S$/Se$_S$, 10 for V$_S$</strong> (97 frozen via <code>if_pos 0 0 0</code>). The cell is strictly fixed &mdash; the supercell lattice must remain exactly 6&times; the primitive for the $\Delta V$ folding and FFT commensurability, so <code>calculation='relax'</code>, never <code>vc-relax</code>.</p>
+<p>Geometry is produced scalar-relativistically (SR SG15&nbsp;v1.0 partners of the campaign's FR-1.0 pseudos, 100&nbsp;Ry, $\Gamma$; forces are insensitive to SOC) and the electronic chain then reruns fully relativistically at the relaxed coordinates with the original campaign inputs &mdash; the only changed lines in the SOC SCF are the 108 coordinate rows. BFGS converges in 14&ndash;16 steps for all three. One honesty number: at convergence the largest force on a <em>frozen</em> atom is 0.008&nbsp;Ry/au (the shell-4 Mo triangle) &mdash; that is the price of the truncation, identical across defects by construction.</p>
+</section>
+
+<section id="sec-patterns"><h2>2&nbsp;&middot;&nbsp;Three defects, three relaxation patterns</h2>
+<div class="table-wrap"><table>
+<tr><th></th><th>O$_S$</th><th>Se$_S$</th><th>V$_S$</th></tr>
+<tr><td>relaxation energy</td><td><b>1.481 eV</b></td><td>0.274 eV</td><td>0.118 eV</td></tr>
+<tr><td>defect-atom motion</td><td><b>&minus;0.533 &Aring;</b> (sinks toward the Mo plane)</td><td><b>+0.186 &Aring;</b> (pops outward)</td><td>&mdash; (vacancy)</td></tr>
+<tr><td>bond, 2.413 &Aring; &rarr;</td><td><b>Mo&ndash;O 2.070 &Aring;</b> (molybdenum-oxide range)</td><td><b>Mo&ndash;Se 2.542 &Aring;</b> (= the MoSe$_2$ bond)</td><td>Mo triangle contracts radially by only 0.008 &Aring;</td></tr>
+<tr><td>cross-layer S</td><td>&minus;0.148 &Aring;</td><td>+0.043 &Aring;</td><td>&minus;0.052 &Aring;</td></tr>
+<tr><td>symmetry</td><td colspan="3">C$_{3v}$ exact in all three (equal-magnitude Mo and S displacements to 4 decimals; defect motion purely axial)</td></tr>
+</table></div>
+<p>The strongest sanity check is chemical: the relaxed bond lengths land on the natural values of the parent compounds &mdash; Mo&ndash;O at 2.07&nbsp;&Aring; and Mo&ndash;Se at 2.54&nbsp;&Aring;, neither of which was put in by hand. Oxygen sinks (small atom, short bond), selenium pops out (large atom), the vacancy's neighbours barely move. Note also what the table does <em>not</em> imply: relaxation energy is a poor predictor of level shifts, as &sect;4 shows &mdash; the 0.118&nbsp;eV V$_S$ relaxation moves its deep levels by 8&nbsp;meV, while the methods-layer artifact it triggers is 30&times; larger.</p>
+</section>
+
+<section id="sec-chain"><h2>3&nbsp;&middot;&nbsp;The rerun chain, and two operational notes</h2>
+<p>Per defect: relaxed-geometry SOC SCF (1.5&nbsp;h, identical cost to ideal) &rarr; <code>extract_pot</code> &rarr; EDI direct $144\times144$ (v8, <a href="anvil.html">single node + OpenMP</a>) &rarr; 21312/20160-dim $H_{\rm eff}$ diagonalization + full-window spectral function &rarr; supercell truth gate. Two notes worth recording:</p>
+<ul>
+<li><strong>Pipeline integrity gate for free:</strong> <code>extract_pot</code> writes the pristine potential alongside the defect one; since the pristine supercell is untouched by the defect relaxation, its cube must be byte-identical to the campaign original &mdash; and is (matching md5 for all three defects). A silent geometry or grid inconsistency anywhere upstream would break this.</li>
+<li><strong>The Banff single-node boundary, pinned:</strong> the SOC case needs a fixed $\sim$320&nbsp;GiB of per-$k$ wavefunction cache regardless of layout, so a 375&nbsp;GiB Banff node admits exactly one configuration &mdash; 4 MPI ranks &times; 56 OpenMP threads (NUMA-clean, 2 ranks/socket). Measured: MaxRSS 369.5/375&nbsp;GiB (98.5%), 3136&nbsp;s, no OOM; 6+ ranks provably cannot fit. The same run takes 1600&ndash;1750&nbsp;s on one Anvil highmem node at 48&times;2 (more pools, better thread efficiency) &mdash; pools beat threads whenever memory allows.</li>
+</ul>
+</section>
+
+<section id="sec-physics"><h2>4&nbsp;&middot;&nbsp;Physics layer (by the truth gate): one qualitative change, two null results</h2>
+<p>The arbiter is the same one used throughout this site: defect-supercell $\Gamma$ eigenvalues against the pristine supercell, deep-band aligned, computed with one script at both geometries so the two columns are strictly comparable.</p>
+<figure><img src="../assets/rlx_levels.png" alt="Defect levels: truth vs Heff, ideal vs relaxed" style="width:100%;max-width:1400px">
+<figcaption><strong>Defect levels in the gap window.</strong> Per defect: supercell-DFT truth (left pair) and the 144$k$ truncated-Bloch $H_{\rm eff}$ (right pair), each at ideal and relaxed geometry. Solid = occupied, dashed = empty; every level is a Kramers doublet. The two arrows in the V$_S$ panel are the whole methods story: the truth moves +8&nbsp;meV, the $H_{\rm eff}$ moves +0.22&nbsp;eV.</figcaption></figure>
+<div class="table-wrap"><table>
+<tr><th>defect</th><th>truth, ideal &rarr; relaxed</th><th>verdict on published (ideal-geometry) results</th></tr>
+<tr><td><b>O$_S$</b></td><td>O-2$p$ Kramers pair at $-0.016/+0.024$ eV (straddling the VBM) &rarr; <b>$+0.036/+0.055$ eV, both inside the gap, occupied</b> (SOC splitting 19 meV); the CBM-edge resonance stays <em>above</em> the edge (+12 &rarr; +18/+21 meV)</td><td><b>Amended:</b> "gap empty" was an ideal-geometry statement &mdash; relaxation pushes the O-2$p$ pair into the gap as genuine shallow occupied levels. The "conduction-edge resonance, not a bound state" verdict survives unchanged.</td></tr>
+<tr><td><b>V$_S$</b></td><td>empty $e$ pair $+1.088/+1.136$ &rarr; $+1.096/+1.144$ eV (<b>+8 meV</b>); SOC splitting 47.6 &rarr; 48.7 meV; $a_1$ drops to the VBM edge</td><td><b>Stands.</b> The deep levels are insensitive to the (small) vacancy relaxation.</td></tr>
+<tr><td><b>Se$_S$</b></td><td>gap empty &rarr; gap empty; edge states move &le;10 meV</td><td><b>Stands.</b> Fully insensitive, despite the 0.19 &Aring; Se pop-out.</td></tr>
+</table></div>
+<p>The O$_S$ mechanism is transparent: with the oxygen sunk 0.53&nbsp;&Aring; and the Mo&ndash;O bonds shortened to 2.07&nbsp;&Aring;, the antibonding O-2$p$ combination is pushed up &mdash; from just under the VBM into the gap. Relaxation energy, meanwhile, predicts none of this ordering: Se$_S$ relaxes twice as strongly as V$_S$ and its levels move the least.</p>
+</section>
+
+<section id="sec-methods"><h2>5&nbsp;&middot;&nbsp;Methods layer: distorted geometries inflate the push-up &mdash; and the truth gate catches it</h2>
+<p>The relaxed-geometry $H_{\rm eff}$ (pristine Bloch basis + $\tilde\chi$, exactly the production method) was run in parallel with the truth. At <em>ideal</em> geometry its known systematic error is the +45&nbsp;meV-class common mode. At <em>relaxed</em> geometry that error inflates:</p>
+<div class="table-wrap"><table>
+<tr><th>level</th><th>truth shift (ideal&rarr;relaxed)</th><th>$H_{\rm eff}$ shift</th><th>$H_{\rm eff}$ overshoot vs truth: ideal &rarr; relaxed</th></tr>
+<tr><td>V$_S$ $e$ pair</td><td>+8 meV</td><td><b>+216 meV</b></td><td>+45 &rarr; <b>+255 meV</b></td></tr>
+<tr><td>V$_S$ $a_1$</td><td>&minus;44 meV (to the edge)</td><td>+45 meV</td><td>+133 &rarr; +222 meV</td></tr>
+<tr><td>O$_S$ O-2$p$ pair</td><td>+51/+31 meV</td><td>edge&rarr;+0.106 eV, splitting distorted</td><td>&plusmn;few &rarr; +50&ndash;70 meV</td></tr>
+<tr><td>Se$_S$ (all)</td><td>&le;10 meV</td><td>4&ndash;7 meV</td><td>unchanged</td></tr>
+</table></div>
+<p>The mechanism is the same one that runs through the <a href="augmentation.html">augmentation page</a>: the basis is the <em>ideal-crystal</em> Bloch set, and a distorted defect environment moves the true wavefunctions away from its span, so the Ritz values are pushed up. The ranking is exactly the vulnerability ranking established there &mdash; the <strong>vacancy is worst</strong> (its dangling-bond states have no augmentation orbital to adapt with; even 0.065&nbsp;&Aring; of neighbour motion costs +0.2&nbsp;eV of representability), O$_S$ intermediate (its $\tilde\chi$ sits at the relaxed site, but the host bands don't know about the distortion), Se$_S$ immune (its states are host-like). Two practical consequences:</p>
+<ul>
+<li><strong>The standing rule did its job.</strong> "Supercell truth arbitrates all mid-gap claims" is what kept the +0.22&nbsp;eV V$_S$ phantom out of the physics layer of this page. An $H_{\rm eff}$-only relaxation study would have published it.</li>
+<li><strong>Relaxed geometries need basis adaptation before the $T$-matrix numbers can be trusted quantitatively.</strong> Candidate cures, in the spirit of A1: displaced-atom $\tilde\chi$ for the shell atoms (Mo/S at their relaxed sites), or a vacancy-site $\tilde\chi$ built from the removed atom's orbitals &mdash; the same construction that was proposed for the PAW vacancy disease.</li>
+</ul>
+</section>
+
+<section id="sec-spectral"><h2>6&nbsp;&middot;&nbsp;Spectral functions, ideal vs relaxed</h2>
+<figure><img src="../assets/rlx_spectral6.png" alt="Six-panel spectral comparison" style="width:100%;max-width:1300px">
+<figcaption><strong>$A(k,\omega)$ along $\Gamma$&ndash;K&ndash;M&ndash;$\Gamma$</strong>, all six panels on one log scale ($\eta$=20 meV, Dyson form, 926&nbsp;&omega; points). O$_S$ relaxed: the new $k$-flat O-2$p$ line appears just above the VBM (drawn at +0.11 eV by $H_{\rm eff}$; the truth places it at +0.04/+0.06 &mdash; the annotation keeps the two numbers side by side). V$_S$ relaxed: the flat resonance appears at +1.35/+1.40 <em>only because of the basis artifact of &sect;5</em> &mdash; the truth says it stays at +1.10/+1.14. Se$_S$: the two panels are indistinguishable, the visual form of the null result.</figcaption></figure>
+<p>These maps inherit the $H_{\rm eff}$ vertex, so they carry its relaxed-geometry biases &mdash; the annotations state where each feature actually belongs per the truth gate. The qualitative content survives the caveat: O$_S$ gains an in-gap flat line, V$_S$ keeps one resonance and its SOC splitting, Se$_S$ changes nothing.</p>
+</section>
+
+<section id="sec-bottom"><h2>7&nbsp;&middot;&nbsp;Bottom line</h2>
+<div class="grid cards">
+<div class="card"><strong>O$_S$: the one real change</strong><span>Relaxation (O sinks 0.53 &Aring;, Mo&ndash;O &rarr; 2.07 &Aring;, 1.48 eV) pushes the occupied O-2$p$ Kramers pair from the VBM edge into the gap: +0.036/+0.055 eV, SOC split 19 meV. The ideal-geometry "gap empty" statement is hereby amended; the CBM-edge resonance verdict survives.</span></div>
+<div class="card"><strong>V$_S$ and Se$_S$: published results stand</strong><span>Truth-level shifts of +8 meV (V$_S$ deep pair, splitting preserved) and &le;10 meV (Se$_S$). Relaxation energy predicts neither: 0.12 / 0.27 eV of relaxation produce the two smallest level responses.</span></div>
+<div class="card"><strong>The 0.22 eV phantom</strong><span>The truncated-Bloch $H_{\rm eff}$ inflates its variational push-up on distorted geometries (V$_S$ overshoot +45 &rarr; +255 meV; no augmentation orbital exists for a vacancy to adapt with). The supercell truth gate &mdash; a standing rule of this site &mdash; is what kept the phantom out of the conclusions.</span></div>
+<div class="card"><strong>Ops</strong><span>Fixed-cell constrained relax converges in &le;16 BFGS steps; the pristine-cube md5 doubles as a pipeline integrity gate; Banff single-node SOC EDI exists at exactly one layout (4&times;56, 98.5% of memory), Anvil highmem remains the comfortable single-node home.</span></div>
+</div>
+<p class="small">Artifacts: relax inputs/outputs <code>~/mos2_soc/relax_{OS,VS,SeS}/</code>; relaxed SOC SCFs <code>sc_rlx/</code>; relaxed cubes + EDI bins + spectra <code>edi_rlx/</code> (Banff) and <code>mos2_rlx/</code> (Anvil); truth gate <code>edi_rlx/truth_levels.json</code> (same-script, both geometries); figures <code>post/plot_rlx_levels.py</code>, <code>post/plot_rlx_spectral.py</code>. Ideal-geometry baselines are the campaign originals throughout.</p>
+</section>
+
+</main>
+<footer><div class="inner small">EDI direct T-matrix site &mdash; geometry-relaxation arm. MoS$_2$+SOC, July 2026.</div></footer>
+</body></html>
