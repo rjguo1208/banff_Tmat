@@ -9,7 +9,7 @@
 
 <header><div class="header-inner"><h1>All-Electron Benchmark: ELK vs the Pseudopotential Pipeline</h1>
 <p class="subtitle">Every layer of this site's error budget had an independent arbiter except one. The $H_{\rm eff}$/downfolding error is gated by supercell truth; basis provenance by the NC&nbsp;&harr;&nbsp;PAW cross-checks &mdash; but NC and PAW <em>share the frozen-core approximation</em>, so their mutual agreement cannot bound it. This page adds the missing column: <strong>ELK</strong>, a full-potential LAPW code with every electron &mdash; including the 38 core electrons per Mo &mdash; solved self-consistently (Dirac) in the crystal. Same geometry to the digit, same PBE, same $k$-grid. Verdict: the frozen-core + pseudization layer contributes $\sim$0.1&ndash;2&nbsp;meV to SOC splittings and meV&ndash;tens-of-meV to band positions across a 67&nbsp;eV window.</p>
-<div class="meta"><span class="pill">ELK 11.0.2, FP-LAPW</span><span class="pill">CB splitting: 3.0 vs 3.1 meV</span><span class="pill">semicore to 4&ndash;68 meV over 60 eV</span><span class="pill">boundary-condition control: 0.00 meV</span><span class="pill">54 s per SCF</span></div></div></header>
+<div class="meta"><span class="pill">ELK 11.0.2, FP-LAPW</span><span class="pill">CB splitting: 3.0 vs 3.1 meV</span><span class="pill">semicore to 4&ndash;68 meV over 60 eV</span><span class="pill">boundary-condition control: 0.00 meV</span><span class="pill">54 s per SCF</span><span class="pill">high-E audit: a step at the vacuum level</span></div></div></header>
 
 <main>
 
@@ -51,7 +51,22 @@
 </table></div>
 </section>
 
-<section id="sec-bottom"><h2>5&nbsp;&middot;&nbsp;Bottom line, and the remaining rungs</h2>
+
+<section id="sec-hienergy"><h2>5&nbsp;&middot;&nbsp;The high-energy audit: a step at the vacuum level, not a decay</h2>
+<p>The $T$-matrix rest space reaches high &mdash; 140 bands in the SOC production, spanning to $\sim$+27&nbsp;eV above the VBM at the primitive level &mdash; and none of those upper states had ever been compared against anything outside the pseudopotential framework. Extending both codes to 160 spinor states (QE rerun with nbnd&nbsp;=&nbsp;172, top twelve discarded; ELK's task-20 output already reached +31&nbsp;eV) makes the audit possible over the entire range the downfolding actually uses.</p>
+<figure><img src="../assets/elk_qe_hibands.png" alt="High-energy ELK vs QE comparison with deviation-vs-energy curve" style="width:100%;max-width:1400px">
+<figcaption><strong>(a)</strong> All 160 spinor states along $\Gamma$&ndash;K&ndash;M&ndash;$\Gamma$: below the vacuum level the two codes superpose; above it the blue and red manifolds visibly weave through each other. <strong>(b)</strong> $|\Delta E|$ binned by energy (median and 95th percentile, log scale), with the QE vacuum level and the rest-space reaches of the campaigns marked. The deviation is <em>not</em> a gradual transferability decay &mdash; it is a <strong>step function at the vacuum level</strong>.</figcaption></figure>
+<div class="table-wrap"><table>
+<tr><th>window</th><th>median $|\Delta E|$</th><th>95th pct</th><th>character</th></tr>
+<tr><td>valence ($-8$&hellip;0 eV)</td><td>29 meV</td><td>40 meV</td><td>bound, layer-localized</td></tr>
+<tr><td>conduction below vacuum (0&hellip;+5.9 eV)</td><td><b>13.5 meV</b></td><td>354 meV (near-vacuum tail)</td><td>bound, layer-localized</td></tr>
+<tr><td>above the vacuum level (+5.9&hellip;+31 eV)</td><td>$\sim$0.9 eV</td><td>$\sim$2 eV</td><td><b>quasi-continuum</b></td></tr>
+</table></div>
+<p><strong>Reading the step honestly.</strong> Above the vacuum level a slab calculation's spectrum is a discretized continuum, and its state-by-state energies are set by things that legitimately differ between the two codes: the vacuum boundary condition (QE's 2D Coulomb cutoff vs ELK's 3D periodic images &mdash; the control of &sect;3 certified <em>bound</em> states only, and indeed the step turns on exactly where bound ends), the $z$-quantization of the 24&nbsp;&Aring; vacuum, and, on the ELK side, LAPW linearization drifting far from the valence energies. None of the $\sim$1&nbsp;eV quasi-continuum spread can be attributed to pseudization specifically; the honest statement is that <em>state-by-state comparison stops being meaningful there for reasons shared by any slab code pair</em>.</p>
+<p><strong>What this means for the $T$-matrix rest space.</strong> The bound part of the rest space &mdash; everything a localized $\Delta V$ couples to strongly &mdash; agrees between pseudopotential and all-electron at the 10&ndash;30&nbsp;meV level all the way up. The quasi-continuum part enters the downfolding only through weak couplings (layer-localized $\Delta V$ against $z$-delocalized states) and large denominators, which is consistent with what the campaigns measured internally all along: band-boosting the rest space from 70 to 160 bands moved converged levels by only tens of meV. The high-energy audit closes with the right conclusion for each region &mdash; endorsement where the states are physical, and a documented reason not to over-interpret where they are not.</p>
+</section>
+
+<section id="sec-bottom"><h2>6&nbsp;&middot;&nbsp;Bottom line, and the remaining rungs</h2>
 <div class="grid cards">
 <div class="card"><strong>The pseudization layer is pinned</strong><span>SOC observables to 0.1&ndash;1.8 meV (1%), band positions to meV&ndash;tens-of-meV across a 67 eV window, gap to 13 meV. Every SOC-splitting conclusion of the campaigns now carries an all-electron endorsement independent of the pseudopotential framework.</span></div>
 <div class="card"><strong>Controls, not caveats</strong><span>ELK's missing 2D cutoff was measured to matter 0.00 meV here; the valence partitions were verified state-for-state before comparing; geometry and functional are shared to the digit. What differs between the columns is the one thing under test.</span></div>
