@@ -1,0 +1,66 @@
+<!doctype html><html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>All-electron benchmark: ELK vs the pseudopotential pipeline</title>
+<link rel="stylesheet" href="../assets/style.css">
+<script>window.MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']],displayMath:[['$$','$$'],['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head><body>
+<nav class="topnav"><div class="inner"><span class="brand">EDI&nbsp;direct&nbsp;T-matrix</span><a href="../index.html">Home</a><a href="results.html">Results</a><a href="augmentation.html">Augmentation</a><a href="mobility.html">Mobility</a><a href="soc.html">SOC</a><a href="soc_mobility.html">SOC&nbsp;mobility</a><a href="wse2.html">WSe$_2$</a><a href="sigma_spectral.html">Σ&harr;A</a><a href="anvil.html">Anvil&nbsp;port</a><a href="relaxation.html">Relaxation</a><a href="elk.html" style="color:#fff;text-decoration:underline">All-electron</a><a href="https://rjguo1208.github.io/claude-sternheimer/">Sternheimer site &rarr;</a></div></nav>
+
+<header><div class="header-inner"><h1>All-Electron Benchmark: ELK vs the Pseudopotential Pipeline</h1>
+<p class="subtitle">Every layer of this site's error budget had an independent arbiter except one. The $H_{\rm eff}$/downfolding error is gated by supercell truth; basis provenance by the NC&nbsp;&harr;&nbsp;PAW cross-checks &mdash; but NC and PAW <em>share the frozen-core approximation</em>, so their mutual agreement cannot bound it. This page adds the missing column: <strong>ELK</strong>, a full-potential LAPW code with every electron &mdash; including the 38 core electrons per Mo &mdash; solved self-consistently (Dirac) in the crystal. Same geometry to the digit, same PBE, same $k$-grid. Verdict: the frozen-core + pseudization layer contributes $\sim$0.1&ndash;2&nbsp;meV to SOC splittings and meV&ndash;tens-of-meV to band positions across a 67&nbsp;eV window.</p>
+<div class="meta"><span class="pill">ELK 11.0.2, FP-LAPW</span><span class="pill">CB splitting: 3.0 vs 3.1 meV</span><span class="pill">semicore to 4&ndash;68 meV over 60 eV</span><span class="pill">boundary-condition control: 0.00 meV</span><span class="pill">54 s per SCF</span></div></div></header>
+
+<main>
+
+<section id="sec-why"><h2>1&nbsp;&middot;&nbsp;What this column arbitrates, and why ELK</h2>
+<p>The pseudopotential campaigns validated basis effects exhaustively (push-up artifacts, A1/PAW cures, the FR-$\chi$ question), always <em>within</em> the pseudopotential framework: the supercell truth is itself SG15-PBE. What no gate had touched is the pseudization itself &mdash; the frozen, Dirac-solved-then-discarded core and the reshaped valence potential. The NC&nbsp;vs&nbsp;PAW agreement (3&ndash;10&nbsp;meV on golden cases) is reassuring but not conclusive: both inherit the same frozen-core construction.</p>
+<p>Among the free all-electron (L)APW codes &mdash; ELK, exciting, FLEUR, all reference-grade in the community's reproducibility benchmarks &mdash; ELK was chosen for this first rung for its one-hour build (single makefile, ifx + threaded MKL + MKL FFT on Banff) and complete SOC support. Its known ceiling &mdash; no distributed eigensolver, no 2D Coulomb cutoff &mdash; is handled below: the former by keeping to primitive cells (a 3&times;3 defect rung fits ELK; the 6&times;6 rung would go to FLEUR, whose <em>film mode</em> is also the proper all-electron analogue of QE's 2D cutoff), the latter by a control calculation that turns the missing cutoff from a caveat into a measured zero.</p>
+</section>
+
+<section id="sec-setup"><h2>2&nbsp;&middot;&nbsp;Setup: identical physics in, one approximation out</h2>
+<p>Geometry is bit-inherited from the QE production cell ($a$ = supercell/6 = 6.0191115837&nbsp;bohr, $c$ = 24&nbsp;&Aring;, S at $z=\pm0.0651240739$, converted with QE's own Bohr constant), PBE, <code>spinorb</code>, the same 12&times;12&times;1 grid, rgkmax&nbsp;=&nbsp;8. The valence partitions match exactly &mdash; which makes the band-by-band comparison meaningful:</p>
+<div class="table-wrap"><table>
+<tr><th></th><th>ELK core (self-consistent Dirac)</th><th>ELK valence bands</th><th>QE SG15 valence</th></tr>
+<tr><td>Mo</td><td>1s&hellip;3d = 28 e$^-$</td><td>4s$^2$4p$^6$4d$^5$5s$^1$ = 14 e$^-$</td><td>$z_{\rm val}$ = 14 ✓</td></tr>
+<tr><td>S</td><td>1s2s2p = 10 e$^-$</td><td>3s$^2$3p$^4$ = 6 e$^-$</td><td>$z_{\rm val}$ = 6 ✓</td></tr>
+</table></div>
+<p>26 spinor valence states per cell in both codes (verified from the ELK occupancies), state-for-state comparable. The only difference left standing is the one under test: QE's cores are frozen into the pseudopotential; ELK's relax in the crystal every SCF cycle.</p>
+</section>
+
+<section id="sec-kpoint"><h2>3&nbsp;&middot;&nbsp;The K-point scorecard &mdash; and the near-cancellation probe</h2>
+<div class="table-wrap"><table>
+<tr><th>@K</th><th>QE (SG15-FR, 100 Ry)</th><th>ELK (all-electron)</th><th>&Delta;</th></tr>
+<tr><td>valence SOC splitting</td><td>149.0 meV</td><td>147.2 meV</td><td>1.8 meV (1.2%)</td></tr>
+<tr><td><b>conduction SOC splitting</b></td><td><b>3.0 meV</b></td><td><b>3.1 meV</b></td><td><b>0.1 meV</b></td></tr>
+<tr><td>direct gap @K</td><td>1.6041 eV</td><td>1.5907 eV</td><td>13 meV (0.8%)</td></tr>
+</table></div>
+<p>The conduction row is the loaded one. MoS$_2$'s famously tiny conduction splitting at K is a <em>near-cancellation</em> between Mo-$d$ contributions of opposite sign &mdash; the most core-region-sensitive observable this system offers, since SOC matrix elements weight exactly the region a pseudopotential reshapes. Agreement to 0.1&nbsp;meV on a cancellation residue is about as strong a statement of FR-pseudo SOC fidelity as can be extracted from one material. Cost of the entire SCF: <strong>54&nbsp;s</strong> on one node &mdash; this rung of the ladder is effectively free.</p>
+<p><strong>Boundary-condition control.</strong> ELK has no 2D Coulomb truncation (verified at the source level: none among its 323 input options), while the QE production used <code>assume_isolated='2D'</code>. Rather than argue the difference away, it was measured: the same QE cell rerun <em>without</em> the cutoff reproduces all three numbers to the printed 0.1&nbsp;meV / 0.1&nbsp;meV / 0.05&nbsp;meV &mdash; for this nonpolar, mirror-symmetric monolayer at 24&nbsp;&Aring; vacuum, the periodic-image contribution is <strong>zero at benchmark resolution</strong>. The 13&nbsp;meV gap difference is therefore genuinely frozen-core + pseudization (plus residual LAPW basis convergence), not electrostatics.</p>
+</section>
+
+<section id="sec-bands"><h2>4&nbsp;&middot;&nbsp;Band structures, with the core states shown</h2>
+<figure><img src="../assets/elk_qe_bands.png" alt="ELK vs QE band structure, three tiers including core states" style="width:100%;max-width:1180px">
+<figcaption><strong>Three tiers along $\Gamma$&ndash;K&ndash;M&ndash;$\Gamma$, each code aligned at its own VBM.</strong> (a) Valence + conduction: solid QE under dashed ELK, superposed along the entire path. (b) The semicore flat bands &mdash; present in <em>both</em> codes because SG15 keeps Mo&nbsp;4s4p and S&nbsp;3s in the valence window. (c) The true core states, which exist <em>only</em> in the all-electron calculation: dispersionless Dirac levels, self-consistent in the crystal, with their own spin&ndash;orbit splittings resolved (S&nbsp;2p 1.3&nbsp;eV, Mo&nbsp;3d 3.3&nbsp;eV, Mo&nbsp;3p 17.5&nbsp;eV); the deepest shells (Mo&nbsp;1s at $-19.8$&nbsp;keV, Mo&nbsp;2s/2p and S&nbsp;1s at $-2.4$ to $-2.8$&nbsp;keV) sit off scale. On the QE side this panel is empty by construction &mdash; it is the visual definition of what a pseudopotential freezes away.</figcaption></figure>
+<p>Quantitatively: over the twenty bands nearest the gap (12 occupied + 8 empty), the largest deviation anywhere on the path is <strong>42&nbsp;meV</strong> (upper conduction bands; band-edge physics agrees an order of magnitude better, per the K-point table). The semicore tier &mdash; the classic stress test of pseudization, 13 to 61&nbsp;eV below the VBM &mdash; lands remarkably close:</p>
+<div class="table-wrap"><table>
+<tr><th>semicore band (rel. VBM)</th><th>QE</th><th>ELK</th><th>&Delta;</th></tr>
+<tr><td>S 3s ($-12.7$ eV)</td><td>$-12.65$</td><td>$-12.65$</td><td><b>4 meV</b></td></tr>
+<tr><td>Mo 4p ($-35$ eV, SOC doublet)</td><td>$-35.04$</td><td>$-34.97$</td><td>68 meV</td></tr>
+<tr><td>Mo 4s ($-61$ eV)</td><td>$-60.86$</td><td>$-60.87$</td><td><b>10 meV</b></td></tr>
+</table></div>
+</section>
+
+<section id="sec-bottom"><h2>5&nbsp;&middot;&nbsp;Bottom line, and the remaining rungs</h2>
+<div class="grid cards">
+<div class="card"><strong>The pseudization layer is pinned</strong><span>SOC observables to 0.1&ndash;1.8 meV (1%), band positions to meV&ndash;tens-of-meV across a 67 eV window, gap to 13 meV. Every SOC-splitting conclusion of the campaigns now carries an all-electron endorsement independent of the pseudopotential framework.</span></div>
+<div class="card"><strong>Controls, not caveats</strong><span>ELK's missing 2D cutoff was measured to matter 0.00 meV here; the valence partitions were verified state-for-state before comparing; geometry and functional are shared to the digit. What differs between the columns is the one thing under test.</span></div>
+<div class="card"><strong>Cheap enough to be routine</strong><span>Build: one hour (ifx + MKL, serial make &mdash; ELK's src/Makefile races under -j). Benchmark: 54 s per SCF, 31 irreducible k, 112 threads. The primitive-cell rung of an all-electron audit costs less than a coffee break.</span></div>
+<div class="card"><strong>Next rungs</strong><span>WSe$_2$ primitive (the 466 meV giant splitting, W at Z=74) on ELK; the 3&times;3 defect supercell (&sim;9,200 LAPW basis, hours) for a NC/PAW/AE three-way on defect levels; the 6&times;6 rung, if ever needed, belongs to FLEUR (film mode + ELPA) or a WIEN2k license.</span></div>
+</div>
+<p class="small">Artifacts: ELK build <code>~/software/elk/elk-11.0.2</code> (make.inc for ifx+MKL+MKL-FFT); benchmark inputs/outputs <code>~/elk_bench/mos2_prim</code> (SCF + task-20 bands + <code>EVALCORE.OUT</code>), QE controls <code>~/elk_bench/qe_no2d</code>, <code>~/elk_bench/qe_bands</code> (isolated outdir &mdash; production data untouched); extraction <code>extract_k.py</code>, figure <code>post/plot_elk_qe_bands.py</code>. QE reference numbers from the campaign's <code>bands144.npz</code>.</p>
+</section>
+
+</main>
+<footer><div class="inner small">EDI direct T-matrix site &mdash; all-electron benchmark column. MoS$_2$+SOC, July 2026.</div></footer>
+</body></html>
